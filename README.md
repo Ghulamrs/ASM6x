@@ -64,10 +64,14 @@ a file against), `.symtab`, the exidx tables, the relocation sections in the ord
 source first needed them, `.TI.symbol.alias`, `.TI.section.flags`, the string tables.
 Every symbol is `STV_HIDDEN`, as asm6x marks them.
 
-Not done: units named in the source, packets whose instructions collide on a unit (asm6x
-moves one; here it is refused), the compact 16-bit instructions asm6x writes by default
-(the oracle runs with `--no_compress`), DWARF, `MVC`, `ADDKPC`, `.field`, the register
-addressing modes beyond a constant offset.
+The vocabulary is the one the three compilers and the vm6747 emulator share, every form
+of it probed (`tests/enc/vocabulary.s` holds the ones today's compilers do not yet write:
+the 40-bit forms into a pair, the register forms of the field instructions, `ANDN`, the
+address adds, `MVC` with its control registers, the 15-bit offsets from B14, `ABS`/`NEG` of
+a pair). Not done: units named in the source, packets whose instructions collide on a unit
+(asm6x moves one; here it is refused), the compact 16-bit instructions asm6x writes by
+default (the oracle runs with `--no_compress`), DWARF, `ADDKPC`, `.field`, the register
+addressing modes beyond a constant offset and the increments.
 
 ## In RIDE
 

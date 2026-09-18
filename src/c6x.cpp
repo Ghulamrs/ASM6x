@@ -316,7 +316,7 @@ unsigned form_of(const Form *list, size_t count, const std::string &m)
 
 /* src1, src2, dst: the L/S/M register form and the C64x+ D form */
 const Form kThreeReg[] = {
-    { "AND", 0x26C }, { "OR", 0x22C }, { "XOR", 0x2EC },
+    { "AND", 0x26C }, { "OR", 0x22C }, { "XOR", 0x2EC }, { "ANDN", 0x20C },
     { "CMPEQ", 0x29E }, { "CMPGT", 0x23E }, { "CMPGTU", 0x27E }, { "CMPLT", 0x2BE }, { "CMPLTU", 0x2FE },
     { "MPY32", 0x200 }, { "MPY", 0x320 }, { "MPYU", 0x3E0 }, { "MPYSU", 0x360 }, { "MPYUS", 0x3A0 },
     { "MPYLH", 0x220 }, { "MPYHL", 0x120 }, { "MPYH", 0x020 }, { "MPYHU", 0x0E0 },
@@ -327,12 +327,12 @@ const Form kThreeReg[] = {
 /* src2, src1, dst: the classic D form (ADD/SUB same side) and the shifts on .S */
 const Form kSrc2First[] = {
     { "ADD", 0x210 }, { "SUB", 0x230 }, { "SHL", 0x338 }, { "SHR", 0x378 }, { "SHRU", 0x278 },
-    { "ADDAW", 0x310 }, { "ADDAH", 0x290 }, { "ADDAB", 0x210 }, { "SUBAW", 0x330 },   /* ADDAW probed; the others by the D-unit op numbers */
+    { "ADDAW", 0x310 }, { "ADDAH", 0x290 }, { "ADDAB", 0x210 }, { "ADDAD", 0x390 }, { "SUBAW", 0x330 },
 };
 /* src2, ucst5, dst */
 const Form kSrc2Cst[] = {
     { "ADD", 0x250 }, { "SUB", 0x270 }, { "SHL", 0x328 }, { "SHR", 0x368 }, { "SHRU", 0x268 },
-    { "ADDAW", 0x350 }, { "ADDAH", 0x2D0 }, { "ADDAB", 0x250 }, { "SUBAW", 0x370 },
+    { "ADDAW", 0x350 }, { "ADDAH", 0x2D0 }, { "ADDAB", 0x250 }, { "ADDAD", 0x3B0 }, { "SUBAW", 0x370 },
 };
 /* scst5, src2, dst */
 const Form kCstFirst[] = {
@@ -400,7 +400,32 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
     std::vector<size_t> cuts;
     split_items(t, i, cuts);
     std::vector<Operand> o;
-    if (i < t.size())
+    unsigned long w = 0;
+    bool have = false;
+    if (m == "MVC") {
+        /* a control register in or out, on .S2: the register side is B, or crosses in. The
+           control register is a name, not a symbol, so it is read before the operands are. */
+        static const struct { const char *name; unsigned code; } cregs[] = {
+            { "AMR", 0 }, { "CSR", 1 }, { "IFR", 2 }, { "ISR", 2 }, { "ICR", 3 }, { "IER", 4 }, { "ISTP", 5 }, { "IRP", 6 },
+            { "NRP", 7 }, { "TSCL", 10 }, { "TSCH", 11 }, { "ILC", 13 }, { "RILC", 14 }, { "REP", 15 }, { "PCE1", 16 },
+            { "DNUM", 17 }, { "SSR", 21 }, { "GPLYA", 22 }, { "GPLYB", 23 }, { "GFPGFR", 24 }, { "DIER", 25 }, { "TSR", 26 },
+            { "ITSR", 27 }, { "NTSR", 28 }, { "EFR", 29 }, { "ECR", 29 }, { "IERR", 31 } };
+        if (cuts.size() != 3 || cuts[1] - 1 != cuts[0] + 1 || cuts[2] - 1 != cuts[1] + 1 ||
+            t[cuts[0]].kind != T_NAME || t[cuts[1]].kind != T_NAME) { u.error("MVC takes a register and a control register"); return; }
+        int reg, side, code = -1;
+        bool in = reg_name(t[cuts[0]].text, reg, side);
+        std::string cname = upper(t[in ? cuts[1] : cuts[0]].text);
+        if (!in && !reg_name(t[cuts[1]].text, reg, side)) { u.error("MVC takes a register and a control register"); return; }
+        for (size_t k = 0; k < sizeof cregs / sizeof *cregs; k++) if (cname == cregs[k].name) code = (int)cregs[k].code;
+        if (code < 0) { u.error("'" + cname + "' is not a control register"); return; }
+        if (in) w = 0x3A2 | ((unsigned long)code << 23) | ((unsigned long)reg << 18) | (side ? 0 : 1ul << 12);
+        else {
+            if (!side) { u.error("MVC out of a control register lands on the B side"); return; }
+            w = 0x3E2 | ((unsigned long)reg << 23) | ((unsigned long)code << 18);
+        }
+        have = true;
+    }
+    if (!have && i < t.size())
         for (size_t k = 0; k + 1 < cuts.size(); k++) {
             Operand x;
             if (!operand(u, t, cuts[k], cuts[k + 1] - 1, x)) return;
@@ -408,8 +433,6 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
         }
     size_t n = o.size();
 
-    unsigned long w = 0;
-    bool have = false;
     int fix_sym = -1;
     RelKind fix_kind = R_NONE;
     long long fix_add = 0;
@@ -420,7 +443,8 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
     #define MEM(k) (o[k].kind == O_MEM)
     #define SYM(k) (o[k].kind == O_EXPR)
 
-    if (m == "NOP") {
+    if (have) {
+    } else if (m == "NOP") {
         long long c = 1;
         if (n == 1 && CST(0)) c = o[0].v;
         else if (n != 0) { u.error("NOP takes a count"); return; }
@@ -486,7 +510,7 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
     } else if (n == 3 && (REG(0) || PAIR(0)) && (REG(1) || PAIR(1)) && (REG(2) || PAIR(2))) {
         unsigned f;
         if (REG(0) && REG(1) && REG(2) && o[0].side != o[2].side && o[1].side == o[2].side &&
-            m != "SHL" && m != "SHR" && m != "SHRU") {
+            m != "SHL" && m != "SHR" && m != "SHRU" && m != "EXT" && m != "EXTU" && m != "SET" && m != "CLR") {
             /* only the second source may cross: asm6x swaps a commutative operation's sources,
                turns a compare about, and has an .S form of SUB and SUBSP that takes the first
                crossed - all read back from it */
@@ -510,13 +534,20 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
             f = m == "ADD" ? 0x11E : 0x13E;
             if (!same) { u.error(m + " into a pair takes sources of its side"); return; }
             w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13);
-        } else if (m == "ADDU" && PAIR(2) && REG(0) && REG(1) && same) {
-            w = (0x15Eul << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13);
+        } else if ((m == "ADDU" || m == "SUBU") && PAIR(2) && REG(0) && REG(1) && same) {
+            w = ((m == "ADDU" ? 0x15Eul : 0x17Eul) << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13);
+        } else if ((m == "EXT" || m == "EXTU" || m == "SET" || m == "CLR") && REG(0) && REG(1) && REG(2)) {
+            /* the field pair in a register: src2 the value, src1 the csta:cstb register of the
+               destination's side, the value alone may cross */
+            if (o[1].side != o[2].side) { u.error(m + "'s field register is on the destination's side"); return; }
+            unsigned fm = m == "EXT" ? 0x2F8 : m == "EXTU" ? 0x2B8 : m == "SET" ? 0x3B8 : 0x3F8;
+            w = ((unsigned long)fm << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].reg << 13) |
+                (o[0].side != o[2].side ? 1ul << 12 : 0);
         } else if ((f = form_of(kSrc2First, sizeof kSrc2First / sizeof *kSrc2First, m)) != 0xFFFF && REG(0) && REG(1) && REG(2) &&
                    (same || m == "SHL" || m == "SHR" || m == "SHRU")) {
             /* ADD/SUB register forms of the classic D unit take both sources from their side; the
                shifts on .S take the value shifted over the cross path but never the count */
-            if (m == "ADD" || m == "SUB" || m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "SUBAW") {
+            if (m == "ADD" || m == "SUB" || m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "ADDAD" || m == "SUBAW") {
                 if (!same) { u.error(m + "'s sources are on the destination's side, or the second crosses"); return; }
                 w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].reg << 13);
                 if (m != "ADD" && m != "SUB") w |= 1ul << 12;   /* asm6x sets x in the address forms */
@@ -562,7 +593,7 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
             if (c < 0 || c > 31) { u.error(m + "'s constant is 0 to 31"); return; }
             w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)c << 13) |
                 ((unsigned long)o[2].side << 1);
-            if (m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "SUBAW") w |= 1ul << 12;
+            if (m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "ADDAD" || m == "SUBAW") w |= 1ul << 12;
             have = true;
         }
     } else if (n == 3 && CST(0) && REG(1) && REG(2)) {
@@ -588,9 +619,9 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
         if (PAIR(0) && (f = form_of(kPairIn, sizeof kPairIn / sizeof *kPairIn, m)) != 0xFFFF) {
             if (o[0].side != o[1].side) { u.error(m + " takes its pair from the destination's side"); return; }
             w = ((unsigned long)f << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)(o[0].reg + 1) << 18) | ((unsigned long)o[0].reg << 13);
-        } else if (PAIR(0) && PAIR(1) && m == "MV") {
-            if (o[0].side != o[1].side) { u.error("a pair moves within its side"); return; }
-            w = (0x106ul << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[0].reg << 18);
+        } else if (PAIR(0) && PAIR(1) && (m == "MV" || m == "ABS" || m == "NEG")) {
+            if (o[0].side != o[1].side) { u.error("a pair " + m + " stays within its side"); return; }
+            w = ((m == "MV" ? 0x106ul : m == "ABS" ? 0x1C6ul : 0x126ul) << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[0].reg << 18);
         } else if ((f = form_of(kUnary, sizeof kUnary / sizeof *kUnary, m)) != 0xFFFF && REG(0)) {
             w = ((unsigned long)f << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[0].reg << 18) |
                 (o[0].side != o[1].side ? 1ul << 12 : 0);
