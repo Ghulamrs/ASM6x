@@ -1,0 +1,9 @@
+"070-addaw-a4-32.s", ERROR!   at line 4: [E0800] Illegal operand combination,
+                                                 second operand
+		ADDAW A4, 32, A3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

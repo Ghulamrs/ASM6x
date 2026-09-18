@@ -1,0 +1,9 @@
+"092-b-cst.s", ERROR!   at line 4: [E0004] Operand #1 not legal: register or
+                                           PC-relative symbol expected
+		B 0x100
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,8 @@
+"028-mpyu-cst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+		MPYU 5, A1, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

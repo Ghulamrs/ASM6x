@@ -1,0 +1,9 @@
+"384-def-undefined.s", ERROR!   at line 1: [E0300] 'd' is not defined in this
+                                                   source file
+		.def d
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

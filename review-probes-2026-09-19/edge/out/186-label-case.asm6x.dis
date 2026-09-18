@@ -1,0 +1,10 @@
+
+Disassembly of 186-label-case.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x10 bytes at 0x0 
+00000000            Foo:
+00000000   00000001           .word 0x00000001
+00000004            foo:
+00000004   00000002           .word 0x00000002
+00000008   00000000           .word 0x00000000
+0000000c   00000000           .word 0x00000000

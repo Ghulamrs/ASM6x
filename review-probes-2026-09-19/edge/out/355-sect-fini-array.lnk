@@ -1,0 +1,11 @@
+warning: output section ".fini_array" refers to load symbol "f" and hence
+   cannot be compressed; compression "rle" is ignored
+
+ undefined first referenced                                                     
+  symbol       in file                                                          
+ --------- ----------------                                                     
+ float     355-sect-fini-array.obj                                              
+ main      C:\Users\GRA\Documents\VM6747\tilib\rts6740_elf_eh.lib<args_main.obj>
+
+error: unresolved symbols remain
+error: errors encountered during linking; "355-sect-fini-array.out" not built

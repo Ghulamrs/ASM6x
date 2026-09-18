@@ -1,0 +1,5 @@
+"244-char-escape.s", WARNING! at line 2: [W0001] Constant value out of range,
+                                                 will be truncated to 8 bits
+		.byte '\n'
+
+No Assembly Errors, 1 Assembly Warning

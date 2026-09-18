@@ -1,0 +1,5 @@
+
+Disassembly of 353-sect-rodata.asm6x.obj:
+
+DATA Section .rodata (Little Endian), 0x1 bytes at 0x0 
+00000000         01           .word 0x00000001

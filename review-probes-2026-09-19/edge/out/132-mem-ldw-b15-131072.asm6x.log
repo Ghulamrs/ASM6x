@@ -1,0 +1,8 @@
+"132-mem-ldw-b15-131072.s", ERROR!   at line 4: [E0800] Offset too large
+		LDW *+B15(131072), A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

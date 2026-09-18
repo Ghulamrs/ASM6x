@@ -1,0 +1,10 @@
+"167-par-two-loads.s", ERROR!   at line 4: [E0801] Functional unit allocation
+                                                   conflict
+1 Assembly Error, No Assembly Warnings
+		LDW *A4, A5
+		|| LDW *A6, A7
+
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

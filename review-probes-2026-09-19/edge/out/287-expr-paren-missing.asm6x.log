@@ -1,0 +1,12 @@
+"287-expr-paren-missing.s", ERROR!   at line 2: [E0000] No matching right
+                                                        parenthesis
+		.word (1
+
+"287-expr-paren-missing.s", ERROR!   at line 2: [E0200] Bad term in expression
+		.word (1
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

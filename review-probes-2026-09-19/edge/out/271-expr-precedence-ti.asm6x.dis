@@ -1,0 +1,8 @@
+
+Disassembly of 271-expr-precedence-ti.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x10 bytes at 0x0 
+00000000   00000007           .word 0x00000007
+00000004   00000008           .word 0x00000008
+00000008   00000004           .word 0x00000004
+0000000c   0000001a           .word 0x0000001a

@@ -1,0 +1,7 @@
+
+Disassembly of 285-expr-set-arith.asm6x.obj:
+
+DATA Section .data (Little Endian), 0xC bytes at 0x0 
+00000000   0000000e           .word 0x0000000e
+00000004   0000001c           .word 0x0000001c
+00000008   0000002a           .word 0x0000002a

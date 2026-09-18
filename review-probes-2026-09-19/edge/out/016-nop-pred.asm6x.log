@@ -1,0 +1,9 @@
+"016-nop-pred.s", ERROR!   at line 4: [E0004] Conditionals not allowed on this
+                                              instruction
+		[A0] NOP
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

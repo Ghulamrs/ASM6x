@@ -1,0 +1,9 @@
+"216-word-in-bss.s", ERROR!   at line 2: [E0300] Cannot redefine this section
+                                                 name
+		.sect ".bss"
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

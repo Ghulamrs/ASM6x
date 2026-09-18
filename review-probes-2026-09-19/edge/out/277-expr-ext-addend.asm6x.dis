@@ -1,0 +1,8 @@
+
+Disassembly of 277-expr-ext-addend.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x10 bytes at 0x0 
+00000000   00000004           .word 0x00000004
+00000004   fffffffc           .word 0xfffffffc
+00000008   00000004           .word 0x00000004
+0000000c   00010000           .word 0x00010000

@@ -1,0 +1,207 @@
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 277 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 258 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 277 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 258 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 277 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 261 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 275 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 259 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 277 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 261 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                 relocatable expression;
+                                                 relocation support for
+                                                 arbitrary expressions is not
+                                                 available in the C6000 EABI
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+"275-expr-labels.s", WARNING! at line 4: [W1500] warning:  relocation template
+                                                 280 not found; returning
+                                                 OFR_INVALID
+	fwd:	.word fwd-back, back-fwd, fwd-back+4, 4+fwd-back, (fwd-back)*2, 2*(fwd-back)
+
+6 Assembly Errors, 32 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

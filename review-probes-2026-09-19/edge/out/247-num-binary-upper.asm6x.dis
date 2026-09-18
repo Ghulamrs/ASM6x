@@ -1,0 +1,5 @@
+
+Disassembly of 247-num-binary-upper.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   0000000a           .word 0x0000000a

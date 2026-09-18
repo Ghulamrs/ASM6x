@@ -1,0 +1,9 @@
+"053-sub-reg-cst-m32.s", ERROR!   at line 4: [E1400] Operand #2 out of range:
+                                                     5bit constant expected
+		SUB A1, -32, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

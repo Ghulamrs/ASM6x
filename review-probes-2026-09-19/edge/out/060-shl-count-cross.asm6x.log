@@ -1,0 +1,8 @@
+"060-shl-count-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+		SHL A1, B2, A3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

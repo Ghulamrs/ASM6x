@@ -1,0 +1,5 @@
+
+Disassembly of 344-sect-const-byte.asm6x.obj:
+
+DATA Section .const (Little Endian), 0x1 bytes at 0x0 
+00000000         01           .word 0x00000001

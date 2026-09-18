@@ -1,0 +1,43 @@
+"147-mem-offset-label-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                           template 275 not
+                                                           found; returning
+                                                           OFR_INVALID
+		LDW *+B15(fwd-back), A2
+
+"147-mem-offset-label-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                           template 275 not
+                                                           found; returning
+                                                           OFR_INVALID
+		LDW *+B15(fwd-back), A2
+
+"147-mem-offset-label-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                           template 259 not
+                                                           found; returning
+                                                           OFR_INVALID
+		LDW *+B15(fwd-back), A2
+
+"147-mem-offset-label-diff.s", ERROR!   at line 5: [E0200] Unable to resolve
+                                                           this relocatable
+                                                           expression;
+                                                           relocation support
+                                                           for arbitrary
+                                                           expressions is not
+                                                           available in the
+                                                           C6000 EABI
+	fwd:
+
+"147-mem-offset-label-diff.s", ERROR!   at line 5: [E0300] Can't use relocation
+                                                           expression here
+	fwd:
+
+"147-mem-offset-label-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                           template 274 not
+                                                           found; returning
+                                                           OFR_INVALID
+	fwd:
+
+2 Assembly Errors, 4 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

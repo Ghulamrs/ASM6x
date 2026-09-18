@@ -1,0 +1,5 @@
+
+Disassembly of 269-expr-not.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   ffffffff           .word 0xffffffff

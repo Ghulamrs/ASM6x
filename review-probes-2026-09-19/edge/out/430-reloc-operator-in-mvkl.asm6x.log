@@ -1,0 +1,6 @@
+"430-reloc-operator-in-mvkl.s", WARNING! at line 4: [E0004] Instruction cannot
+                                                            use built-in
+                                                            function $EXTAB_LP
+		MVKL $EXTAB_LP(fwd), A0
+
+No Assembly Errors, 1 Assembly Warning

@@ -1,0 +1,8 @@
+"369-sect-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.sect
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

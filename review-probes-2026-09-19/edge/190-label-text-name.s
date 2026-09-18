@@ -1,0 +1,3 @@
+	.text
+	NOP
+	.word .text

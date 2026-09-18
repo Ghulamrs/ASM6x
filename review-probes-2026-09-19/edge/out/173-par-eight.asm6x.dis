@@ -1,0 +1,22 @@
+
+Disassembly of 173-par-eight.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x40 bytes at 0x0 
+00000000            back:
+00000000   02900265           LDW.D1T1      *+A4[0],A5
+00000004   029002e7 ||        LDW.D2T2      *+B4[0],B5
+00000008   01882a79 ||        CMPEQ.L1      A1,A2,A3
+0000000c   01882a7b ||        CMPEQ.L2      B1,B2,B3
+00000010   0418ece1 ||        SHL.S1        A6,A7,A8
+00000014   0418ece3 ||        SHL.S2        B6,B7,B8
+00000018   05a92c81 ||        MPY.M1        A9,A10,A11
+0000001c   05a92c82 ||        MPY.M2        B9,B10,B11
+00000020            fwd:
+00000020   00000000           NOP           
+00000024   00000000           NOP           
+00000028   00000000           NOP           
+0000002c   00000000           NOP           
+00000030   00000000           NOP           
+00000034   00000000           NOP           
+00000038   00000000           NOP           
+0000003c   00000000           NOP           

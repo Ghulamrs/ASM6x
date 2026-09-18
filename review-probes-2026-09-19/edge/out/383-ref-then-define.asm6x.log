@@ -1,0 +1,5 @@
+"383-ref-then-define.s", WARNING! at line 1: [W0000] Defined symbol 'f' cannot
+                                                     have a .ref
+		.ref f
+
+No Assembly Errors, 1 Assembly Warning

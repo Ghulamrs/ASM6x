@@ -1,0 +1,29 @@
+# Edge probes on which ASM6x and asm6x still differ, on purpose - each is asm6x's own
+# failure, not a form of the language. recheck.sh counts these as known, not as disagreements.
+#
+# No verdict from asm6x on the box (cl6x wrote neither a log nor an object; a 4 MB .space in
+# .text): ASM6x encodes the displacement, which fits the field in every one of them.
+109-b-reach-max
+111-b-reach-back-max
+112-b-reach-back-over
+113-bnop-reach-max
+114-bnop-reach-over
+# asm6x warns "relocation template 275 not found; returning OFR_INVALID" and writes no usable
+# object for a difference of two labels it has not both placed yet, or of two externals;
+# ASM6x settles a same-section difference on a later pass and refuses one across sections.
+147-mem-offset-label-diff
+276-expr-labels-fwd
+280-expr-two-ext-diff
+293-expr-label-diff-in-mvk
+306-set-of-label-diff
+415-reloc-half-diff
+434-reloc-mvkl-same-diff
+# asm6x has no % operator: .word 7%3 gives it 0x3f01. ASM6x's % is C's.
+268-expr-mod
+# cl6x fails with no message on an exidx table holding a .byte; ASM6x writes what was asked.
+363-sect-exidx-byte-align
+# asm6x "accepts" and writes an empty relocation section (421) or drops the instruction with a
+# warning (430); ASM6x refuses both: a scope needs another to differ from, and an operator
+# is not an instruction operand.
+421-reloc-scope-alone
+430-reloc-operator-in-mvkl

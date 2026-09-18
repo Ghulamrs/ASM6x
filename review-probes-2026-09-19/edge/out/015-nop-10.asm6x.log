@@ -1,0 +1,5 @@
+"015-nop-10.s", WARNING! at line 4: [W0000] Delay slot count must be 1 to 9,
+                                            reducing to 9
+		NOP 10
+
+No Assembly Errors, 1 Assembly Warning

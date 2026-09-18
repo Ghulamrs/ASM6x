@@ -1,0 +1,6 @@
+"258-num-half-m32769.s", WARNING! at line 2: [W0001] Constant value out of
+                                                     range, will be truncated
+                                                     to 16 bits
+		.half -32769
+
+No Assembly Errors, 1 Assembly Warning

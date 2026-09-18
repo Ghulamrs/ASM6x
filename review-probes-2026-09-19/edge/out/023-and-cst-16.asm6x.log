@@ -1,0 +1,9 @@
+"023-and-cst-16.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 5bit
+                                                signed constant expected
+		AND 16, A1, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

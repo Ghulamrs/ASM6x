@@ -1,0 +1,97 @@
+"434-reloc-mvkl-same-diff.s", WARNING! at line 3: [W1500] warning:  relocation
+                                                          template 275 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKL fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 3: [W1500] warning:  relocation
+                                                          template 275 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKL fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 3: [W1500] warning:  relocation
+                                                          template 259 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKL fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", ERROR!   at line 4: [E0200] Unable to resolve this
+                                                          relocatable
+                                                          expression;
+                                                          relocation support
+                                                          for arbitrary
+                                                          expressions is not
+                                                          available in the
+                                                          C6000 EABI
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 277 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 267 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 273 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 275 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 275 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                          template 259 not
+                                                          found; returning
+                                                          OFR_INVALID
+		MVKH fwd-back, A0
+
+"434-reloc-mvkl-same-diff.s", ERROR!   at line 5: [E0200] Unable to resolve this
+                                                          relocatable
+                                                          expression;
+                                                          relocation support
+                                                          for arbitrary
+                                                          expressions is not
+                                                          available in the
+                                                          C6000 EABI
+	fwd:
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                          template 277 not
+                                                          found; returning
+                                                          OFR_INVALID
+	fwd:
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                          template 264 not
+                                                          found; returning
+                                                          OFR_INVALID
+	fwd:
+
+"434-reloc-mvkl-same-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                          template 273 not
+                                                          found; returning
+                                                          OFR_INVALID
+	fwd:
+
+2 Assembly Errors, 12 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

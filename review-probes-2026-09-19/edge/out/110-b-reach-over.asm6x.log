@@ -1,0 +1,10 @@
+"110-b-reach-over.s", ERROR!   at line 3: [E0800] Specified label is too far
+                                                  away; max range is
+                                                  [-4194304,4194303]
+		B fwd
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

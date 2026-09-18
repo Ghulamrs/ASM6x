@@ -1,0 +1,14 @@
+
+Disassembly of 154-par-and-shl.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   018829b1           AND.D1        A1,A2,A3
+00000004   0310ace0 ||        SHL.S1        A4,A5,A6
+00000008            fwd:
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

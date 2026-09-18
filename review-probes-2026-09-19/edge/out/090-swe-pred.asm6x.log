@@ -1,0 +1,8 @@
+"090-swe-pred.s", ERROR!   at line 4: [E0800] Instruction must be unconditional
+		[A0] SWE
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

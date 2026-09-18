@@ -1,0 +1,14 @@
+
+Disassembly of 002-mvk-32768.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   00400028           MVK.S1        0xffff8000,A0
+00000004            fwd:
+00000004   00000000           NOP           
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

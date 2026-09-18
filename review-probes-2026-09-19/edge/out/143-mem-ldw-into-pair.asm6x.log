@@ -1,0 +1,9 @@
+"143-mem-ldw-into-pair.s", ERROR!   at line 4: [E0004] Operand #2, A4, not
+                                                       legal: register expected
+		LDW *A4, A5:A4
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

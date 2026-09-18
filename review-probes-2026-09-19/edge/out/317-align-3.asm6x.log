@@ -1,0 +1,4 @@
+"317-align-3.s", WARNING! at line 3: [W0001] Power of 2 required, 4 assumed
+		.align 3
+
+No Assembly Errors, 1 Assembly Warning

@@ -1,0 +1,37 @@
+"433-reloc-b-cross-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                        template 275 not found;
+                                                        returning OFR_INVALID
+		B fwd-d
+
+"433-reloc-b-cross-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                        template 275 not found;
+                                                        returning OFR_INVALID
+		B fwd-d
+
+"433-reloc-b-cross-diff.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                        template 259 not found;
+                                                        returning OFR_INVALID
+		B fwd-d
+
+"433-reloc-b-cross-diff.s", ERROR!   at line 6: [E0200] Unable to resolve this
+                                                        relocatable expression;
+                                                        relocation support for
+                                                        arbitrary expressions
+                                                        is not available in the
+                                                        C6000 EABI
+	fwd:
+
+"433-reloc-b-cross-diff.s", ERROR!   at line 6: [E0300] Can't use relocation
+                                                        expression here
+	fwd:
+
+"433-reloc-b-cross-diff.s", WARNING! at line 6: [W1500] warning:  relocation
+                                                        template 274 not found;
+                                                        returning OFR_INVALID
+	fwd:
+
+2 Assembly Errors, 4 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

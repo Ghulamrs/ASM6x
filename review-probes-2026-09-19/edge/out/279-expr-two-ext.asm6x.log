@@ -1,0 +1,32 @@
+"279-expr-two-ext.s", WARNING! at line 3: [W1500] warning:  relocation template
+                                                  275 not found; returning
+                                                  OFR_INVALID
+		.word ext+ext2
+
+"279-expr-two-ext.s", WARNING! at line 3: [W1500] warning:  relocation template
+                                                  275 not found; returning
+                                                  OFR_INVALID
+		.word ext+ext2
+
+"279-expr-two-ext.s", WARNING! at line 3: [W1500] warning:  relocation template
+                                                  258 not found; returning
+                                                  OFR_INVALID
+		.word ext+ext2
+
+"279-expr-two-ext.s", ERROR!   at line 3: [E0200] Unable to resolve this
+                                                  relocatable expression;
+                                                  relocation support for
+                                                  arbitrary expressions is not
+                                                  available in the C6000 EABI
+		.word ext+ext2
+
+"279-expr-two-ext.s", WARNING! at line 3: [W1500] warning:  relocation template
+                                                  280 not found; returning
+                                                  OFR_INVALID
+		.word ext+ext2
+
+1 Assembly Error, 4 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

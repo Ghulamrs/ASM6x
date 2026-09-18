@@ -1,0 +1,5 @@
+
+Disassembly of 256-num-half-65535.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x2 bytes at 0x0 
+00000000       ffff           .word 0x0000ffff

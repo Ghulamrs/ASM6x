@@ -1,0 +1,9 @@
+"062-ext-cross.s", ERROR!   at line 4: [E0800] A/B register file mismatch; dst
+                                               and src2 must be on same side
+		EXT B1, 3, 7, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

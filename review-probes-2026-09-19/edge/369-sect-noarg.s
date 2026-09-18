@@ -1,0 +1,2 @@
+	.sect
+	.word 1

@@ -1,0 +1,14 @@
+
+Disassembly of 103-b-pred-both.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   30000192    [!B0]  B.S2          fwd (PC+12 = 0x0000000c)
+00000004   60000012    [ B2]  B.S2           (PC+0 = 0x00000000)
+00000008   b00c1362    [!A2]  B.S2X         A3
+0000000c            fwd:
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

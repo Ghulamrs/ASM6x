@@ -1,0 +1,9 @@
+"210-bss-fwd-size.s", ERROR!   at line 1: [E0004] Absolute, well-defined integer
+                                                  value expected
+		.bss z1, N, 4
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

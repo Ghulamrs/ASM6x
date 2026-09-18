@@ -1,0 +1,2 @@
+src/unit.cpp:175:28: runtime error: division by zero
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior src/unit.cpp:175:28 

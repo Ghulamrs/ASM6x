@@ -1,0 +1,8 @@
+"170-par-first.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+		|| NOP
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

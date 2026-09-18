@@ -1,0 +1,3 @@
+	.ref r
+	.text
+	NOP

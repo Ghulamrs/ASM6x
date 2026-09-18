@@ -1,0 +1,5 @@
+"002-mvk-32768.s", WARNING! at line 4: [W0001] Value out of range; converted to
+                                               -32768
+		MVK 32768, A0
+
+No Assembly Errors, 1 Assembly Warning

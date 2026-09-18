@@ -1,0 +1,5 @@
+
+Disassembly of 245-char-quote.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x1 bytes at 0x0 
+00000000         27           .word 0x00000027

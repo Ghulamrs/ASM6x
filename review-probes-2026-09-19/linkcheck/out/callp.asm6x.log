@@ -1,0 +1,12 @@
+"callp.s", ERROR!   at line 4: [E0009] A3 or B3 required as return address
+                                       register
+		CALLP far, B4
+
+"callp.s", ERROR!   at line 5: [E0800] Instruction must be unconditional
+		[A0] CALLP far, A3
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

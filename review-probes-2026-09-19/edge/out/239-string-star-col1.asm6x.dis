@@ -1,0 +1,5 @@
+
+Disassembly of 239-string-star-col1.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x1 bytes at 0x0 
+00000000         2a           .word 0x0000002a

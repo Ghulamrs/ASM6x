@@ -1,0 +1,9 @@
+"192-comment-star-indented.s", ERROR!   at line 2: [E0002] Illegal mnemonic
+                                                           specified
+		* not a comment in TI
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

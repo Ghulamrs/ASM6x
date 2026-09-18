@@ -1,0 +1,12 @@
+"089-mvc-unknown.s", ERROR!   at line 4: [E0004] Operand #2, FOO, not legal:
+                                                 register expected
+		MVC B1, FOO
+
+"089-mvc-unknown.s", ERROR!   at EOF: [E0300] The following symbols are
+                                              undefined:
+2 Assembly Errors, No Assembly Warnings
+  FOO
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

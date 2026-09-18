@@ -1,0 +1,8 @@
+"029-mpy32-cst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+		MPY32 5, A1, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,8 @@
+"182-col1-word.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+	.word 1
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

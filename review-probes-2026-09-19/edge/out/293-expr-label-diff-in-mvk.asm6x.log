@@ -1,0 +1,63 @@
+"293-expr-label-diff-in-mvk.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                            template 275 not
+                                                            found; returning
+                                                            OFR_INVALID
+		MVK fwd-back, A0
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                            template 275 not
+                                                            found; returning
+                                                            OFR_INVALID
+		MVK fwd-back, A0
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 4: [W1500] warning:  relocation
+                                                            template 259 not
+                                                            found; returning
+                                                            OFR_INVALID
+		MVK fwd-back, A0
+
+"293-expr-label-diff-in-mvk.s", ERROR!   at line 5: [E0200] Unable to resolve
+                                                            this relocatable
+                                                            expression;
+                                                            relocation support
+                                                            for arbitrary
+                                                            expressions is not
+                                                            available in the
+                                                            C6000 EABI
+		ADD fwd-back, A1, A2
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                            template 274 not
+                                                            found; returning
+                                                            OFR_INVALID
+		ADD fwd-back, A1, A2
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                            template 275 not
+                                                            found; returning
+                                                            OFR_INVALID
+		ADD fwd-back, A1, A2
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                            template 275 not
+                                                            found; returning
+                                                            OFR_INVALID
+		ADD fwd-back, A1, A2
+
+"293-expr-label-diff-in-mvk.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                            template 259 not
+                                                            found; returning
+                                                            OFR_INVALID
+		ADD fwd-back, A1, A2
+
+"293-expr-label-diff-in-mvk.s", ERROR!   at line 5: [E0004] Operand #1 not
+                                                            legal: register or
+                                                            regpair or 5bit
+                                                            constant expected
+		ADD fwd-back, A1, A2
+
+2 Assembly Errors, 7 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

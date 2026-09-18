@@ -1,0 +1,14 @@
+
+Disassembly of 161-par-mpy32u-shl.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   02082631           MPY32U.M1     A1,A2,A5:A4
+00000004   0418ece0 ||        SHL.S1        A6,A7,A8
+00000008            fwd:
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

@@ -6,10 +6,11 @@
 /* The object as asm6x 8.2.2 writes it: ELF32, little-endian, EM_TI_C6000 (140), one
    section header per section the source opened in the order it opened them with .text
    first, then .c6xabi.attributes, .symtab, the exidx tables (asm6x adds those after the
-   symbol table), a .rela.<sec> for the MVKL/MVKH halves and a .rel.<sec> for every other
-   relocation kind, the two TI bookkeeping sections, .strtab and .shstrtab. Every symbol is
-   STV_HIDDEN, as asm6x marks them; the build attributes are the bytes asm6x writes for
-   --abi=eabi -mv6740, which is what lnk6x checks a file against. */
+   symbol table, each linked to the code section its name ends with), a .rela.<sec> for the
+   MVK/MVKL/MVKH halves and a .rel.<sec> for every other relocation kind, the two TI
+   bookkeeping sections, .strtab and .shstrtab. Every symbol is STV_HIDDEN, as asm6x marks
+   them; the build attributes are the bytes asm6x writes for --abi=eabi -mv6740, which is
+   what lnk6x checks a file against. */
 
 namespace {
 
@@ -50,7 +51,7 @@ const unsigned char kAttributes[0x3c] = {
 const unsigned char kSymbolAlias[9] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x54, 0x49, 0x00 };
 const unsigned char kSectionFlags[0x1a] = { 0x01, 0 };
 
-bool rela_kind(RelKind k) { return k == R_ABS_L16 || k == R_ABS_H16; }
+bool rela_kind(RelKind k) { return k == R_ABS_L16 || k == R_ABS_H16 || k == R_ABS_S16; }
 
 }
 
@@ -71,8 +72,9 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         for (size_t k = 0; k < exidx.size(); k++) shndx[exidx[k]] = next++;
     }
 
-    /* the symbols asm6x writes: the file, every local that is defined or referenced, one
-       per section, then the globals, weak and undefined - with our index for each */
+    /* the symbols asm6x writes: the file, every local that is defined, one per section, then
+       the globals, weak and undefined - a .global of a symbol neither defined nor used is
+       omitted, as asm6x omits it - with our index for each */
     std::vector<int> index(u.symbols.size(), -1);
     std::vector<int> secsym(nsec, -1);
     Strtab strtab;
@@ -88,7 +90,7 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         const Symbol &s = u.symbols[i];
         if (s.bind != B_LOCAL || !s.defined) continue;
         index[i] = count++;
-        sym.u32(strtab.add(s.name)); sym.u32((unsigned long)s.value); sym.u32(0);   /* a local's .bss size is not recorded */
+        sym.u32(strtab.add(s.name)); sym.u32((unsigned long)s.value); sym.u32(s.sized ? (unsigned long)s.size : 0);
         /* a .set constant is an absolute symbol of no type, as asm6x writes it */
         sym.u8(s.section < 0 ? 0 : (unsigned)s.type); sym.u8(2); sym.u16(s.section < 0 ? 0xFFF1 : (unsigned)shndx[s.section]);
     }
@@ -102,12 +104,12 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         const Symbol &s = u.symbols[i];
         if (s.bind == B_LOCAL && (s.defined || !s.referenced)) continue;
         if (s.bind == B_LOCAL && !s.defined) { err = "'" + s.name + "' is not defined"; return false; }
-        if (s.defined && s.section < 0) continue;   /* a .set constant is not written */
+        if (!s.defined && !s.referenced && s.bind == B_GLOBAL) continue;
         index[i] = count++;
         unsigned bind = s.bind == B_WEAK ? 2 : 1;
-        unsigned type = s.defined ? (unsigned)s.type : 0;
+        unsigned type = s.defined && s.section >= 0 ? (unsigned)s.type : 0;
         sym.u32(strtab.add(s.name)); sym.u32(s.defined ? (unsigned long)s.value : 0); sym.u32((unsigned long)s.size);
-        sym.u8((bind << 4) | type); sym.u8(2); sym.u16(s.defined ? (unsigned)shndx[s.section] : 0);
+        sym.u8((bind << 4) | type); sym.u8(2); sym.u16(!s.defined ? 0 : s.section < 0 ? 0xFFF1 : (unsigned)shndx[s.section]);
     }
 
     /* the section headers, in asm6x's order */
@@ -122,7 +124,7 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         Shdr h; memset(&h, 0, sizeof h);
         h.name = shstr.add(s.name);
         h.type = (unsigned long)s.kind;
-        h.flags = (s.alloc ? 2 : 0) | (s.readonly || s.code ? 0 : 1) | (s.code ? 4 : 0);
+        h.flags = (s.alloc ? 2 : 0) | (s.writable && !s.code ? 1 : 0) | (s.code ? 4 : 0);
         h.size = (unsigned long)s.bytes.size();
         h.align = (unsigned long)s.align;
         if (shndx[i] != (int)hdrs.size()) { err = "internal: section order"; return false; }
@@ -148,7 +150,14 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         h.flags = 0x82;   /* SHF_ALLOC | SHF_LINK_ORDER */
         h.size = (unsigned long)s.bytes.size();
         h.align = (unsigned long)s.align;
-        h.link = s.linked >= 0 ? (unsigned long)shndx[s.linked] : 1;
+        /* linked to the code section its name ends with, wherever that was opened; a plain
+           .c6xabi.exidx to .text */
+        size_t colon = s.name.find(':');
+        std::string code = colon == std::string::npos ? std::string(".text") : s.name.substr(colon + 1);
+        int linked = -1;
+        for (size_t i = 0; i < nsec; i++) if (u.sections[i].name == code && u.sections[i].kind != SEC_UNWIND) linked = (int)i;
+        if (linked < 0) { err = "'" + s.name + "' describes '" + code + "', which this file does not have"; return false; }
+        h.link = (unsigned long)shndx[linked];
         if (shndx[exidx[k]] != (int)hdrs.size()) { err = "internal: exidx order"; return false; }
         hdrs.push_back(h);
         bodies.push_back(s.bytes);
@@ -157,6 +166,13 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
        entries of each by offset; the .symdepend entries are R_C6000_NONE at offset 0 */
     struct Group { size_t section; bool rela; unsigned long first; };
     std::vector<Group> groups;
+    std::vector<std::pair<int, int> > depends;      /* .symdepend, its section found by name */
+    for (size_t k = 0; k < u.depends.size(); k++) {
+        int sec = -1;
+        for (size_t i = 0; i < nsec; i++) if (u.sections[i].name == u.depends[k].second) sec = (int)i;
+        if (sec < 0) { err = "'" + u.depends[k].second + "' is not a section of this file"; return false; }
+        depends.push_back(std::make_pair(u.depends[k].first, sec));
+    }
     for (size_t i = 0; i < nsec; i++) {
         const Section &s = u.sections[i];
         Group ga = { i, true, ~0ul }, gr = { i, false, ~0ul };
@@ -164,8 +180,8 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
             Group &g = rela_kind(s.relocs[k].kind) ? ga : gr;
             if (s.relocs[k].order < g.first) g.first = s.relocs[k].order;
         }
-        for (size_t k = 0; k < u.depends.size(); k++)
-            if (u.depends[k].second == (int)i && gr.first == ~0ul) gr.first = ~1ul;
+        for (size_t k = 0; k < depends.size(); k++)
+            if (depends[k].second == (int)i && gr.first == ~0ul) gr.first = ~1ul;
         if (ga.first != ~0ul) groups.push_back(ga);
         if (gr.first != ~0ul) groups.push_back(gr);
     }
@@ -178,9 +194,9 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         const Section &s = u.sections[i];
         Out rela, rel;
         std::vector<Reloc> sorted(s.relocs);
-        for (size_t k = 0; k < u.depends.size(); k++)
-            if (u.depends[k].second == (int)i) {
-                Reloc r; r.offset = 0; r.symbol = u.depends[k].first; r.kind = R_NONE; r.addend = 0; r.order = ~1ul;
+        for (size_t k = 0; k < depends.size(); k++)
+            if (depends[k].second == (int)i) {
+                Reloc r; r.offset = 0; r.symbol = depends[k].first; r.section = -1; r.kind = R_NONE; r.addend = 0; r.order = ~1ul;
                 sorted.push_back(r);
             }
         for (size_t a = 1; a < sorted.size(); a++)      /* a stable sort by offset */
@@ -190,11 +206,11 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         for (size_t k = 0; k < sorted.size(); k++) {
             const Reloc &r = sorted[k];
             if (rela_kind(r.kind) != groups[gi].rela) continue;
-            int si = index[r.symbol];
+            int si = r.symbol < 0 ? secsym[r.section] : index[r.symbol];
             if (si < 0) { err = "no symbol for a relocation against '" + u.symbols[r.symbol].name + "'"; return false; }
             Out &o = rela_kind(r.kind) ? rela : rel;
             o.u32(r.offset);
-            o.u32(((unsigned long)si << 8) | (unsigned long)r.kind);
+            o.u32(((unsigned long)si << 8) | ((unsigned long)r.kind & 0xFF));
             if (rela_kind(r.kind)) o.u32((unsigned long)r.addend);
         }
         if (rela.size()) {

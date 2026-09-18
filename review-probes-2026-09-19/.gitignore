@@ -1,0 +1,7 @@
+# the review's own runs of ASM6x and the linked programs are not kept - recheck.sh and
+# run.sh make them again; asm6x's objects, logs and listings (the oracle's word) are
+*/out/lnk/
+*/out/*.mine.log
+*/out/*.diff
+*/out/*.obj
+!*/out/*.asm6x.obj

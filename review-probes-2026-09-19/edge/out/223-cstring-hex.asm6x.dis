@@ -1,0 +1,5 @@
+
+Disassembly of 223-cstring-hex.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x3 bytes at 0x0 
+00000000     313400           .word 0x00313400

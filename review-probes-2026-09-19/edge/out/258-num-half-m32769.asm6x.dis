@@ -1,0 +1,5 @@
+
+Disassembly of 258-num-half-m32769.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x2 bytes at 0x0 
+00000000       7fff           .word 0x00007fff

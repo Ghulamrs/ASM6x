@@ -1,0 +1,13 @@
+"151-mem-a-neg-32.s", ERROR!   at line 4: [E0009] B14 or B15 required as long
+                                                  displacement base register
+		LDW *-A4(128), A5
+
+"151-mem-a-neg-32.s", ERROR!   at line 4: [E0004] Illegal offset mode for 15 bit
+                                                  constant
+		LDW *-A4(128), A5
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

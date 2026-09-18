@@ -1,0 +1,8 @@
+"064-addaw-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+		ADDAW B1, A2, A3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

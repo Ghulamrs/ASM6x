@@ -1,0 +1,4 @@
+	.text
+	NOP
+	.align
+	NOP

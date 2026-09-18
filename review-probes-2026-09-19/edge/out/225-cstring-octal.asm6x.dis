@@ -1,0 +1,5 @@
+
+Disassembly of 225-cstring-octal.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x2 bytes at 0x0 
+00000000       0041           .word 0x00000041

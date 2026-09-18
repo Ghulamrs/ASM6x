@@ -25,55 +25,67 @@ static bool name_char(char c)
     return isalnum((unsigned char)c) || c == '_' || c == '$' || c == '.';
 }
 
-/* a number: decimal, 0x hex, or TI's suffix forms 0FFh and 1010b */
+/* digits in a base, wrapped at 64 bits as asm6x wraps them (the directive that stores the
+   value warns of the truncation) */
+static bool digits_in(const std::string &d, int base, long long &v, std::string &err)
+{
+    unsigned long long acc = 0;
+    for (size_t k = 0; k < d.size(); k++) {
+        char c = (char)tolower((unsigned char)d[k]);
+        int x = isdigit((unsigned char)c) ? c - '0' : c - 'a' + 10;
+        if (x >= base) { err = "'" + d + "' is not a number in base " + std::to_string(base); return false; }
+        acc = acc * (unsigned long long)base + (unsigned long long)x;
+    }
+    v = (long long)acc;
+    return true;
+}
+
+/* a number: decimal, 0x hex, or TI's suffix forms 0FFh, 1010b and 17q */
 static bool number(const std::string &s, size_t &i, long long &v, std::string &err)
 {
     size_t j = i;
     if (s[j] == '0' && j + 1 < s.size() && (s[j + 1] == 'x' || s[j + 1] == 'X')) {
         j += 2;
-        v = 0;
         size_t start = j;
-        while (j < s.size() && isxdigit((unsigned char)s[j])) {
-            char c = (char)tolower((unsigned char)s[j]);
-            v = v * 16 + (isdigit((unsigned char)c) ? c - '0' : c - 'a' + 10);
-            j++;
-        }
+        while (j < s.size() && isxdigit((unsigned char)s[j])) j++;
         if (j == start) { err = "a hex number needs digits"; return false; }
+        if (!digits_in(s.substr(start, j - start), 16, v, err)) return false;
         i = j;
         return true;
     }
     size_t start = j;
     while (j < s.size() && isxdigit((unsigned char)s[j])) j++;
     std::string digits = s.substr(start, j - start);
-    if (j < s.size() && (s[j] == 'h' || s[j] == 'H')) {
-        v = 0;
-        for (size_t k = 0; k < digits.size(); k++) {
-            char c = (char)tolower((unsigned char)digits[k]);
-            v = v * 16 + (isdigit((unsigned char)c) ? c - '0' : c - 'a' + 10);
-        }
+    if (j < s.size() && (s[j] == 'h' || s[j] == 'H') && !(j + 1 < s.size() && name_char(s[j + 1]))) {
+        if (!digits_in(digits, 16, v, err)) return false;
         i = j + 1;
         return true;
     }
-    if (j < s.size() && (s[j] == 'b' || s[j] == 'B') && !(j + 1 < s.size() && name_char(s[j + 1]))) {
-        v = 0;
-        for (size_t k = 0; k < digits.size(); k++) {
-            if (digits[k] != '0' && digits[k] != '1') { err = "a binary number takes 0 and 1"; return false; }
-            v = v * 2 + (digits[k] - '0');
-        }
+    if (j < s.size() && (s[j] == 'q' || s[j] == 'Q') && !(j + 1 < s.size() && name_char(s[j + 1]))) {
+        if (!digits_in(digits, 8, v, err)) return false;
         i = j + 1;
+        return true;
+    }
+    /* 1010b: the digits ran into the b already */
+    if (digits.size() > 1 && (digits.back() == 'b' || digits.back() == 'B') && !(j < s.size() && name_char(s[j]))) {
+        if (!digits_in(digits.substr(0, digits.size() - 1), 2, v, err)) return false;
+        i = j;
         return true;
     }
     j = start;
-    v = 0;
-    while (j < s.size() && isdigit((unsigned char)s[j])) { v = v * 10 + (s[j] - '0'); j++; }
+    while (j < s.size() && isdigit((unsigned char)s[j])) j++;
     if (j == start) { err = "a number expected"; return false; }
+    /* a leading zero is C's octal, as asm6x reads 017 */
+    bool octal = j - start > 1 && s[start] == '0';
+    if (!digits_in(s.substr(start, j - start), octal ? 8 : 10, v, err)) return false;
     i = j;
     return true;
 }
 
 /* one source line to tokens. TI's rules: `;` starts a comment, so does `*` in column 1; a
-   name in column 1 is a label, with or without the colon - one is supplied so the parser
-   sees one shape; `||` opens a parallel instruction; a string keeps C's escapes */
+   name in column 1 is a label, with or without the colon - one is supplied, marked with
+   value 1, so the parser sees one shape and knows it from a colon written elsewhere; `||`
+   opens a parallel instruction; a string is raw, .cstring decodes the escapes itself */
 bool split_line(const std::string &src, std::vector<Token> &out, std::string &err)
 {
     out.clear();
@@ -94,10 +106,8 @@ bool split_line(const std::string &src, std::vector<Token> &out, std::string &er
             i = j;
             out.push_back(t);
             if (label && out.size() == 1) {
-                Token colon; colon.kind = T_PUNCT; colon.text = ":"; colon.value = 0;
-                size_t k = i;
-                while (k < src.size() && isspace((unsigned char)src[k])) k++;
-                if (k < src.size() && src[k] == ':') i = k + 1;
+                Token colon; colon.kind = T_PUNCT; colon.text = ":"; colon.value = 1;
+                if (i < src.size() && src[i] == ':') i++;
                 out.push_back(colon);
             }
             continue;
@@ -111,41 +121,34 @@ bool split_line(const std::string &src, std::vector<Token> &out, std::string &er
             continue;
         }
         if (c == '"') {
+            /* raw, as asm6x reads a string: a backslash is a byte; .cstring decodes escapes itself */
             size_t j = i + 1;
-            std::string s;
-            while (j < src.size() && src[j] != '"') {
-                if (src[j] == '\\' && j + 1 < src.size()) {
-                    j++;
-                    switch (src[j]) {
-                    case 'n': s += '\n'; break;
-                    case 't': s += '\t'; break;
-                    case 'r': s += '\r'; break;
-                    case '0': s += '\0'; break;
-                    case '\\': s += '\\'; break;
-                    case '"': s += '"'; break;
-                    default: s += src[j]; break;
-                    }
-                    j++;
-                    continue;
-                }
-                s += src[j++];
-            }
+            while (j < src.size() && src[j] != '"') j++;
             if (j >= src.size()) { err = "an unclosed string"; return false; }
             t.kind = T_STR;
-            t.text = s;
+            t.text = src.substr(i + 1, j - i - 1);
             out.push_back(t);
             i = j + 1;
             continue;
         }
         if (c == '\'') {
-            if (i + 2 < src.size() && src[i + 2] == '\'') {
-                t.kind = T_NUM; t.value = (unsigned char)src[i + 1]; t.text = src.substr(i, 3);
-                out.push_back(t);
-                i += 3;
-                continue;
+            /* 'a', and '''' for the quote itself; asm6x knows no escapes here - '\n' is the
+               two characters, packed low byte first, and a .byte of it warns and keeps the \ */
+            if (src.compare(i, 4, "''''") == 0) {
+                t.kind = T_NUM; t.value = '\''; t.text = "''''"; out.push_back(t); i += 4; continue;
             }
-            err = "a character constant is one character in quotes";
-            return false;
+            size_t j = i + 1;
+            while (j < src.size() && src[j] != '\'') j++;
+            if (j >= src.size() || j == i + 1 || j - i - 1 > 4) { err = "a character constant is one to four characters in quotes"; return false; }
+            t.kind = T_NUM; t.value = 0;
+            for (size_t k = i + 1; k < j; k++) t.value |= (long long)(unsigned char)src[k] << (8 * (k - i - 1));
+            t.text = src.substr(i, j - i + 1);
+            out.push_back(t);
+            i = j + 1;
+            continue;
+        }
+        if ((c == '<' || c == '>') && i + 1 < src.size() && src[i + 1] == c) {
+            t.kind = T_PUNCT; t.text = std::string(2, c); out.push_back(t); i += 2; continue;
         }
         if (c == '|' && i + 1 < src.size() && src[i + 1] == '|') {
             t.kind = T_PUNCT; t.text = "||"; out.push_back(t); i += 2; continue;

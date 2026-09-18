@@ -1,0 +1,9 @@
+"040-sub-cst-first-16.s", ERROR!   at line 4: [E0800] Could not find a valid
+                                                      unit for instruction
+		SUB 16, A1, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,9 @@
+"413-reloc-byte-ext.s", ERROR!   at line 3: [E0004] Invalid data size for
+                                                    relocation
+		.byte ext
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,8 @@
+
+Disassembly of 345-sect-const-named.asm6x.obj:
+
+DATA Section .const:x (Little Endian), 0x1 bytes at 0x0 
+00000000         01           .word 0x00000001
+
+DATA Section .const:.string (Little Endian), 0x1 bytes at 0x0 
+00000000         73           .word 0x00000073

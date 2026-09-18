@@ -1,0 +1,1768 @@
+001-mvk-65535
+  asm6x: accepted, warning: "001-mvk-65535.s", WARNING! at line 4: [W0001] Value out of range; converted to
+  ASM6x: REFUSED: line 4: MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves
+  tables: -
+002-mvk-32768
+  asm6x: accepted, warning: "002-mvk-32768.s", WARNING! at line 4: [W0001] Value out of range; converted to
+  ASM6x: REFUSED: line 4: MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves
+  tables: -
+003-mvk-m32769
+  asm6x: accepted, warning: "003-mvk-m32769.s", WARNING! at line 4: [W0001] Value out of range; converted to
+  ASM6x: REFUSED: line 4: MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves
+  tables: -
+004-mvk-0xffff
+  asm6x: accepted, warning: "004-mvk-0xffff.s", WARNING! at line 4: [W0001] Value out of range; converted to
+  ASM6x: REFUSED: line 4: MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves
+  tables: -
+005-mvk-symbol
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: MVK takes a constant; a symbol's address needs MVKL and MVKH
+  tables: -
+006-mvk-label
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: MVK takes a constant; a symbol's address needs MVKL and MVKH
+  tables: -
+007-mvkl-33bit
+  asm6x: accepted, warning: "007-mvkl-33bit.s", WARNING! at line 4: [W0001] Constant value out of range,
+  ASM6x: accepted
+  tables: identical
+008-mvkl-m1
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+009-mvkh-65535
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+010-mvklh-big
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+011-mvk-pair
+  asm6x: REFUSED: "011-mvk-pair.s", ERROR!   at line 4: [E0004] Operand #2, A0, not legal:
+  ASM6x: REFUSED: line 4: 'MVK' with these operands is not an instruction this assembler knows
+  tables: -
+012-addk-32768
+  asm6x: REFUSED: "012-addk-32768.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 16bit
+  ASM6x: REFUSED: line 4: ADDK's constant is 16 bits
+  tables: -
+013-addk-m32768
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+014-nop-0
+  asm6x: REFUSED: "014-nop-0.s", ERROR!   at line 4: [W0000] NOP count of zero is meaningless
+  ASM6x: REFUSED: line 4: NOP takes 1 to 9
+  tables: -
+015-nop-10
+  asm6x: accepted, warning: "015-nop-10.s", WARNING! at line 4: [W0000] Delay slot count must be 1 to 9,
+  ASM6x: REFUSED: line 4: NOP takes 1 to 9
+  tables: -
+016-nop-pred
+  asm6x: REFUSED: "016-nop-pred.s", ERROR!   at line 4: [E0004] Conditionals not allowed on this
+  ASM6x: REFUSED: line 4: NOP cannot be predicated
+  tables: -
+017-nop-pred-3
+  asm6x: REFUSED: "017-nop-pred-3.s", ERROR!   at line 4: [E0004] Conditionals not allowed on this
+  ASM6x: REFUSED: line 4: NOP cannot be predicated
+  tables: -
+018-and-reg-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: AND does not take a constant here
+  tables: -
+019-or-reg-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: OR does not take a constant here
+  tables: -
+020-xor-reg-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: XOR does not take a constant here
+  tables: -
+021-and-cst-m16
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+022-and-cst-m17
+  asm6x: REFUSED: "022-and-cst-m17.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 5bit
+  ASM6x: REFUSED: line 4: AND's constant is out of range
+  tables: -
+023-and-cst-16
+  asm6x: REFUSED: "023-and-cst-16.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 5bit
+  ASM6x: REFUSED: line 4: AND's constant is out of range
+  tables: -
+024-and-cst-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+025-mpy-cst-first
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: MPY does not take a constant first
+  tables: -
+026-mpy-cst-second
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: MPY does not take a constant here
+  tables: -
+027-mpy-cst-neg
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: MPY does not take a constant first
+  tables: -
+028-mpyu-cst
+  asm6x: REFUSED: "028-mpyu-cst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+  ASM6x: REFUSED: line 4: MPYU does not take a constant first
+  tables: -
+029-mpy32-cst
+  asm6x: REFUSED: "029-mpy32-cst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+  ASM6x: REFUSED: line 4: MPY32 does not take a constant first
+  tables: -
+030-lmbd-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: LMBD does not take a constant first
+  tables: -
+031-cmpgtu-16
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: CMPGTU's constant is out of range
+  tables: -
+032-cmpgtu-31
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: CMPGTU's constant is out of range
+  tables: -
+033-cmpltu-31
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: CMPLTU's constant is out of range
+  tables: -
+034-cmpltu-32
+  asm6x: REFUSED: "034-cmpltu-32.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 5bit
+  ASM6x: REFUSED: line 4: CMPLTU's constant is out of range
+  tables: -
+035-cmpgtu-reg-20
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: CMPGTU's constant is out of range
+  tables: -
+036-cmpeq-16
+  asm6x: REFUSED: "036-cmpeq-16.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 5bit
+  ASM6x: REFUSED: line 4: CMPEQ's constant is out of range
+  tables: -
+037-cmpeq-reg-cst-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+038-cmpeq-cst-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+039-cmplt-cst-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+040-sub-cst-first-16
+  asm6x: REFUSED: "040-sub-cst-first-16.s", ERROR!   at line 4: [E0800] Could not find a valid
+  ASM6x: REFUSED: line 4: SUB's constant is out of range
+  tables: -
+041-sub-cst-first-m16
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+042-sub-cst-first-m17
+  asm6x: REFUSED: "042-sub-cst-first-m17.s", ERROR!   at line 4: [E0800] Could not find a valid
+  ASM6x: REFUSED: line 4: SUB's constant is out of range
+  tables: -
+043-sub-cst-first-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+044-add-cst-first-neg
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD's constant first takes 0 to 31 on one side
+  tables: -
+045-add-cst-first-31
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+046-add-cst-first-32
+  asm6x: REFUSED: "046-add-cst-first-32.s", ERROR!   at line 4: [E1400] Operand #1 out of range:
+  ASM6x: REFUSED: line 4: ADD's constant first takes 0 to 31 on one side
+  tables: -
+047-add-cst-first-m17
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD's constant first takes 0 to 31 on one side
+  tables: -
+048-add-cst-first-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD's constant first takes 0 to 31 on one side
+  tables: -
+049-add-reg-cst-32
+  asm6x: REFUSED: "049-add-reg-cst-32.s", ERROR!   at line 4: [E1400] Operand #2 out of range:
+  ASM6x: REFUSED: line 4: ADD's constant is 0 to 31
+  tables: -
+050-sub-reg-cst-32
+  asm6x: REFUSED: "050-sub-reg-cst-32.s", ERROR!   at line 4: [E1400] Operand #2 out of range:
+  ASM6x: REFUSED: line 4: SUB's constant is 0 to 31
+  tables: -
+051-add-reg-cst-m17
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD's negative constant is -16 to -1
+  tables: -
+052-sub-reg-cst-m17
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+053-sub-reg-cst-m32
+  asm6x: REFUSED: "053-sub-reg-cst-m32.s", ERROR!   at line 4: [E1400] Operand #2 out of range:
+  ASM6x: REFUSED: line 4: ADD's constant is 0 to 31
+  tables: -
+054-add-reg-cst-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD with a constant takes its register from the destination's side
+  tables: -
+055-add-reg-cst-m4-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD with a constant takes its register from the destination's side
+  tables: -
+056-sub-reg-cst-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: SUB with a constant takes its register from the destination's side
+  tables: -
+057-shl-cross-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: SHL with a constant takes its register from the destination's side
+  tables: -
+058-shr-cross-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: SHR with a constant takes its register from the destination's side
+  tables: -
+059-shru-cross-cst
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: SHRU with a constant takes its register from the destination's side
+  tables: -
+060-shl-count-cross
+  asm6x: REFUSED: "060-shl-count-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+  ASM6x: REFUSED: line 4: a shift count comes from the destination's side
+  tables: -
+061-shl-32
+  asm6x: REFUSED: "061-shl-32.s", ERROR!   at line 4: [E1400] Operand #2 out of range: 5bit
+  ASM6x: REFUSED: line 4: SHL's constant is 0 to 31
+  tables: -
+062-ext-cross
+  asm6x: REFUSED: "062-ext-cross.s", ERROR!   at line 4: [E0800] A/B register file mismatch; dst
+  ASM6x: REFUSED: line 4: EXT's source and destination are on one side
+  tables: -
+063-ext-32
+  asm6x: REFUSED: "063-ext-32.s", ERROR!   at line 4: [E1400] Operand #2 out of range: 5bit
+  ASM6x: REFUSED: line 4: EXT's constants are 0 to 31
+  tables: -
+064-addaw-cross
+  asm6x: REFUSED: "064-addaw-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+  ASM6x: REFUSED: line 4: ADDAW's first source is on the destination's side; only the second may cross
+  tables: -
+065-addaw-cst-cross
+  asm6x: REFUSED: "065-addaw-cst-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+  ASM6x: REFUSED: line 4: ADDAW with a constant takes its register from the destination's side
+  tables: -
+066-addaw-b15-big
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADDAW's constant is 0 to 31
+  tables: -
+067-addab-b14-big
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADDAB's constant is 0 to 31
+  tables: -
+068-addah-b15-32767
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADDAH's constant is 0 to 31
+  tables: -
+069-addaw-b15-32768
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADDAW's constant is 0 to 31
+  tables: -
+070-addaw-a4-32
+  asm6x: REFUSED: "070-addaw-a4-32.s", ERROR!   at line 4: [E0800] Illegal operand combination,
+  ASM6x: REFUSED: line 4: ADDAW's constant is 0 to 31
+  tables: -
+071-addu-cst
+  asm6x: REFUSED: "071-addu-cst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+  ASM6x: REFUSED: line 4: 'ADDU' with these operands is not an instruction this assembler knows
+  tables: -
+072-addu-pair-src
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADDU does not take three registers this way
+  tables: -
+073-add-pair-src
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD does not take three registers this way
+  tables: -
+074-add-pair-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: ADD into a pair takes sources of its side
+  tables: -
+075-sub-pair-cross
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: SUB into a pair takes sources of its side
+  tables: -
+076-mpy32u-reg-dst
+  asm6x: REFUSED: "076-mpy32u-reg-dst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+  ASM6x: accepted
+  tables: -
+077-mpy32-pair-dst
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000000 02082800  asm6x 000000 02082a00
+078-mv-pair-cross
+  asm6x: REFUSED: "078-mv-pair-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+  ASM6x: REFUSED: line 4: a pair MV stays within its side
+  tables: -
+079-mv-cst
+  asm6x: REFUSED: "079-mv-cst.s", ERROR!   at line 4: [E0004] Operand #1 not legal: register or
+  ASM6x: REFUSED: line 4: 'MV' with these operands is not an instruction this assembler knows
+  tables: -
+080-zero-pred
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+081-zero-pair-b
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+082-not-pair
+  asm6x: REFUSED: "082-not-pair.s", ERROR!   at line 4: [E0800] Illegal operand combination
+  ASM6x: REFUSED: line 4: NOT does not take these two registers
+  tables: -
+083-neg-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+084-norm-pair
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: NORM does not take these two registers
+  tables: -
+085-abs-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+086-mvc-a-out
+  asm6x: REFUSED: "086-mvc-a-out.s", ERROR!   at line 4: [E0004] B side register required for
+  ASM6x: REFUSED: line 4: MVC out of a control register lands on the B side
+  tables: -
+087-mvc-pred
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+088-mvc-cross-out
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+089-mvc-unknown
+  asm6x: REFUSED: "089-mvc-unknown.s", ERROR!   at line 4: [E0004] Operand #2, FOO, not legal:
+  ASM6x: REFUSED: line 4: 'FOO' is not a control register
+  tables: -
+090-swe-pred
+  asm6x: REFUSED: "090-swe-pred.s", ERROR!   at line 4: [E0800] Instruction must be unconditional
+  ASM6x: REFUSED: line 4: SWE cannot be predicated
+  tables: -
+091-idle-pred
+  asm6x: REFUSED: "091-idle-pred.s", ERROR!   at line 4: [E0004] Conditionals not allowed on this
+  ASM6x: REFUSED: line 4: IDLE cannot be predicated
+  tables: -
+092-b-cst
+  asm6x: REFUSED: "092-b-cst.s", ERROR!   at line 4: [E0004] Operand #1 not legal: register or
+  ASM6x: REFUSED: line 4: B needs a label or a register
+  tables: -
+093-b-ext-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000000 00000012  asm6x 000000 00000112
+094-b-fwd-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+095-b-back-neg
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+096-bnop-ext-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: .text: mine 000000 00004120  asm6x 000000 00014120
+097-bnop-fwd-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+098-bnop-nocount
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: 'BNOP' with these operands is not an instruction this assembler knows
+  tables: -
+099-bnop-6
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: BNOP's count is 0 to 5
+  tables: -
+100-callp-ext-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000000 10000010  asm6x 000000 10000090
+101-callp-b4
+  asm6x: REFUSED: "101-callp-b4.s", ERROR!   at line 4: [E0009] A3 or B3 required as return
+  ASM6x: accepted
+  tables: -
+102-callp-pred
+  asm6x: REFUSED: "102-callp-pred.s", ERROR!   at line 4: [E0800] Instruction must be
+  ASM6x: accepted
+  tables: -
+103-b-pred-both
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+104-b-weak-same-section
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+105-b-global-same-section
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+106-b-other-code-section
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+107-b-data-label
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+108-b-set-alias
+  asm6x: accepted
+  ASM6x: REFUSED: line 6: a constant is needed here, not a label
+  tables: -
+109-b-reach-max
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+110-b-reach-over
+  asm6x: REFUSED: "110-b-reach-over.s", ERROR!   at line 3: [E0800] Specified label is too far
+  ASM6x: REFUSED: line 3: branch to 'fwd' is too far
+  tables: -
+111-b-reach-back-max
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+112-b-reach-back-over
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+113-bnop-reach-max
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+114-bnop-reach-over
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: branch to 'fwd' is too far
+  tables: -
+115-lowercase-regs
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: 'MV' with these operands is not an instruction this assembler knows
+  tables: -
+116-lowercase-pred
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: a predicate is [A0], [A1], [A2], [B0], [B1] or [B2], with ! before it for the zero test
+  tables: -
+117-lowercase-mnemonic
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+118-lowercase-directive
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  000004 NOCMP    .text
+119-reg-a32
+  asm6x: REFUSED: "119-reg-a32.s", ERROR!   at line 4: [E0004] Operand #1, A32, not legal:
+  ASM6x: REFUSED: line 4: 'MV' with these operands is not an instruction this assembler knows
+  tables: -
+120-unit-named
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: unexpected 'A1' in an expression
+  tables: -
+121-pair-odd
+  asm6x: REFUSED: "121-pair-odd.s", ERROR!   at line 4: [E0009] Invalid symbol 'A5' in register
+  ASM6x: REFUSED: line 4: a register pair is odd:even of one side
+  tables: -
+122-pair-cross-sides
+  asm6x: REFUSED: "122-pair-cross-sides.s", ERROR!   at line 4: [E0009] Invalid symbol 'B4' in
+  ASM6x: REFUSED: line 4: a register pair is odd:even of one side
+  tables: -
+123-mem-no-sign
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+124-mem-no-sign-bracket
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+125-mem-bracket
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+126-mem-unaligned
+  asm6x: accepted, warning: "126-mem-unaligned.s", WARNING! at line 4: [W0000] Word offsets must be
+  ASM6x: REFUSED: line 4: the offset is not a multiple of the access width
+  tables: -
+127-mem-neg-15bit
+  asm6x: REFUSED: "127-mem-neg-15bit.s", ERROR!   at line 4: [E0004] Illegal offset mode for 15
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+128-mem-lddw-15bit
+  asm6x: REFUSED: "128-mem-lddw-15bit.s", ERROR!   at line 4: [E0009] > 5-bit constants not
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+129-mem-ldb-b14-32767
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+130-mem-ldb-b14-32768
+  asm6x: REFUSED: "130-mem-ldb-b14-32768.s", ERROR!   at line 4: [E0800] Offset too large
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+131-mem-ldw-b15-131068
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+132-mem-ldw-b15-131072
+  asm6x: REFUSED: "132-mem-ldw-b15-131072.s", ERROR!   at line 4: [E0800] Offset too large
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+133-mem-ldw-a4-128
+  asm6x: REFUSED: "133-mem-ldw-a4-128.s", ERROR!   at line 4: [E0009] B14 or B15 required as long
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+134-mem-neg-offset
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000000 013c42e4  asm6x 000000 013c20e4
+135-mem-post-nocount
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+136-mem-post-bracket
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+137-mem-plus-noparen
+  asm6x: REFUSED: "137-mem-plus-noparen.s", ERROR!   at line 4: [E0003] Memory operand missing
+  ASM6x: accepted
+  tables: -
+138-mem-15bit-post
+  asm6x: REFUSED: "138-mem-15bit-post.s", ERROR!   at line 4: [E0004] Illegal offset mode for 15
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+139-mem-15bit-bracket
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+140-mem-b14-store-h
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+141-mem-15bit-pred
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+142-mem-15bit-cross
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+143-mem-ldw-into-pair
+  asm6x: REFUSED: "143-mem-ldw-into-pair.s", ERROR!   at line 4: [E0004] Operand #2, A4, not
+  ASM6x: accepted
+  tables: -
+144-mem-lddw-into-reg
+  asm6x: REFUSED: "144-mem-lddw-into-reg.s", ERROR!   at line 4: [E0004] Operand #2, A5, not
+  ASM6x: accepted
+  tables: -
+145-mem-fwd-constant
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+146-mem-offset-expr
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+147-mem-offset-label-diff
+  asm6x: REFUSED: "147-mem-offset-label-diff.s", ERROR!   at line 5: [E0200] Unable to resolve
+  ASM6x: accepted
+  tables: -
+148-mem-lddw-b15-124
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+149-mem-lddw-b15-256
+  asm6x: REFUSED: "149-mem-lddw-b15-256.s", ERROR!   at line 4: [E0009] > 5-bit constants not
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+150-mem-a-neg-31
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+151-mem-a-neg-32
+  asm6x: REFUSED: "151-mem-a-neg-32.s", ERROR!   at line 4: [E0009] B14 or B15 required as long
+  ASM6x: REFUSED: line 4: the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15
+  tables: -
+152-mem-reg-offset
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: a constant is needed here, not a label
+  tables: -
+153-mem-b15-neg-post
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+154-par-and-shl
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+155-par-add-and
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000004 031489b0  asm6x 000004 031487e0
+156-par-and-or
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+157-par-sub-cross-shl
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .text: mine 000000 01845d71  asm6x 000000 018832f9
+158-par-sub-cross-add
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+159-par-mpy32u-mpy
+  asm6x: REFUSED: "159-par-mpy32u-mpy.s", ERROR!   at line 4: [E0801] Functional unit allocation
+  ASM6x: accepted
+  tables: -
+160-par-mpy32us-ldw
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+161-par-mpy32u-shl
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+162-par-mv-mv
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+163-par-mv-ldw
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+164-par-not-ldw
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+165-par-mvk-mvk
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+166-par-mvk-cmpeq
+  asm6x: accepted
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+167-par-two-loads
+  asm6x: REFUSED: "167-par-two-loads.s", ERROR!   at line 4: [E0801] Functional unit allocation
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+168-par-nop
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+169-par-nop-first
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+170-par-first
+  asm6x: REFUSED: "170-par-first.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+  ASM6x: REFUSED: line 2: || needs an instruction before it
+  tables: -
+171-par-after-label
+  asm6x: REFUSED: "171-par-after-label.s", ERROR!   at line 4: [E0002] Illegal mnemonic specified
+  ASM6x: accepted
+  tables: -
+172-par-label-between
+  asm6x: REFUSED: "172-par-label-between.s", ERROR!   at line 5: [E0002] Illegal mnemonic
+  ASM6x: accepted
+  tables: -
+173-par-eight
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+174-par-across-fetch-packet
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+175-par-pred-pair
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+176-par-branch-branch
+  asm6x: REFUSED: "176-par-branch-branch.s", ERROR!   at line 4: [E0801] Too many branches to a
+  ASM6x: REFUSED: line 5: two instructions of one packet want the same unit; asm6x would move one, this assembler does not
+  tables: -
+177-par-after-word
+  asm6x: REFUSED: "177-par-after-word.s", ERROR!   at line 5: [E0002] Illegal mnemonic specified
+  ASM6x: REFUSED: line 5: || needs an instruction before it
+  tables: -
+178-par-section-switch
+  asm6x: REFUSED: "178-par-section-switch.s", ERROR!   at line 6: [E0002] Illegal mnemonic
+  ASM6x: accepted
+  tables: -
+179-par-pred-before-bar
+  asm6x: REFUSED: "179-par-pred-before-bar.s", ERROR!   at line 5: [E0002] Illegal mnemonic
+  ASM6x: accepted
+  tables: -
+180-col1-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+181-col1-global
+  asm6x: REFUSED: "181-col1-global.s", ERROR!   at line 1: [E0002] Illegal mnemonic specified
+  ASM6x: REFUSED: line 1: 'FWD' with these operands is not an instruction this assembler knows
+  tables: -
+182-col1-word
+  asm6x: REFUSED: "182-col1-word.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+  ASM6x: REFUSED: line 2: an instruction outside a code section
+  tables: -
+183-col1-mnemonic
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+184-label-space-colon
+  asm6x: REFUSED: "184-label-space-colon.s", ERROR!   at line 2: [E0002] Illegal mnemonic
+  ASM6x: accepted
+  tables: -
+185-label-only-lines
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  00000c NOCMP    .text
+186-label-case
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+187-label-dollar
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  00000c NOCMP    .text
+188-label-mnemonic-name
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+189-label-twice
+  asm6x: REFUSED: "189-label-twice.s", ERROR!   at EOF: [E0300] Symbol a has already been defined
+  ASM6x: REFUSED: line 4: 'a' is already defined
+  tables: -
+190-label-text-name
+  asm6x: REFUSED: "190-label-text-name.s", ERROR!   at EOF: [E0300] The following symbols are
+  ASM6x: REFUSED: line 3: '.text' is not defined
+  tables: -
+191-comment-forms
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+192-comment-star-indented
+  asm6x: REFUSED: "192-comment-star-indented.s", ERROR!   at line 2: [E0002] Illegal mnemonic
+  ASM6x: REFUSED: line 2: an instruction expected
+  tables: -
+193-end-mid-file
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+194-empty-file
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+195-only-comment
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+196-no-trailing-newline
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+197-crlf
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+198-data-only
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+199-tab-label
+  asm6x: REFUSED: "199-tab-label.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+  ASM6x: accepted
+  tables: -
+200-usect-basic
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .far: mine type NOBITS flags 0x3 align 1 size 0x4, asm6x type NOBITS flags 0x3 align 4 size 0x8
+201-usect-noalign
+  asm6x: accepted
+  ASM6x: REFUSED: line 1: .USECT needs a name and a size
+  tables: -
+202-usect-global
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 4: section .far: mine type NOBITS flags 0x3 align 1 size 0x8, asm6x type NOBITS flags 0x3 align 8 size 0x10
+203-usect-twice
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 6: section .far: mine type NOBITS flags 0x3 align 1 size 0x8, asm6x type NOBITS flags 0x3 align 4 size 0x8
+204-usect-no-label
+  asm6x: REFUSED: "204-usect-no-label.s", ERROR!   at line 1: [E0300] Symbol expected in label
+  ASM6x: accepted
+  tables: -
+205-bss-local-size
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+206-bss-noalign
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+207-bss-global-after
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+208-bss-zero
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+209-bss-expr
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+210-bss-fwd-size
+  asm6x: REFUSED: "210-bss-fwd-size.s", ERROR!   at line 1: [E0004] Absolute, well-defined integer
+  ASM6x: accepted
+  tables: -
+211-bss-align-3
+  asm6x: accepted, warning: "211-bss-align-3.s", WARNING! at line 1: [W0001] Power of 2 required, 32 assumed
+  ASM6x: REFUSED: line 1: the alignment must be a power of two
+  tables: -
+212-bss-in-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+213-bss-label-before
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+214-sect-far-word
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .far: mine type NOBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+215-sect-bss-word
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .bss: mine type NOBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+216-word-in-bss
+  asm6x: REFUSED: "216-word-in-bss.s", ERROR!   at line 2: [E0300] Cannot redefine this section
+  ASM6x: accepted
+  tables: -
+217-string-n
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x3, asm6x type PROGBITS flags 0x3 align 1 size 0x4
+218-cstring-n
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+219-string-quote
+  asm6x: REFUSED: "219-string-quote.s", ERROR!   at line 2: [E0003] Cluttered string constant
+  ASM6x: accepted
+  tables: -
+220-string-backslash
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x1, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+221-cstring-backslash
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+222-string-hex
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x3, asm6x type PROGBITS flags 0x3 align 1 size 0x4
+223-cstring-hex
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x4, asm6x type PROGBITS flags 0x3 align 1 size 0x3
+224-string-octal
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x3, asm6x type PROGBITS flags 0x3 align 1 size 0x4
+225-cstring-octal
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x4, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+226-string-abfv
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x4, asm6x type PROGBITS flags 0x3 align 1 size 0x8
+227-cstring-abfv
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: .data: mine 000000 61 62 66 76 00  asm6x 000000 07 08 0c 0b 00
+228-string-tab
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x3, asm6x type PROGBITS flags 0x3 align 1 size 0x4
+229-string-zero
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x1, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+230-cstring-zero
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x3, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+231-string-numbers
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+232-string-number-only
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+233-cstring-two
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+234-byte-string
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+235-byte-string-mixed
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+236-word-string
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: a value expected, not 'a'
+  tables: -
+237-half-string
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: a value expected, not 'ab'
+  tables: -
+238-string-semicolon
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+239-string-star-col1
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+240-string-in-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+241-string-empty
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+242-string-high-byte
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .data: mine type PROGBITS flags 0x3 align 1 size 0x6, asm6x type PROGBITS flags 0x3 align 1 size 0x8
+243-char-const
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+244-char-escape
+  asm6x: accepted, warning: "244-char-escape.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: REFUSED: line 2: a character constant is one character in quotes
+  tables: -
+245-char-quote
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: a character constant is one character in quotes
+  tables: -
+246-num-binary
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected 'b' in an expression
+  tables: -
+247-num-binary-upper
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected 'B' in an expression
+  tables: -
+248-num-hex-suffix
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+249-num-hex-suffix-nolead
+  asm6x: REFUSED: "249-num-hex-suffix-nolead.s", ERROR!   at EOF: [E0300] The following symbols
+  ASM6x: REFUSED: line 2: 'FFh' is not defined
+  tables: -
+250-num-octal
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected 'q' in an expression
+  tables: -
+251-num-0b
+  asm6x: REFUSED: "251-num-0b.s", ERROR!   at line 2: [E0003] Invalid octal constant specified
+  ASM6x: REFUSED: line 2: unexpected 'b101' in an expression
+  tables: -
+252-num-word-33bit
+  asm6x: accepted, warning: "252-num-word-33bit.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+253-num-word-4294967296
+  asm6x: accepted, warning: "253-num-word-4294967296.s", WARNING! at line 2: [W0001] Constant value out of
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+254-num-word-m2147483649
+  asm6x: accepted, warning: "254-num-word-m2147483649.s", WARNING! at line 2: [W0001] Constant value out of
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+255-num-word-4294967295
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+256-num-half-65535
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+257-num-half-65536
+  asm6x: accepted, warning: "257-num-half-65536.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: REFUSED: line 2: a half word cannot hold 65536
+  tables: -
+258-num-half-m32769
+  asm6x: accepted, warning: "258-num-half-m32769.s", WARNING! at line 2: [W0001] Constant value out of
+  ASM6x: REFUSED: line 2: a half word cannot hold -32769
+  tables: -
+259-num-byte-256
+  asm6x: accepted, warning: "259-num-byte-256.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: REFUSED: line 2: a byte cannot hold 256
+  tables: -
+260-num-byte-m129
+  asm6x: accepted, warning: "260-num-byte-m129.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: REFUSED: line 2: a byte cannot hold -129
+  tables: -
+261-num-byte-255-m128
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+262-num-float
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: '.float' is not a directive this assembler knows
+  tables: -
+263-num-double
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: '.double' is not a directive this assembler knows
+  tables: -
+264-num-word-decimal-big
+  asm6x: accepted, warning: "264-num-word-decimal-big.s", WARNING! at line 2: [W0001] Constant value out of
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+265-num-hex-big
+  asm6x: accepted, warning: "265-num-hex-big.s", WARNING! at line 2: [W0001] Constant value out of range,
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+266-expr-shift
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected '<' in an expression
+  tables: -
+267-expr-and-or
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected '&' in an expression
+  tables: -
+268-expr-mod
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: unexpected '%' in an expression
+  tables: -
+269-expr-not
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: a value expected, not '~'
+  tables: -
+270-expr-arith
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+271-expr-precedence-ti
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+272-expr-neg-div
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+273-expr-div-zero
+  asm6x: REFUSED: "273-expr-div-zero.s", ERROR!   at line 2: [E0200] Integer divide by zero
+  ASM6x: REFUSED: line 2: division by zero
+  tables: -
+274-expr-unary-plus
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+275-expr-labels
+  asm6x: REFUSED: "275-expr-labels.s", ERROR!   at line 4: [E0200] Unable to resolve this
+  ASM6x: REFUSED: line 4: a label cannot be multiplied or divided
+  tables: -
+276-expr-labels-fwd
+  asm6x: REFUSED: "276-expr-labels-fwd.s", ERROR!   at line 2: [E0200] Unable to resolve this
+  ASM6x: accepted
+  tables: -
+277-expr-ext-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+278-expr-neg-ext
+  asm6x: REFUSED: "278-expr-neg-ext.s", ERROR!   at line 3: [E0200] Unable to resolve this
+  ASM6x: REFUSED: line 3: a label cannot be negated
+  tables: -
+279-expr-two-ext
+  asm6x: REFUSED: "279-expr-two-ext.s", ERROR!   at line 3: [E0200] Unable to resolve this
+  ASM6x: REFUSED: line 3: two labels cannot be added
+  tables: -
+280-expr-two-ext-diff
+  asm6x: REFUSED: "280-expr-two-ext-diff.s", ERROR!   at line 3: [E0200] Unable to resolve this
+  ASM6x: accepted
+  tables: -
+281-expr-dollar
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: $ is not supported here - the compilers never write it
+  tables: -
+282-expr-dollar-text
+  asm6x: accepted
+  ASM6x: REFUSED: line 3: $ is not supported here - the compilers never write it
+  tables: -
+283-expr-cross-section-diff
+  asm6x: REFUSED: "283-expr-cross-section-diff.s", ERROR!   at line 6: [E0200] Unable to resolve
+  ASM6x: REFUSED: line 6: labels in different sections cannot be subtracted
+  tables: -
+284-expr-mul-ext
+  asm6x: REFUSED: "284-expr-mul-ext.s", ERROR!   at line 3: [E0200] Unable to resolve this
+  ASM6x: REFUSED: line 3: a label cannot be multiplied or divided
+  tables: -
+285-expr-set-arith
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+286-expr-set-forward
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+287-expr-paren-missing
+  asm6x: REFUSED: "287-expr-paren-missing.s", ERROR!   at line 2: [E0000] No matching right
+  ASM6x: REFUSED: line 2: ')' expected
+  tables: -
+288-expr-trailing-comma
+  asm6x: REFUSED: "288-expr-trailing-comma.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+289-expr-empty-item
+  asm6x: REFUSED: "289-expr-empty-item.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+290-expr-in-mem
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+291-expr-in-mvk
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: unexpected '<' in an expression
+  tables: -
+292-expr-in-add
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+293-expr-label-diff-in-mvk
+  asm6x: REFUSED: "293-expr-label-diff-in-mvk.s", ERROR!   at line 5: [E0200] Unable to resolve
+  ASM6x: accepted
+  tables: -
+294-expr-label-in-add
+  asm6x: REFUSED: "294-expr-label-in-add.s", ERROR!   at line 4: [E0004] Operand #1, fwd, not
+  ASM6x: REFUSED: line 4: 'ADD' with these operands is not an instruction this assembler knows
+  tables: -
+295-set-forms
+  asm6x: REFUSED: "295-set-forms.s", ERROR!   at line 3: [E0003] Unexpected trailing operand(s)
+  ASM6x: accepted
+  tables: -
+296-set-twice-same
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+297-set-twice-differ
+  asm6x: REFUSED: "297-set-twice-differ.s", ERROR!   at line 2: [E0300] Redefinition of K
+  ASM6x: REFUSED: line 2: 'K' is already defined
+  tables: -
+298-set-of-label
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: a constant is needed here, not a label
+  tables: -
+299-set-of-label-arith
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: a constant is needed here, not a label
+  tables: -
+300-set-of-ext
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: a constant is needed here, not a label
+  tables: -
+301-set-global
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+302-set-negative
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+303-set-in-mvk
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+304-set-label-collision
+  asm6x: REFUSED: "304-set-label-collision.s", ERROR!   at line 4: [E0300] Redefinition of fwd
+  ASM6x: REFUSED: line 4: 'fwd' is already defined
+  tables: -
+305-set-referenced-before-def-const
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+306-set-of-label-diff
+  asm6x: REFUSED: "306-set-of-label-diff.s", ERROR!   at line 6: [E0003] .set/equ value cannot be
+  ASM6x: accepted
+  tables: -
+307-asg-directive
+  asm6x: accepted
+  ASM6x: REFUSED: line 3: 'K' is not defined
+  tables: -
+308-symdepend-one-arg
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: .symdepend takes two quoted names
+  tables: -
+309-symdepend-unquoted
+  asm6x: accepted
+  ASM6x: REFUSED: line 4: .symdepend takes two quoted names
+  tables: -
+310-symdepend-no-section
+  asm6x: REFUSED: "310-symdepend-no-section.s", ERROR!   at line 4: [E0300] Symbol .nosuch not
+  ASM6x: REFUSED: line 4: '.nosuch' is not a section of this file
+  tables: -
+311-symdepend-before-section
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: '.c6xabi.extab:f' is not a section of this file
+  tables: -
+312-symdepend-local-sym
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+313-symdepend-twice
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+314-symdepend-text-with-relocs
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+315-align-noarg-data
+  asm6x: accepted
+  ASM6x: REFUSED: line 3: an expression is missing
+  tables: -
+316-align-noarg-text
+  asm6x: accepted
+  ASM6x: REFUSED: line 3: an expression is missing
+  tables: -
+317-align-3
+  asm6x: accepted, warning: "317-align-3.s", WARNING! at line 3: [W0001] Power of 2 required, 4 assumed
+  ASM6x: REFUSED: line 3: .align takes a power of two
+  tables: -
+318-align-0
+  asm6x: accepted, warning: "318-align-0.s", WARNING! at line 3: [W0001] Power of 2 required, 1 assumed
+  ASM6x: REFUSED: line 3: .align takes a power of two
+  tables: -
+319-align-1
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+320-align-64-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+321-align-128-data
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+322-align-64k
+  asm6x: accepted, warning: "322-align-64k.s", WARNING! at line 3: [W0001] Maximum alignment is to 32K
+  ASM6x: accepted
+  tables: DIFFER 4: section .data: mine type PROGBITS flags 0x3 align 65536 size 0x10001, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+323-align-2-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+324-align-text-pad-bytes
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+325-align-in-bss
+  asm6x: REFUSED: "325-align-in-bss.s", ERROR!   at line 2: [E0300] Cannot redefine this section
+  ASM6x: accepted
+  tables: -
+326-align-fwd-const
+  asm6x: REFUSED: "326-align-fwd-const.s", ERROR!   at line 3: [E0004] Absolute, well-defined
+  ASM6x: accepted
+  tables: -
+327-space-neg
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 4: section .data: mine type PROGBITS flags 0x3 align 1 size 0x1, asm6x type PROGBITS flags 0x3 align 1 size 0x20000000
+328-space-noarg
+  asm6x: REFUSED: "328-space-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: .space needs a count
+  tables: -
+329-space-zero
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+330-space-in-text-3
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+331-byte-in-text-then-nop
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+332-bes
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+333-space-label
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+334-space-fwd-const
+  asm6x: REFUSED: "334-space-fwd-const.s", ERROR!   at line 2: [E0004] Absolute, well-defined
+  ASM6x: accepted
+  tables: -
+335-word-after-byte
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+336-word-in-text-after-code
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: symbol only mine: fwd local func .text 0x9 size 0 other 2
+337-ulong-uint-uword
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+338-sect-foo
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .foo: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+339-sect-cinit
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .cinit: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+340-sect-fardata
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .fardata: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+341-sect-neardata-byte
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .neardata: mine type PROGBITS flags 0x3 align 1 size 0x1, asm6x type PROGBITS flags 0x2 align 1 size 0x1
+342-sect-neardata-rw
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+343-sect-neardata-ro
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .neardata: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+344-sect-const-byte
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+345-sect-const-named
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+346-sect-data-named
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .data:x: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+347-data-byte
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+348-data-empty
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+349-sect-text-named-code
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+350-sect-text-named-empty
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text:f: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x2 align 1 size 0x0
+351-sect-text-named-data
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 4: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+352-sect-textfoo
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: an instruction outside a code section
+  tables: -
+353-sect-rodata
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+354-sect-init-array
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+355-sect-fini-array
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .fini_array: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+356-sect-switch
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+357-sect-extab-plain
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+358-sect-exidx-plain
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+359-sect-exidx-text-named
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+360-sect-exidx-before-text-named
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+361-sect-exidx-no-text
+  asm6x: REFUSED: 
+  ASM6x: accepted
+  tables: -
+362-sect-exidx-mid-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+363-sect-exidx-byte-align
+  asm6x: REFUSED: 
+  ASM6x: accepted
+  tables: -
+364-sect-text-reopen
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+365-sect-stack
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .stack: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+366-sect-sysmem
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .sysmem: mine type PROGBITS flags 0x3 align 1 size 0x4, asm6x type PROGBITS flags 0x2 align 1 size 0x4
+367-sect-cio
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .cio: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+368-sect-vm6747-eh
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+369-sect-noarg
+  asm6x: REFUSED: "369-sect-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: REFUSED: line 1: .sect needs a quoted name
+  tables: -
+370-sect-unquoted
+  asm6x: accepted
+  ASM6x: REFUSED: line 1: .sect needs a quoted name
+  tables: -
+371-sect-upper-text
+  asm6x: accepted
+  ASM6x: REFUSED: line 2: an instruction outside a code section
+  tables: -
+372-sect-many
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 41: section .s0: mine type PROGBITS flags 0x3 align 4 size 0x4, asm6x type PROGBITS flags 0x2 align 4 size 0x4
+373-sect-exidx-align-8
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+374-sect-text-align-64
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+375-sect-const-align-8
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+376-sect-data-align-8-first
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+377-weak-undefined
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+378-weak-defined
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+379-weak-then-global
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+380-global-then-weak
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+381-weak-bss
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+382-weak-branch-other-section
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+383-ref-then-define
+  asm6x: accepted, warning: "383-ref-then-define.s", WARNING! at line 1: [W0000] Defined symbol 'f' cannot
+  ASM6x: accepted
+  tables: identical
+384-def-undefined
+  asm6x: REFUSED: "384-def-undefined.s", ERROR!   at line 1: [E0300] 'd' is not defined in this
+  ASM6x: accepted
+  tables: -
+385-def-defined
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+386-ref-unused
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+387-global-unused-undefined
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: symbol only mine: g global none undef 0x0 size 0 other 2
+388-undefined-local
+  asm6x: REFUSED: "388-undefined-local.s", ERROR!   at EOF: [E0300] The following symbols are
+  ASM6x: REFUSED: line 2: 'nothere' is not defined
+  tables: -
+389-undefined-local-branch
+  asm6x: REFUSED: "389-undefined-local-branch.s", ERROR!   at EOF: [E0300] The following symbols
+  ASM6x: REFUSED: line 2: 'nothere' is not defined
+  tables: -
+390-global-after-use
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+391-global-list
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+392-global-noarg
+  asm6x: REFUSED: "392-global-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: accepted
+  tables: -
+393-ref-noarg
+  asm6x: REFUSED: "393-ref-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: accepted
+  tables: -
+394-weak-noarg
+  asm6x: REFUSED: "394-weak-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: accepted
+  tables: -
+395-word-noarg
+  asm6x: REFUSED: "395-word-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+396-byte-noarg
+  asm6x: REFUSED: "396-byte-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+397-string-noarg
+  asm6x: REFUSED: "397-string-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+398-cstring-noarg
+  asm6x: REFUSED: "398-cstring-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+  ASM6x: REFUSED: line 2: an expression is missing
+  tables: -
+399-set-noarg
+  asm6x: REFUSED: "399-set-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: REFUSED: line 1: .set needs a name and a value
+  tables: -
+400-bss-noarg
+  asm6x: REFUSED: "400-bss-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: REFUSED: line 1: .BSS needs a name and a size
+  tables: -
+401-usect-noarg
+  asm6x: REFUSED: "401-usect-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: REFUSED: line 1: .USECT needs a name and a size
+  tables: -
+402-symdepend-noarg
+  asm6x: REFUSED: "402-symdepend-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+  ASM6x: REFUSED: line 1: .symdepend takes two quoted names
+  tables: -
+403-global-number
+  asm6x: REFUSED: "403-global-number.s", ERROR!   at line 1: [E0300] Symbol expected
+  ASM6x: REFUSED: line 1: .GLOBAL names symbols
+  tables: -
+404-global-string
+  asm6x: REFUSED: "404-global-string.s", ERROR!   at line 1: [E0300] Symbol expected
+  ASM6x: REFUSED: line 1: .GLOBAL names symbols
+  tables: -
+405-global-set-constant
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+406-global-section-name
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: symbol only mine: .text global none undef 0x0 size 0 other 2
+407-label-global-data-type
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+408-label-in-text-data
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  000008 NOCMP    .text
+409-label-in-bss-sect
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 3: section .bss: mine type NOBITS flags 0x3 align 1 size 0x4, asm6x type PROGBITS flags 0x2 align 1 size 0x4
+410-label-in-switch
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+411-label-in-exidx
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+412-reloc-half-ext
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+413-reloc-byte-ext
+  asm6x: REFUSED: "413-reloc-byte-ext.s", ERROR!   at line 3: [E0004] Invalid data size for
+  ASM6x: accepted
+  tables: -
+414-reloc-half-local
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+415-reloc-half-diff
+  asm6x: REFUSED: "415-reloc-half-diff.s", ERROR!   at line 3: [E0200] Unable to resolve this
+  ASM6x: accepted
+  tables: -
+416-reloc-word-local
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+417-reloc-word-global-local
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+418-reloc-word-text-label
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+419-reloc-exidx-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .c6xabi.exidx:.text: mine 000000 00 00 00 00  asm6x 000000 04 00 00 00
+420-reloc-extab-lp-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .c6xabi.extab:f: mine 000000 00 00 00 00 00 00 00 00  asm6x 000000 04 00 00 00 fc ff ff ff
+421-reloc-scope-alone
+  asm6x: accepted, warning: "421-reloc-scope-alone.s", WARNING! at line 5: [W1500] warning:  relocation
+  ASM6x: REFUSED: line 5: a scope needs another scope to differ from
+  tables: -
+422-reloc-scope-diff-word
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+423-reloc-scope-cross-section
+  asm6x: REFUSED: "423-reloc-scope-cross-section.s", ERROR!   at line 8: [E0200] Unable to resolve
+  ASM6x: REFUSED: line 8: labels in different sections cannot be subtracted
+  tables: -
+424-reloc-rtti
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+425-reloc-rtti-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: .c6xabi.extab:f: mine 000000 00 00 00 00  asm6x 000000 04 00 00 00
+426-reloc-exidx-extab-unquoted
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+427-reloc-lowercase-operator
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+428-reloc-unknown-operator
+  asm6x: REFUSED: "428-reloc-unknown-operator.s", ERROR!   at line 5: [E0000] Commas must separate
+  ASM6x: REFUSED: line 5: '$FOO' is not an operator this assembler knows
+  tables: -
+429-reloc-two-operators
+  asm6x: REFUSED: "429-reloc-two-operators.s", ERROR!   at line 7: [E0200] Unable to resolve this
+  ASM6x: REFUSED: line 7: two labels cannot be added
+  tables: -
+430-reloc-operator-in-mvkl
+  asm6x: accepted, warning: "430-reloc-operator-in-mvkl.s", WARNING! at line 4: [E0004] Instruction cannot
+  ASM6x: accepted
+  tables: DIFFER 4: section .text: mine type PROGBITS flags 0x6 align 32 size 0x20, asm6x type PROGBITS flags 0x6 align 32 size 0x1c
+431-reloc-operator-in-half
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+432-reloc-mvkl-cross-diff
+  asm6x: REFUSED: "432-reloc-mvkl-cross-diff.s", ERROR!   at line 6: [E0200] Unable to resolve
+  ASM6x: accepted
+  tables: -
+433-reloc-b-cross-diff
+  asm6x: REFUSED: "433-reloc-b-cross-diff.s", ERROR!   at line 6: [E0200] Unable to resolve this
+  ASM6x: accepted
+  tables: -
+434-reloc-mvkl-same-diff
+  asm6x: REFUSED: "434-reloc-mvkl-same-diff.s", ERROR!   at line 4: [E0200] Unable to resolve this
+  ASM6x: accepted
+  tables: -
+435-reloc-mvkl-set-constant
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+436-reloc-mvkl-fwd-set
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+437-reloc-mvkl-label-addend
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 2: .text: mine 000004 00000068  asm6x 000004 007fffe8
+438-reloc-word-set-plus-label
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+439-reloc-order
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  00000c NOCMP    .text
+440-reloc-weak-word
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+441-reloc-half-in-text
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: .rel.text: asm6x only rel  000002 NOCMP    .text
+442-reloc-many-symbols
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0

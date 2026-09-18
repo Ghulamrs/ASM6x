@@ -1,0 +1,13 @@
+
+Disassembly of 183-col1-mnemonic.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            NOP:
+00000000   00000000           NOP           
+00000004   00000000           NOP           
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

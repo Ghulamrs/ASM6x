@@ -1,0 +1,10 @@
+"159-par-mpy32u-mpy.s", ERROR!   at line 4: [E0801] Functional unit allocation
+                                                    conflict
+1 Assembly Error, No Assembly Warnings
+		MPY32U A1, A2, A5:A4
+		|| MPY A6, A7, A8
+
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

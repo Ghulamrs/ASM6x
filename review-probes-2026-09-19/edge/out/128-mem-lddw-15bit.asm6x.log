@@ -1,0 +1,12 @@
+"128-mem-lddw-15bit.s", ERROR!   at line 4: [E0009] > 5-bit constants not
+                                                    allowed as offset for LDDW
+		LDDW *+B15(256), A5:A4
+
+"128-mem-lddw-15bit.s", ERROR!   at line 4: [E0800] Illegal memory form for LDDW
+		LDDW *+B15(256), A5:A4
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

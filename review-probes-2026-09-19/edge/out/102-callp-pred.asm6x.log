@@ -1,0 +1,9 @@
+"102-callp-pred.s", ERROR!   at line 4: [E0800] Instruction must be
+                                                unconditional
+		[A0] CALLP ext, A3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

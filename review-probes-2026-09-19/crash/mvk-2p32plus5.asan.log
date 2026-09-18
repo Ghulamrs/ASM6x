@@ -1,0 +1,1 @@
+crash/mvk-2p32plus5.s: line 2: MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves

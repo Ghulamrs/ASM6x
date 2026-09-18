@@ -1,0 +1,10 @@
+"176-par-branch-branch.s", ERROR!   at line 4: [E0801] Too many branches to a
+                                                       label in this packet
+1 Assembly Error, No Assembly Warnings
+		B fwd
+		|| B ext
+
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

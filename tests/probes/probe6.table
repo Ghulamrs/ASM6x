@@ -1,0 +1,287 @@
+ADD A3:A2, A1, A5:A4               02082438  ADD.L1        A1,A3:A2,A5:A4       dst= 4 src2= 2 src1= 1 x=0 sig=0100001110 s=0
+ADD B3:B2, B1, B5:B4               0208243a  ADD.L2        B1,B3:B2,B5:B4       dst= 4 src2= 2 src1= 1 x=0 sig=0100001110 s=1
+ADD2 A1, A2, A3                    01882060  ADD2.S1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0000011000 s=0
+ADD2 B1, B2, B3                    01882062  ADD2.S2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0000011000 s=1
+ADD2 A4, B5, A6                    03149060  ADD2.S1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0000011000 s=0
+ADD2 B4, A5, B6                    03149062  ADD2.S2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0000011000 s=1
+ADD4 A1, A2, A3                    01882cb8  ADD4.L1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1100101110 s=0
+ADD4 B1, B2, B3                    01882cba  ADD4.L2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1100101110 s=1
+ADD4 A4, B5, A6                    03149cb8  ADD4.L1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1100101110 s=0
+ADD4 B4, A5, B6                    03149cba  ADD4.L2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1100101110 s=1
+ADDU A3:A2, A1, A5:A4              02082538  ADDU.L1       A1,A3:A2,A5:A4       dst= 4 src2= 2 src1= 1 x=0 sig=0101001110 s=0
+ADDU B3:B2, B1, B5:B4              0208253a  ADDU.L2       B1,B3:B2,B5:B4       dst= 4 src2= 2 src1= 1 x=0 sig=0101001110 s=1
+AND A1, 3, A3                      018469f0  AND.D1        3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1001111100 s=0
+AND B1, 3, B3                      018469f2  AND.D2        3,B1,B3              dst= 3 src2= 1 src1= 3 x=0 sig=1001111100 s=1
+AND A1, -3, A3                     0187a9f0  AND.D1        -3,A1,A3             dst= 3 src2= 1 src1=29 x=0 sig=1001111100 s=0
+AVG2 A1, A2, A3                    018824f0  AVG2.M1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0100111100 s=0
+AVG2 B1, B2, B3                    018824f2  AVG2.M2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0100111100 s=1
+AVG2 A4, B5, A6                    031494f0  AVG2.M1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0100111100 s=0
+AVG2 B4, A5, B6                    031494f2  AVG2.M2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0100111100 s=1
+BITC4 A1, A2                       0107c0f0  BITC4.M1      A1,A2                dst= 2 src2= 1 src1=30 x=0 sig=0000111100 s=0
+BITC4 B1, B2                       0107c0f2  BITC4.M2      B1,B2                dst= 2 src2= 1 src1=30 x=0 sig=0000111100 s=1
+BITC4 B4, A5                       0293d0f0  BITC4.M1X     B4,A5                dst= 5 src2= 4 src1=30 x=1 sig=0000111100 s=0
+BITR A1, A2                        0107e0f0  BITR.M1       A1,A2                dst= 2 src2= 1 src1=31 x=0 sig=0000111100 s=0
+BITR B1, B2                        0107e0f2  BITR.M2       B1,B2                dst= 2 src2= 1 src1=31 x=0 sig=0000111100 s=1
+BITR B4, A5                        0293f0f0  BITR.M1X      B4,A5                dst= 5 src2= 4 src1=31 x=1 sig=0000111100 s=0
+CMPEQ2 A1, A2, A3                  01882760  CMPEQ2.S1     A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0111011000 s=0
+CMPEQ2 B1, B2, B3                  01882762  CMPEQ2.S2     B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0111011000 s=1
+CMPEQ2 A4, B5, A6                  03149760  CMPEQ2.S1X    A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0111011000 s=0
+CMPEQ2 B4, A5, B6                  03149762  CMPEQ2.S2X    B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0111011000 s=1
+CMPEQ4 A1, A2, A3                  01882720  CMPEQ4.S1     A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0111001000 s=0
+CMPEQ4 B1, B2, B3                  01882722  CMPEQ4.S2     B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0111001000 s=1
+CMPEQ4 A4, B5, A6                  03149720  CMPEQ4.S1X    A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0111001000 s=0
+CMPEQ4 B4, A5, B6                  03149722  CMPEQ4.S2X    B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0111001000 s=1
+CMPGT2 A1, A2, A3                  01882520  CMPGT2.S1     A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0101001000 s=0
+CMPGT2 B1, B2, B3                  01882522  CMPGT2.S2     B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0101001000 s=1
+CMPGT2 A4, B5, A6                  03149520  CMPGT2.S1X    A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0101001000 s=0
+CMPGT2 B4, A5, B6                  03149522  CMPGT2.S2X    B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0101001000 s=1
+CMPGTU4 A1, A2, A3                 01882560  CMPGTU4.S1    A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0101011000 s=0
+CMPGTU4 B1, B2, B3                 01882562  CMPGTU4.S2    B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0101011000 s=1
+CMPGTU4 A4, B5, A6                 03149560  CMPGTU4.S1X   A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0101011000 s=0
+CMPGTU4 B4, A5, B6                 03149562  CMPGTU4.S2X   B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0101011000 s=1
+DEAL A1, A2                        0107a0f0  DEAL.M1       A1,A2                dst= 2 src2= 1 src1=29 x=0 sig=0000111100 s=0
+DEAL B1, B2                        0107a0f2  DEAL.M2       B1,B2                dst= 2 src2= 1 src1=29 x=0 sig=0000111100 s=1
+DEAL B4, A5                        0293b0f0  DEAL.M1X      B4,A5                dst= 5 src2= 4 src1=29 x=1 sig=0000111100 s=0
+DOTP2 A1, A2, A3                   01882330  DOTP2.M1      A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0011001100 s=0
+DOTP2 B1, B2, B3                   01882332  DOTP2.M2      B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0011001100 s=1
+DOTP2 A4, B5, A6                   03149330  DOTP2.M1X     A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0011001100 s=0
+DOTP2 B4, A5, B6                   03149332  DOTP2.M2X     B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0011001100 s=1
+MAX2 A1, A2, A3                    01882f70  MAX2.S1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1111011100 s=0
+MAX2 B1, B2, B3                    01882f72  MAX2.S2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1111011100 s=1
+MAX2 A4, B5, A6                    03149f70  MAX2.S1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1111011100 s=0
+MAX2 B4, A5, B6                    03149f72  MAX2.S2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1111011100 s=1
+MIN2 A1, A2, A3                    01882f30  MIN2.S1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1111001100 s=0
+MIN2 B1, B2, B3                    01882f32  MIN2.S2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1111001100 s=1
+MIN2 A4, B5, A6                    03149f30  MIN2.S1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1111001100 s=0
+MIN2 B4, A5, B6                    03149f32  MIN2.S2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1111001100 s=1
+MPY A1, 3, A3                      01846c00  MPY.M1        3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1100000000 s=0
+MPY B1, 3, B3                      01846c02  MPY.M2        3,B1,B3              dst= 3 src2= 1 src1= 3 x=0 sig=1100000000 s=1
+MPY A1, -3, A3                     0187ac00  MPY.M1        -3,A1,A3             dst= 3 src2= 1 src1=29 x=0 sig=1100000000 s=0
+MPY2 A1, A2, A5:A4                 02082030  MPY2.M1       A1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=0 sig=0000001100 s=0
+MPY2 B1, B2, B5:B4                 02082032  MPY2.M2       B1,B2,B5:B4          dst= 4 src2= 2 src1= 1 x=0 sig=0000001100 s=1
+MPY2 A1, B2, A5:A4                 02083030  MPY2.M1X      A1,B2,A5:A4          dst= 4 src2= 2 src1= 1 x=1 sig=0000001100 s=0
+MPYHI A1, A2, A5:A4                02082530  MPYHI.M1      A1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=0 sig=0101001100 s=0
+MPYHI B1, B2, B5:B4                02082532  MPYHI.M2      B1,B2,B5:B4          dst= 4 src2= 2 src1= 1 x=0 sig=0101001100 s=1
+MPYHI A1, B2, A5:A4                02083530  MPYHI.M1X     A1,B2,A5:A4          dst= 4 src2= 2 src1= 1 x=1 sig=0101001100 s=0
+MPYLI A1, A2, A5:A4                02082570  MPYLI.M1      A1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=0 sig=0101011100 s=0
+MPYLI B1, B2, B5:B4                02082572  MPYLI.M2      B1,B2,B5:B4          dst= 4 src2= 2 src1= 1 x=0 sig=0101011100 s=1
+MPYLI A1, B2, A5:A4                02083570  MPYLI.M1X     A1,B2,A5:A4          dst= 4 src2= 2 src1= 1 x=1 sig=0101011100 s=0
+MVD A1, A2                         010740f0  MVD.M1        A1,A2                dst= 2 src2= 1 src1=26 x=0 sig=0000111100 s=0
+MVD B1, B2                         010740f2  MVD.M2        B1,B2                dst= 2 src2= 1 src1=26 x=0 sig=0000111100 s=1
+MVD B4, A5                         029350f0  MVD.M1X       B4,A5                dst= 5 src2= 4 src1=26 x=1 sig=0000111100 s=0
+OR A1, 3, A3                       018468f0  OR.D1         3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1000111100 s=0
+OR B1, 3, B3                       018468f2  OR.D2         3,B1,B3              dst= 3 src2= 1 src1= 3 x=0 sig=1000111100 s=1
+OR A1, -3, A3                      0187a8f0  OR.D1         -3,A1,A3             dst= 3 src2= 1 src1=29 x=0 sig=1000111100 s=0
+PACK2 A1, A2, A3                   01882ff0  PACK2.S1      A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1111111100 s=0
+PACK2 B1, B2, B3                   01882ff2  PACK2.S2      B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1111111100 s=1
+PACK2 A4, B5, A6                   03149ff0  PACK2.S1X     A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1111111100 s=0
+PACK2 B4, A5, B6                   03149ff2  PACK2.S2X     B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1111111100 s=1
+RSQRSP A1, A2                      01040fa0  RSQRSP.S1     A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=1111101000 s=0
+RSQRSP B1, B2                      01040fa2  RSQRSP.S2     B1,B2                dst= 2 src2= 1 src1= 0 x=0 sig=1111101000 s=1
+RSQRSP B4, A5                      02901fa0  RSQRSP.S1X    B4,A5                dst= 5 src2= 4 src1= 0 x=1 sig=1111101000 s=0
+SADD A1, A2, A3                    01882820  SADD.S1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1000001000 s=0
+SADD B1, B2, B3                    01882822  SADD.S2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1000001000 s=1
+SADD A4, B5, A6                    03149820  SADD.S1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1000001000 s=0
+SADD B4, A5, B6                    03149822  SADD.S2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1000001000 s=1
+SHFL A1, A2                        010780f0  SHFL.M1       A1,A2                dst= 2 src2= 1 src1=28 x=0 sig=0000111100 s=0
+SHFL B1, B2                        010780f2  SHFL.M2       B1,B2                dst= 2 src2= 1 src1=28 x=0 sig=0000111100 s=1
+SHFL B4, A5                        029390f0  SHFL.M1X      B4,A5                dst= 5 src2= 4 src1=28 x=1 sig=0000111100 s=0
+SHLMB A1, A2, A3                   01882e70  SHLMB.S1      A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1110011100 s=0
+SHLMB B1, B2, B3                   01882e72  SHLMB.S2      B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1110011100 s=1
+SHLMB A4, B5, A6                   03149e70  SHLMB.S1X     A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1110011100 s=0
+SHLMB B4, A5, B6                   03149e72  SHLMB.S2X     B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1110011100 s=1
+SHRMB A1, A2, A3                   01882eb0  SHRMB.S1      A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1110101100 s=0
+SHRMB B1, B2, B3                   01882eb2  SHRMB.S2      B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1110101100 s=1
+SHRMB A4, B5, A6                   03149eb0  SHRMB.S1X     A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1110101100 s=0
+SHRMB B4, A5, B6                   03149eb2  SHRMB.S2X     B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1110101100 s=1
+SMPY A1, A2, A3                    01882d00  SMPY.M1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1101000000 s=0
+SMPY B1, B2, B3                    01882d02  SMPY.M2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1101000000 s=1
+SMPY A4, B5, A6                    03149d00  SMPY.M1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1101000000 s=0
+SMPY B4, A5, B6                    03149d02  SMPY.M2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1101000000 s=1
+SMPY2 A1, A2, A5:A4                02082070  SMPY2.M1      A1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=0 sig=0000011100 s=0
+SMPY2 B1, B2, B5:B4                02082072  SMPY2.M2      B1,B2,B5:B4          dst= 4 src2= 2 src1= 1 x=0 sig=0000011100 s=1
+SMPY2 A1, B2, A5:A4                02083070  SMPY2.M1X     A1,B2,A5:A4          dst= 4 src2= 2 src1= 1 x=1 sig=0000011100 s=0
+SPACK2 A1, A2, A3                  01882cb0  SPACK2.S1     A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1100101100 s=0
+SPACK2 B1, B2, B3                  01882cb2  SPACK2.S2     B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1100101100 s=1
+SPACK2 A4, B5, A6                  03149cb0  SPACK2.S1X    A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1100101100 s=0
+SPACK2 B4, A5, B6                  03149cb2  SPACK2.S2X    B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1100101100 s=1
+SSUB A1, A2, A3                    018821f8  SSUB.L1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=0001111110 s=0
+SSUB B1, B2, B3                    018821fa  SSUB.L2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=0001111110 s=1
+SSUB A4, B5, A6                    031491f8  SSUB.L1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=0001111110 s=0
+SSUB B4, A5, B6                    031491fa  SSUB.L2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=0001111110 s=1
+SUB2 A1, A2, A3                    01882970  SUB2.D1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011100 s=0
+SUB2 B1, B2, B3                    01882972  SUB2.D2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011100 s=1
+SUB2 A4, B5, A6                    03149970  SUB2.D1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011100 s=0
+SUB2 B4, A5, B6                    03149972  SUB2.D2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011100 s=1
+SUB4 A1, A2, A3                    01882cd8  SUB4.L1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1100110110 s=0
+SUB4 B1, B2, B3                    01882cda  SUB4.L2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1100110110 s=1
+SUB4 A4, B5, A6                    03149cd8  SUB4.L1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1100110110 s=0
+SUB4 B4, A5, B6                    03149cda  SUB4.L2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1100110110 s=1
+SUBAB A1, 3, A3                    018479c0  SUBAB.D1      A1,0x3,A3            dst= 3 src2= 1 src1= 3 x=1 sig=1001110000 s=0
+SUBAB B1, 3, B3                    018479c2  SUBAB.D2      B1,0x3,B3            dst= 3 src2= 1 src1= 3 x=1 sig=1001110000 s=1
+SUBAB A1, -3, A3                   REFUSED
+SUBAB A1, A2, A3                   018458c0  SUBAB.D1      A1,A2,A3             dst= 3 src2= 1 src1= 2 x=1 sig=1000110000 s=0
+SUBAB B1, B2, B3                   018458c2  SUBAB.D2      B1,B2,B3             dst= 3 src2= 1 src1= 2 x=1 sig=1000110000 s=1
+SUBAB A4, B5, A6                   REFUSED
+SUBAB B4, A5, B6                   REFUSED
+SUBAH A1, 3, A3                    01847bc0  SUBAH.D1      A1,0x3,A3            dst= 3 src2= 1 src1= 3 x=1 sig=1011110000 s=0
+SUBAH B1, 3, B3                    01847bc2  SUBAH.D2      B1,0x3,B3            dst= 3 src2= 1 src1= 3 x=1 sig=1011110000 s=1
+SUBAH A1, -3, A3                   REFUSED
+SUBAH A1, A2, A3                   01845ac0  SUBAH.D1      A1,A2,A3             dst= 3 src2= 1 src1= 2 x=1 sig=1010110000 s=0
+SUBAH B1, B2, B3                   01845ac2  SUBAH.D2      B1,B2,B3             dst= 3 src2= 1 src1= 2 x=1 sig=1010110000 s=1
+SUBAH A4, B5, A6                   REFUSED
+SUBAH B4, A5, B6                   REFUSED
+SUBC A1, A2, A3                    01882978  SUBC.L1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011110 s=0
+SUBC B1, B2, B3                    0188297a  SUBC.L2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011110 s=1
+SUBC A4, B5, A6                    03149978  SUBC.L1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011110 s=0
+SUBC B4, A5, B6                    0314997a  SUBC.L2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011110 s=1
+SWAP4 A1, A2                       01042358  SWAP4.L1      A1,A2                dst= 2 src2= 1 src1= 1 x=0 sig=0011010110 s=0
+SWAP4 B1, B2                       0104235a  SWAP4.L2      B1,B2                dst= 2 src2= 1 src1= 1 x=0 sig=0011010110 s=1
+SWAP4 B4, A5                       02903358  SWAP4.L1X     B4,A5                dst= 5 src2= 4 src1= 1 x=1 sig=0011010110 s=0
+UNPKHU4 A1, A2                     01046358  UNPKHU4.L1    A1,A2                dst= 2 src2= 1 src1= 3 x=0 sig=0011010110 s=0
+UNPKHU4 B1, B2                     0104635a  UNPKHU4.L2    B1,B2                dst= 2 src2= 1 src1= 3 x=0 sig=0011010110 s=1
+UNPKHU4 B4, A5                     02907358  UNPKHU4.L1X   B4,A5                dst= 5 src2= 4 src1= 3 x=1 sig=0011010110 s=0
+UNPKLU4 A1, A2                     01044358  UNPKLU4.L1    A1,A2                dst= 2 src2= 1 src1= 2 x=0 sig=0011010110 s=0
+UNPKLU4 B1, B2                     0104435a  UNPKLU4.L2    B1,B2                dst= 2 src2= 1 src1= 2 x=0 sig=0011010110 s=1
+UNPKLU4 B4, A5                     02905358  UNPKLU4.L1X   B4,A5                dst= 5 src2= 4 src1= 2 x=1 sig=0011010110 s=0
+XOR A1, 3, A3                      01846bf0  XOR.D1        3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1011111100 s=0
+XOR B1, 3, B3                      01846bf2  XOR.D2        3,B1,B3              dst= 3 src2= 1 src1= 3 x=0 sig=1011111100 s=1
+XOR A1, -3, A3                     0187abf0  XOR.D1        -3,A1,A3             dst= 3 src2= 1 src1=29 x=0 sig=1011111100 s=0
+XPND2 A1, A2                       010720f0  XPND2.M1      A1,A2                dst= 2 src2= 1 src1=25 x=0 sig=0000111100 s=0
+XPND2 B1, B2                       010720f2  XPND2.M2      B1,B2                dst= 2 src2= 1 src1=25 x=0 sig=0000111100 s=1
+XPND2 B4, A5                       029330f0  XPND2.M1X     B4,A5                dst= 5 src2= 4 src1=25 x=1 sig=0000111100 s=0
+XPND4 A1, A2                       010700f0  XPND4.M1      A1,A2                dst= 2 src2= 1 src1=24 x=0 sig=0000111100 s=0
+XPND4 B1, B2                       010700f2  XPND4.M2      B1,B2                dst= 2 src2= 1 src1=24 x=0 sig=0000111100 s=1
+XPND4 B4, A5                       029310f0  XPND4.M1X     B4,A5                dst= 5 src2= 4 src1=24 x=1 sig=0000111100 s=0
+MPY 3, A1, A3                      01846c00  MPY.M1        3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1100000000 s=0
+LMBD 3, A1, A3 (asm6x warns and then emits every later instruction one slot late - its bug, kept out) REFUSED
+AND 3, A1, A3                      018469f0  AND.D1        3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1001111100 s=0
+OR 3, A1, A3                       018468f0  OR.D1         3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=1000111100 s=0
+CMPGTU 3, A1, A3                   018469d8  CMPGTU.L1     0x3,A1,A3            dst= 3 src2= 1 src1= 3 x=0 sig=1001110110 s=0
+CMPLTU 3, A1, A3                   01846bd8  CMPLTU.L1     0x3,A1,A3            dst= 3 src2= 1 src1= 3 x=0 sig=1011110110 s=0
+SADD A1, 3, A3                     01846258  SADD.L1       3,A1,A3              dst= 3 src2= 1 src1= 3 x=0 sig=0010010110 s=0
+SADD B1, 3, B3                     0184625a  SADD.L2       3,B1,B3              dst= 3 src2= 1 src1= 3 x=0 sig=0010010110 s=1
+SADD A1, -3, A3                    0187a258  SADD.L1       -3,A1,A3             dst= 3 src2= 1 src1=29 x=0 sig=0010010110 s=0
+SUBC A1, A2, A3                    01882978  SUBC.L1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011110 s=0
+SUBC B1, B2, B3                    0188297a  SUBC.L2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1001011110 s=1
+SUBC A4, B5, A6                    03149978  SUBC.L1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011110 s=0
+SUBC B4, A5, B6                    0314997a  SUBC.L2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1001011110 s=1
+MAX2 A1, A2, A3                    01882f70  MAX2.S1       A1,A2,A3             dst= 3 src2= 2 src1= 1 x=0 sig=1111011100 s=0
+MAX2 B1, B2, B3                    01882f72  MAX2.S2       B1,B2,B3             dst= 3 src2= 2 src1= 1 x=0 sig=1111011100 s=1
+MAX2 A4, B5, A6                    03149f70  MAX2.S1X      A4,B5,A6             dst= 6 src2= 5 src1= 4 x=1 sig=1111011100 s=0
+MAX2 B4, A5, B6                    03149f72  MAX2.S2X      B4,A5,B6             dst= 6 src2= 5 src1= 4 x=1 sig=1111011100 s=1
+CMPGTU 31, A1, A3                  0187e9d8  CMPGTU.L1     0x1f,A1,A3           dst= 3 src2= 1 src1=31 x=0 sig=1001110110 s=0
+CMPLTU 20, A1, A3                  01868bd8  CMPLTU.L1     0x14,A1,A3           dst= 3 src2= 1 src1=20 x=0 sig=1011110110 s=0
+CMPGTU A1, 20, A3                  01868bd8  CMPLTU.L1     0x14,A1,A3           dst= 3 src2= 1 src1=20 x=0 sig=1011110110 s=0
+AND A1, 5, A2                      0104a9f0  AND.D1        5,A1,A2              dst= 2 src2= 1 src1= 5 x=0 sig=1001111100 s=0
+OR A1, 5, A2                       0104a8f0  OR.D1         5,A1,A2              dst= 2 src2= 1 src1= 5 x=0 sig=1000111100 s=0
+XOR A1, 5, A2                      0104abf0  XOR.D1        5,A1,A2              dst= 2 src2= 1 src1= 5 x=0 sig=1011111100 s=0
+MPY 5, A1, A2                      0104ac00  MPY.M1        5,A1,A2              dst= 2 src2= 1 src1= 5 x=0 sig=1100000000 s=0
+MPY A1, 5, A2                      0104ac00  MPY.M1        5,A1,A2              dst= 2 src2= 1 src1= 5 x=0 sig=1100000000 s=0
+MPY -16, A1, A2                    01060c00  MPY.M1        -16,A1,A2            dst= 2 src2= 1 src1=16 x=0 sig=1100000000 s=0
+LMBD 1, A1, A2 (asm6x warns and then emits every later instruction one slot late - its bug, kept out) REFUSED
+ADD 3, B1, A2                      01047af0  ADD.D1X       3,B1,A2              dst= 2 src2= 1 src1= 3 x=1 sig=1010111100 s=0
+ADD B1, 3, A2                      01047af0  ADD.D1X       3,B1,A2              dst= 2 src2= 1 src1= 3 x=1 sig=1010111100 s=0
+ADD B1, -4, A2                     01079af0  SUB.D1X       B1,0x4,A2            dst= 2 src2= 1 src1=28 x=1 sig=1010111100 s=0
+SUB B1, 3, A2                      0107baf0  SUB.D1X       B1,0x3,A2            dst= 2 src2= 1 src1=29 x=1 sig=1010111100 s=0
+SHL B1, 3, A2                      01047ca0  SHL.S1X       B1,0x3,A2            dst= 2 src2= 1 src1= 3 x=1 sig=1100101000 s=0
+SHR B1, 3, A2                      01047da0  SHR.S1X       B1,0x3,A2            dst= 2 src2= 1 src1= 3 x=1 sig=1101101000 s=0
+SHRU B1, 3, A2                     010479a0  SHRU.S1X      B1,0x3,A2            dst= 2 src2= 1 src1= 3 x=1 sig=1001101000 s=0
+ADD -3, A1, A2                     0107aaf0  SUB.D1        A1,0x3,A2            dst= 2 src2= 1 src1=29 x=0 sig=1010111100 s=0
+ADD -17, A1, A2                    010629c0  SUB.D1        A1,0x11,A2           dst= 2 src2= 1 src1=17 x=0 sig=1001110000 s=0
+ADD A1, -17, A2                    010629c0  SUB.D1        A1,0x11,A2           dst= 2 src2= 1 src1=17 x=0 sig=1001110000 s=0
+ADD A1, -31, A2                    0107e9c0  SUB.D1        A1,0x1f,A2           dst= 2 src2= 1 src1=31 x=0 sig=1001110000 s=0
+SUB A1, -31, A2                    0107e940  ADD.D1        A1,0x1f,A2           dst= 2 src2= 1 src1=31 x=0 sig=1001010000 s=0
+ADD A1, -32, A2                    REFUSED
+ADDAW B15, 100, B3                 118064fe  ADDAW.D2      B15,100,B3           dst= 3 src2= 0 src1= 3 x=0 sig=0100111111 s=1
+ADDAB B14, 1000, B3                1183e83e  ADDAB.D2      B14,1000,B3          dst= 3 src2= 0 src1=31 x=0 sig=1000001111 s=1
+ADDAH B15, 32767, B3               11ffffde  ADDAH.D2      B15,32767,B3         dst= 3 src2=31 src1=31 x=1 sig=1111110111 s=1
+ADDAW B15, 32, B3                  118020fe  ADDAW.D2      B15,32,B3            dst= 3 src2= 0 src1= 1 x=0 sig=0000111111 s=1
+ADDAB B15, 32, A3                  118020bc  ADDAB.D1X     B15,32,A3            dst= 3 src2= 0 src1= 1 x=0 sig=0000101111 s=0
+ADDAW B14, 5, B3                   1180057e  ADDAW.D2      B14,5,B3             dst= 3 src2= 0 src1= 0 x=0 sig=0101011111 s=1
+ADDU A1:A0, A2, A5:A4              02004538  ADDU.L1       A2,A1:A0,A5:A4       dst= 4 src2= 0 src1= 2 x=0 sig=0101001110 s=0
+ADD A1:A0, A2, A5:A4               02004438  ADD.L1        A2,A1:A0,A5:A4       dst= 4 src2= 0 src1= 2 x=0 sig=0100001110 s=0
+ADD B1, A2, A5:A4                  02045478  ADD.L1X       A2,B1,A5:A4          dst= 4 src2= 1 src1= 2 x=1 sig=0100011110 s=0
+SUB B1, A2, A5:A4                  020836f8  SUB.L1X       B1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=1 sig=0110111110 s=0
+NORM A5:A4, A2                     01100c18  NORM.L1       A5:A4,A2             dst= 2 src2= 4 src1= 0 x=0 sig=1100000110 s=0
+SUB A1:A0, A2, A5:A4               REFUSED
+SUBU A1:A0, A2, A5:A4              REFUSED
+BNOP fwd                           004f0120  BNOP.S1       fwd (PC+316 = 0x0000047c),0 dst= 0 src2=19 src1=24 x=0 sig=0001001000 s=0
+BNOP fwd, 6                        004fc120  BNOP.S1       fwd (PC+316 = 0x0000047c),6 dst= 0 src2=19 src1=30 x=0 sig=0001001000 s=0
+BNOP fwd, 7                        004fe120  BNOP.S1       fwd (PC+316 = 0x0000047c),7 dst= 0 src2=19 src1=31 x=0 sig=0001001000 s=0
+BNOP B3, 7                         008ce362  BNOP.S2       B3,7                 dst= 1 src2= 3 src1= 7 x=0 sig=0011011000 s=1
+MVK sym, A0                        00000028  MVK.S1        0x0000,A0            dst= 0 src2= 0 src1= 0 x=0 sig=0000001010 s=0
+MVKL sym, B1                       0080002a  MVK.S2        0x0000,B1            dst= 1 src2= 0 src1= 0 x=0 sig=0000001010 s=1
+LDW *+A4[A5], A6                   0310aa64  LDW.D1T1      *+A4[A5],A6          dst= 6 src2= 4 src1= 5 x=0 sig=1010011001 s=0
+LDW *-A4[A5], A6                   0310a864  LDW.D1T1      *-A4[A5],A6          dst= 6 src2= 4 src1= 5 x=0 sig=1000011001 s=0
+LDW *++A4[A5], A6                  0310ba64  LDW.D1T1      *++A4[A5],A6         dst= 6 src2= 4 src1= 5 x=1 sig=1010011001 s=0
+LDW *A4++[A5], A6                  0310be64  LDW.D1T1      *A4++[A5],A6         dst= 6 src2= 4 src1= 5 x=1 sig=1110011001 s=0
+STW A6, *+B4[B5]                   0310aaf4  STW.D2T1      A6,*+B4[B5]          dst= 6 src2= 4 src1= 5 x=0 sig=1010111101 s=0
+LDB *+A4[A5], A6                   0310aa24  LDB.D1T1      *+A4[A5],A6          dst= 6 src2= 4 src1= 5 x=0 sig=1010001001 s=0
+LDDW *+A4[A5], A7:A6               0310ab64  LDDW.D1T1     *+A4[A5],A7:A6       dst= 6 src2= 4 src1= 5 x=0 sig=1011011001 s=0
+LDW *+B15(-4), A2                  013c20e4  LDW.D2T1      *-B15[1],A2          dst= 2 src2=15 src1= 1 x=0 sig=0000111001 s=0
+LDW *-B15(-4), A2                  013c22e4  LDW.D2T1      *+B15[1],A2          dst= 2 src2=15 src1= 1 x=0 sig=0010111001 s=0
+LDW *+A4[2], A6                    03104264  LDW.D1T1      *+A4[2],A6           dst= 6 src2= 4 src1= 2 x=0 sig=0010011001 s=0
+LDW *-A4[2], A6                    03104064  LDW.D1T1      *-A4[2],A6           dst= 6 src2= 4 src1= 2 x=0 sig=0000011001 s=0
+LDW *A4++, A6                      03103664  LDW.D1T1      *A4++[1],A6          dst= 6 src2= 4 src1= 1 x=1 sig=0110011001 s=0
+LDW *A4--, A6                      03103464  LDW.D1T1      *A4--[1],A6          dst= 6 src2= 4 src1= 1 x=1 sig=0100011001 s=0
+LDW *++A4, A6                      03103264  LDW.D1T1      *++A4[1],A6          dst= 6 src2= 4 src1= 1 x=1 sig=0010011001 s=0
+LDW *--A4, A6                      03103064  LDW.D1T1      *--A4[1],A6          dst= 6 src2= 4 src1= 1 x=1 sig=0000011001 s=0
+LDW *A4++(8), A6                   03105664  LDW.D1T1      *A4++[2],A6          dst= 6 src2= 4 src1= 2 x=1 sig=0110011001 s=0
+STW A6, *A4++                      03103674  STW.D1T1      A6,*A4++[1]          dst= 6 src2= 4 src1= 1 x=1 sig=0110011101 s=0
+LDW *+A4(8), A6                    03104264  LDW.D1T1      *+A4[2],A6           dst= 6 src2= 4 src1= 2 x=0 sig=0010011001 s=0
+MPY32 A1, A2, A5:A4                02082a00  MPY32.M1      A1,A2,A5:A4          dst= 4 src2= 2 src1= 1 x=0 sig=1010000000 s=0
+B .S1 fwd                          00001b90  B.S1          fwd (PC+220 = 0x0000047c) dst= 0 src2= 0 src1= 0 x=1 sig=1011100100 s=0
+CALLP fwd, A3                      10001b90  CALLP.S1      fwd (PC+220 = 0x0000047c),A3 dst= 0 src2= 0 src1= 0 x=1 sig=1011100100 s=0
+CALLP .S1 fwd, A3                  10001b90  CALLP.S1      fwd (PC+220 = 0x0000047c),A3 dst= 0 src2= 0 src1= 0 x=1 sig=1011100100 s=0
+CALLP .S2 fwd, B3                  10001b92  CALLP.S2      fwd (PC+220 = 0x0000047c),B3 dst= 0 src2= 0 src1= 0 x=1 sig=1011100100 s=1
+ZERO .L1 A1                        0080a358  MVK.L1        0,A1                 dst= 1 src2= 0 src1= 5 x=0 sig=0011010110 s=0
+ZERO .S1 A1                        00800028  MVK.S1        0x0000,A1            dst= 1 src2= 0 src1= 0 x=0 sig=0000001010 s=0
+ZERO .D1 A1                        00800040  MVK.D1        0,A1                 dst= 1 src2= 0 src1= 0 x=0 sig=0000010000 s=0
+ZERO .L2 B5:B4                     020004fa  ZERO.L2       B5:B4                dst= 4 src2= 0 src1= 0 x=0 sig=0100111110 s=1
+ZERO .S1 A5:A4                     REFUSED
+MVK .L1 5, A1                      0094a358  MVK.L1        5,A1                 dst= 1 src2= 5 src1= 5 x=0 sig=0011010110 s=0
+MVK .S1 5, A1                      008002a8  MVK.S1        0x0005,A1            dst= 1 src2= 0 src1= 0 x=0 sig=0010101010 s=0
+MVK .L1 100, A1                    REFUSED
+MVK .S2 -16, B1                    00fff82a  MVK.S2        0xfffffff0,B1        dst= 1 src2=31 src1=31 x=1 sig=1000001010 s=1
+MVKL .S1 5, A1                     008002a8  MVK.S1        0x0005,A1            dst= 1 src2= 0 src1= 0 x=0 sig=0010101010 s=0
+MVKH .S2 5, B1                     0080006a  MVKH.S2       0x0000,B1            dst= 1 src2= 0 src1= 0 x=0 sig=0000011010 s=1
+MV .L1 A1, A2                      01040fd8  MV.L1         A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=1111110110 s=0
+MV .S1 A1, A2                      010406a0  MV.S1         A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=0110101000 s=0
+MV .D1 A1, A2                      010408f0  MV.D1         A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=1000111100 s=0
+MV .L1X B1, A2                     01041fd8  MV.L1X        B1,A2                dst= 2 src2= 1 src1= 0 x=1 sig=1111110110 s=0
+MV .S2X A1, B2                     010416a2  MV.S2X        A1,B2                dst= 2 src2= 1 src1= 0 x=1 sig=0110101000 s=1
+MV .D2X A1, B2                     010418f2  MV.D2X        A1,B2                dst= 2 src2= 1 src1= 0 x=1 sig=1000111100 s=1
+NEG .L1 A1, A2                     010400d8  NEG.L1        A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=0000110110 s=0
+NEG .S1 A1, A2                     010405a0  NEG.S1        A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=0101101000 s=0
+NOT .L1 A1, A2                     0107edd8  NOT.L1        A1,A2                dst= 2 src2= 1 src1=31 x=0 sig=1101110110 s=0
+NOT .S1 A1, A2                     0107e2a0  NOT.S1        A1,A2                dst= 2 src2= 1 src1=31 x=0 sig=0010101000 s=0
+NOT .D1 A1, A2                     0107ebf0  NOT.D1        A1,A2                dst= 2 src2= 1 src1=31 x=0 sig=1011111100 s=0
+ABS .L1 A1, A2                     01040358  ABS.L1        A1,A2                dst= 2 src2= 1 src1= 0 x=0 sig=0011010110 s=0
+EXT .S1 A1, 3, 7, A3               01846748  EXT.S1        A1,3,7,A3            dst= 3 src2= 1 src1= 3 x=0 sig=0111010010 s=0
+EXTU .S2 B1, 3, 7, B3              0184670a  EXTU.S2       B1,3,7,B3            dst= 3 src2= 1 src1= 3 x=0 sig=0111000010 s=1
+SET .S1X B1, 3, 7, A3              REFUSED
+CLR .S1 A1, A2, A3                 01844fe0  CLR.S1        A1,A2,A3             dst= 3 src2= 1 src1= 2 x=0 sig=1111111000 s=0
+LDW .D1T2 *A4, B6                  03100266  LDW.D1T2      *+A4[0],B6           dst= 6 src2= 4 src1= 0 x=0 sig=0010011001 s=1
+LDW .D2T1 *B4, A6                  031002e4  LDW.D2T1      *+B4[0],A6           dst= 6 src2= 4 src1= 0 x=0 sig=0010111001 s=0
+STW .D1T2 B6, *A4                  03100276  STW.D1T2      B6,*+A4[0]           dst= 6 src2= 4 src1= 0 x=0 sig=0010011101 s=1
+STDW .D2T1 A7:A6, *B4              031003c4  STDW.D2T1     A7:A6,*+B4[0]        dst= 6 src2= 4 src1= 0 x=0 sig=0011110001 s=0
+LDDW .D1T1 *A4, A7:A6              03100364  LDDW.D1T1     *+A4[0],A7:A6        dst= 6 src2= 4 src1= 0 x=0 sig=0011011001 s=0
+LDNDW .D1T1 *A4, A7:A6             03900324  LDNDW.D1T1    *+A4[0],A7:A6        dst= 7 src2= 4 src1= 0 x=0 sig=0011001001 s=0
+STNDW .D1T1 A7:A6, *A4             03900374  STNDW.D1T1    A7:A6,*+A4[0]        dst= 7 src2= 4 src1= 0 x=0 sig=0011011101 s=0
+LDW .D2 *B4, A6                    031002e4  LDW.D2T1      *+B4[0],A6           dst= 6 src2= 4 src1= 0 x=0 sig=0010111001 s=0
+LDW .D1 *A4, B6                    03100266  LDW.D1T2      *+A4[0],B6           dst= 6 src2= 4 src1= 0 x=0 sig=0010011001 s=1
+MVC .S2 B1, ILC                    068403a2  MVC.S2        B1,ILC               dst=13 src2= 1 src1= 0 x=0 sig=0011101000 s=1
+MVC .S2X A1, ILC                   068413a2  MVC.S2X       A1,ILC               dst=13 src2= 1 src1= 0 x=1 sig=0011101000 s=1
+MVC .S2 ILC, B1                    00b403e2  MVC.S2        ILC,B1               dst= 1 src2=13 src1= 0 x=0 sig=0011111000 s=1
+B .S2 B3                           000c0362  B.S2          B3                   dst= 0 src2= 3 src1= 0 x=0 sig=0011011000 s=1
+B .S2X A3                          000c1362  B.S2X         A3                   dst= 0 src2= 3 src1= 0 x=1 sig=0011011000 s=1
+B .S1 B3                           REFUSED
+BNOP .S1 fwd, 2                    000f4120  BNOP.S1       fwd (PC+60 = 0x0000047c),2 dst= 0 src2= 3 src1=26 x=0 sig=0001001000 s=0
+BNOP .S2 B3, 2                     008c4362  BNOP.S2       B3,2                 dst= 1 src2= 3 src1= 2 x=0 sig=0011011000 s=1
+RET .S2 B3                         000c0362  B.S2          B3                   dst= 0 src2= 3 src1= 0 x=0 sig=0011011000 s=1
+RETNOP .S2 B3, 4                   008c8362  BNOP.S2       B3,4                 dst= 1 src2= 3 src1= 4 x=0 sig=0011011000 s=1
+NOP 9                              00010000  NOP           9                    dst= 0 src2= 0 src1= 8 x=0 sig=0000000000 s=0
+NOP 1                              00000000  NOP                                dst= 0 src2= 0 src1= 0 x=0 sig=0000000000 s=0
+SWE                                10000000  SWE                                dst= 0 src2= 0 src1= 0 x=0 sig=0000000000 s=0
+IDLE                               0001e000  IDLE                               dst= 0 src2= 0 src1=15 x=0 sig=0000000000 s=0

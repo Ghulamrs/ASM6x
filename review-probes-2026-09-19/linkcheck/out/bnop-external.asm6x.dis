@@ -1,0 +1,24 @@
+
+Disassembly of bnop-external.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            main:
+00000000   00006120           BNOP.S1        (PC+0 = 0x00000000),3
+00000004   00000000           NOP           
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           
+
+TEXT Section .text:far (Little Endian), 0x20 bytes at 0x0 
+00000000   00000000           NOP           
+00000004   00000000           NOP           
+00000008            far:
+00000008   00004120           BNOP.S1        (PC+0 = 0x00000000),2
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

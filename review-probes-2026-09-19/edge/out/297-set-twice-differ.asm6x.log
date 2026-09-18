@@ -1,0 +1,9 @@
+"297-set-twice-differ.s", ERROR!   at line 2: [E0300] Redefinition of K
+                                                      attempted
+	K	.set 6
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

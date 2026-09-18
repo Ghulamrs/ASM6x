@@ -1,0 +1,2 @@
+	.sect ".TEXT"
+	NOP

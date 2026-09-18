@@ -1,0 +1,5 @@
+
+Disassembly of 329-space-zero.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x1 bytes at 0x0 
+00000000         01           .word 0x00000001

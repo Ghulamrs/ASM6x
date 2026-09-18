@@ -1,0 +1,14 @@
+
+Disassembly of 163-par-mv-ldw.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   010406a1           MV.S1         A1,A2
+00000004   02900264 ||        LDW.D1T1      *+A4[0],A5
+00000008            fwd:
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

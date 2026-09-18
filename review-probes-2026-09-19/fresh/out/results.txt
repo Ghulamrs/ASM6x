@@ -1,0 +1,8 @@
+bigframe
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical
+shapes
+  asm6x: accepted
+  ASM6x: accepted
+  tables: identical

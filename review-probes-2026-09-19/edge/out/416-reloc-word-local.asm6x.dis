@@ -1,0 +1,9 @@
+
+Disassembly of 416-reloc-word-local.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x10 bytes at 0x0 
+00000000            l:
+00000000   00000001           .word 0x00000001
+00000004   00000000           .word 0x00000000
+00000008   00000004           .word 0x00000004
+0000000c   fffffffc           .word 0xfffffffc

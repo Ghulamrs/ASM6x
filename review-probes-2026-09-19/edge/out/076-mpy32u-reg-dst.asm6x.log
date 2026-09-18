@@ -1,0 +1,8 @@
+"076-mpy32u-reg-dst.s", ERROR!   at line 4: [E0800] Illegal operand combination
+		MPY32U A1, A2, A3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

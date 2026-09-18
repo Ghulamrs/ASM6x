@@ -1,0 +1,4 @@
+"align-2p31.s", WARNING! at line 3: [W0001] Power of 2 required, 1 assumed
+		.align 0x80000000
+
+No Assembly Errors, 1 Assembly Warning

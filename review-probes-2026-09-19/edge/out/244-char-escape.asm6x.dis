@@ -1,0 +1,5 @@
+
+Disassembly of 244-char-escape.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x1 bytes at 0x0 
+00000000         5c           .word 0x0000005c

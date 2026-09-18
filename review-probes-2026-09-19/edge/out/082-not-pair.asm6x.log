@@ -1,0 +1,8 @@
+"082-not-pair.s", ERROR!   at line 4: [E0800] Illegal operand combination
+		NOT A5:A4, A7:A6
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

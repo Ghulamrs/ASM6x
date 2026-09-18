@@ -1,0 +1,6 @@
+
+Disassembly of 242-string-high-byte.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   6666785c           .word 0x6666785c
+00000004   3737335c           .word 0x3737335c

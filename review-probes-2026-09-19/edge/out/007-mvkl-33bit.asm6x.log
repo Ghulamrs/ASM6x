@@ -1,0 +1,5 @@
+"007-mvkl-33bit.s", WARNING! at line 4: [W0001] Constant value out of range,
+                                                will be truncated to 32 bits
+		MVKL 0x123456789, A0
+
+No Assembly Errors, 1 Assembly Warning

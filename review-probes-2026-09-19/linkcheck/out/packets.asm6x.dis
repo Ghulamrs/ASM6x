@@ -1,0 +1,13 @@
+
+Disassembly of packets.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            main:
+00000000   01844841           ADD.D1        A1,A2,A3
+00000004   031487e0 ||        AND.S1        A4,A5,A6
+00000008   018832f9           SUB.L1X       B1,A2,A3
+0000000c   0310ace0 ||        SHL.S1        A4,A5,A6
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

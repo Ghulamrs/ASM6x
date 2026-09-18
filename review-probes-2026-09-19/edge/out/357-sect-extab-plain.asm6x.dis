@@ -1,0 +1,5 @@
+
+Disassembly of 357-sect-extab-plain.asm6x.obj:
+
+DATA Section .c6xabi.extab (Little Endian), 0x4 bytes at 0x0 
+00000000   00000001           .word 0x00000001

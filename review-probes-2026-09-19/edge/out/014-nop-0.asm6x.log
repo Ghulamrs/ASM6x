@@ -1,0 +1,8 @@
+"014-nop-0.s", ERROR!   at line 4: [W0000] NOP count of zero is meaningless
+		NOP 0
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

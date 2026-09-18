@@ -1,0 +1,6 @@
+	.ref ext
+	.text
+back:
+	LDW *+A4[A5], A6
+fwd:
+	NOP

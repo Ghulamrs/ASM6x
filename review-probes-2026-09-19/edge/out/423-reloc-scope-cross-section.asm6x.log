@@ -1,0 +1,44 @@
+"423-reloc-scope-cross-section.s", WARNING! at line 8: [W1500] warning: 
+                                                               relocation
+                                                               template 275 not
+                                                               found; returning
+                                                               OFR_INVALID
+		.word $EXTAB_SCOPE(g)-$EXTAB_SCOPE(f)
+
+"423-reloc-scope-cross-section.s", WARNING! at line 8: [W1500] warning: 
+                                                               relocation
+                                                               template 275 not
+                                                               found; returning
+                                                               OFR_INVALID
+		.word $EXTAB_SCOPE(g)-$EXTAB_SCOPE(f)
+
+"423-reloc-scope-cross-section.s", WARNING! at line 8: [W1500] warning: 
+                                                               relocation
+                                                               template 259 not
+                                                               found; returning
+                                                               OFR_INVALID
+		.word $EXTAB_SCOPE(g)-$EXTAB_SCOPE(f)
+
+"423-reloc-scope-cross-section.s", ERROR!   at line 8: [E0200] Unable to resolve
+                                                               this relocatable
+                                                               expression;
+                                                               relocation
+                                                               support for
+                                                               arbitrary
+                                                               expressions is
+                                                               not available in
+                                                               the C6000 EABI
+		.word $EXTAB_SCOPE(g)-$EXTAB_SCOPE(f)
+
+"423-reloc-scope-cross-section.s", WARNING! at line 8: [W1500] warning: 
+                                                               relocation
+                                                               template 280 not
+                                                               found; returning
+                                                               OFR_INVALID
+		.word $EXTAB_SCOPE(g)-$EXTAB_SCOPE(f)
+
+1 Assembly Error, 4 Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

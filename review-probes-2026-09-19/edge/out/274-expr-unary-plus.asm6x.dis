@@ -1,0 +1,6 @@
+
+Disassembly of 274-expr-unary-plus.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   00000005           .word 0x00000005
+00000004   00000005           .word 0x00000005

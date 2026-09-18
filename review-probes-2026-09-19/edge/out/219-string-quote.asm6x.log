@@ -1,0 +1,13 @@
+"219-string-quote.s", ERROR!   at line 2: [E0003] Cluttered string constant
+                                                  operand encountered
+		.string "q\"q"
+
+"219-string-quote.s", ERROR!   at line 2: [E0000] Missing right quote of string
+                                                  constant
+		.string "q\"q"
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

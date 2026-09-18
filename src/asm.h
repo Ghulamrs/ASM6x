@@ -8,6 +8,7 @@
 
    C-style ISO C++14, one thread per input file, no mutable globals. */
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -22,12 +23,14 @@ struct Token {
 /* the C6000 EABI relocation types, numbered as the ABI numbers them */
 enum RelKind {
     R_NONE = 0, R_ABS32 = 1, R_ABS16 = 2, R_ABS8 = 3, R_PCR_S21 = 4, R_PCR_S12 = 5, R_PCR_S10 = 6,
-    R_PCR_S7 = 7, R_ABS_S16 = 8, R_ABS_L16 = 9, R_ABS_H16 = 10, R_PREL31 = 25
+    R_PCR_S7 = 7, R_ABS_S16 = 8, R_ABS_L16 = 9, R_ABS_H16 = 10, R_PREL31 = 25, R_EHTYPE = 28,
+    R_NOCMP = 255       /* asm6x's marker on the last data word a code section ends with */
 };
 
 struct Reloc {
     unsigned long offset;
-    int symbol;
+    int symbol;         /* a symbol, or -1 with section below: against that section's own symbol */
+    int section;
     RelKind kind;
     long long addend;   /* written as a RELA entry for the kinds asm6x writes that way, else in place */
     unsigned long order;    /* its place in the source, by which asm6x orders the relocation sections */
@@ -35,13 +38,16 @@ struct Reloc {
 
 struct Section {
     std::string name;
-    bool code;          /* .text and what .sect names with .text: instructions go here */
+    bool code;          /* executable: asm6x's rule is the content, not the name - an instruction
+                           makes any section code, and .text starts so */
+    bool hasCode;       /* an instruction landed: 32-aligned and padded to 32 */
     bool bss;           /* .bss / .usect: size only */
-    bool readonly;      /* no SHF_WRITE: .const, .rodata, .switch, the exidx and extab tables */
+    bool writable;      /* .data, .bss, .usect, and a .sect with RW */
     bool alloc;         /* loaded: every section the compilers write is */
     int kind;           /* SEC_PROGBITS, SEC_NOBITS, SEC_UNWIND */
     int align;
-    int linked;         /* an exidx table: the code section it describes, for sh_link */
+    bool dataLast;      /* the last thing emitted was data, for the NOCMP marker */
+    unsigned long dataEnd;
     std::vector<unsigned char> bytes;
     std::vector<Reloc> relocs;
 };
@@ -64,16 +70,23 @@ struct Symbol {
     int prev_section;   /* where the previous pass put it: the layout has settled when nothing moved */
     long long prev_value;
     bool referenced;    /* named in an expression, a .global or a .ref */
-    long long size;     /* a .bss symbol's, as asm6x records it; 0 otherwise */
+    long long size;     /* a .bss or .usect symbol's, as asm6x records it; 0 otherwise */
+    bool sized;         /* the size is written even for a local: a .usect symbol's is, a .bss one's not */
+    bool mustDefine;    /* .def: the file must define it */
+    int alias;          /* al .set fwd+4: the label, with aliasAdd; a reference to al is one to fwd, and the
+                           symbol table has al as an absolute of the offset, as asm6x writes it */
+    long long aliasAdd;
 };
 
 struct Fixup {
     int section;
     unsigned long at;
-    int symbol;
+    int symbol;         /* or -1: against the section symbol of secref ($) */
+    int secref;
     int sub;            /* a label subtracted: the difference is a constant once both are placed */
     RelKind kind;
     long long addend;
+    int width;          /* of the field: 1, 2 or 4 bytes */
     int line;
 };
 
@@ -84,8 +97,11 @@ struct Value {
     long long v;
     int sym;
     int sub;
+    int secref;         /* $: the current section, at v */
     RelKind op;         /* R_NONE for a plain expression, else the operator's relocation */
     bool operate;       /* an operator was written */
+    bool forward;       /* a .set constant defined later in the file was folded in; the directives that
+                           size a section refuse that, as asm6x refuses it */
 };
 
 class Unit {
@@ -101,25 +117,31 @@ public:
     std::vector<Symbol> symbols;
     std::vector<Fixup> fixups;
     std::vector<std::string> errors;
-    std::vector<std::pair<int, int> > depends;  /* .symdepend: (symbol, section) pairs, R_NONE entries */
+    std::vector<std::string> warnings;          /* asm6x mends these with a word; so does this */
+    std::vector<std::pair<int, std::string> > depends;  /* .symdepend: (symbol, section name) pairs, R_NONE entries */
+    std::string pendingLabel;                   /* a label alone on its line, placed by the next emission */
 
     void begin_pass(int n);
     bool moved() const;
     void error(const std::string &msg);
-    int section(const std::string &name, int align);
+    void warn(const std::string &msg);
+    int section(const std::string &name, bool writable);
     Section *cur();
     unsigned long here();
 
     int find(const std::string &name) const;
     int ref(const std::string &name);
     bool define(const std::string &name, int type);
-    bool constant(const std::string &name, long long v);
+    bool constant(const std::string &name, long long v, int alias = -1, long long aliasAdd = 0);
 
     void align(int bytes);
+    void placeLabel();
     void emit8(unsigned v);
     void emit16(unsigned v);
     void emit32(unsigned long v);
-    void fixup(unsigned long at, int sym, RelKind kind, long long addend = 0, int sub = -1);
+    void emitData(int width, unsigned long long v);     /* bytes, and the section remembers it was data */
+    void emitWord(unsigned long v);                     /* an instruction word */
+    void fixup(unsigned long at, int sym, RelKind kind, long long addend = 0, int sub = -1, int secref = -1, int width = 4);
 
     void resolve();
 };
@@ -128,7 +150,52 @@ bool split_line(const std::string &src, std::vector<Token> &out, std::string &er
 std::string upper(const std::string &s);
 bool is_punct(const std::vector<Token> &t, size_t i, char c);
 bool eval(Unit &u, const std::vector<Token> &t, size_t from, size_t to, Value &v, std::string &err);
-bool eval_const(Unit &u, const std::vector<Token> &t, size_t from, size_t to, long long &v, std::string &err);
+bool eval_const(Unit &u, const std::vector<Token> &t, size_t from, size_t to, long long &v, std::string &err, bool settled = false);
+
+/* c6x.cpp's: an operand, a unit named in the source, what an instruction encodes to, and an
+   instruction of the open execute packet, kept so that one can be moved to another unit */
+enum OpKind { O_REG, O_PAIR, O_CST, O_MEM, O_EXPR };
+
+struct Operand {
+    OpKind kind;
+    int reg;            /* O_REG, O_PAIR (the even, low register), O_MEM the base */
+    int side;           /* 0 for A, 1 for B */
+    long long v;        /* O_CST; O_MEM the offset as written; O_EXPR the constant part */
+    bool minus;         /* O_MEM: *-R... */
+    bool bracket;       /* O_MEM: the offset was [n], in units of the access */
+    int mode;           /* O_MEM: 0 plain, 1 pre-increment, 2 pre-decrement, 3 post-increment, 4 post-decrement */
+    int offReg;         /* O_MEM: a register offset, or -1 */
+    Value val;          /* O_EXPR */
+};
+
+/* a named unit: .L1 .S2X .D1T2 .M1 - the letter, its side, the cross path, the data side */
+struct UnitName {
+    char letter;        /* 0 when none was named */
+    int side;
+    bool cross;
+    int dataSide;       /* .D1T2: 1; -1 when not named */
+    bool loose;         /* only the letter is asked for: a packet looking for another unit */
+};
+
+/* what an instruction encodes to: the word, the unit it takes, and a relocation if it needs one */
+struct Encoded {
+    unsigned long w;
+    char unit;          /* 0 for NOP, SWE, IDLE */
+    int side;
+    int fixSym;
+    RelKind fixKind;
+    long long fixAdd;
+};
+
+struct Packet {
+    std::string mnemonic;
+    std::vector<Operand> operands;
+    unsigned creg, z;
+    unsigned long at;
+    Encoded e;
+    bool named;         /* the source named its unit: not moved */
+};
+
 
 /* the target: one statement at a time, over the source until the layout settles */
 class C6xTarget {
@@ -142,12 +209,15 @@ public:
 private:
     bool done;
     int pass;
-    bool parallel;      /* the last instruction opened an execute packet this one joins */
     unsigned long last_at;
+    int last_section;   /* where the last instruction went: || joins it only there */
     unsigned units;     /* the units the open packet has taken, a bit per unit and side */
+    std::map<std::string, std::vector<Token> > aliases;     /* .asg: a name for a piece of text */
+    std::vector<Packet> packet;     /* the instructions of the open packet, for moving one to another unit */
 
     bool directive(Unit &u, const std::vector<Token> &t, size_t i);
     void instruction(Unit &u, const std::vector<Token> &t, size_t i);
+    bool retarget(Unit &u, Packet &p, unsigned taken, bool keepUnit);
 };
 
 bool write_elf(const Unit &u, const std::string &path, std::string &err);
@@ -157,6 +227,7 @@ public:
     Assembler(const std::string &input, const std::string &output);
     bool run();
     const std::vector<std::string> &errors() const { return unit.errors; }
+    const std::vector<std::string> &warnings() const { return unit.warnings; }
     void fail(const std::string &why) { unit.errors.push_back(why); }
 
 private:

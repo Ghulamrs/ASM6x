@@ -1,0 +1,11 @@
+"171-par-after-label.s", ERROR!   at line 4: [E0002] Illegal mnemonic specified
+		L1: ADD A1, A2, A3
+
+"171-par-after-label.s", ERROR!   at line 5: [E0002] Illegal mnemonic specified
+		|| ADD B1, B2, B3
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

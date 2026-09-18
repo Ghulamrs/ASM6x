@@ -1,0 +1,8 @@
+"align-2p32.s", WARNING! at line 3: [W0001] Constant value out of range, will be
+                                            truncated to 32 bits
+		.align 0x100000000
+
+"align-2p32.s", WARNING! at line 3: [W0001] Power of 2 required, 1 assumed
+		.align 0x100000000
+
+No Assembly Errors, 2 Assembly Warnings

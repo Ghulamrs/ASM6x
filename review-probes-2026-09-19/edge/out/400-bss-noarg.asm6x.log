@@ -1,0 +1,11 @@
+"400-bss-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.bss
+
+"400-bss-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.bss
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

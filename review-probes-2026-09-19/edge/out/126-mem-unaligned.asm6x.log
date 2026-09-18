@@ -1,0 +1,5 @@
+"126-mem-unaligned.s", WARNING! at line 4: [W0000] Word offsets must be
+                                                   divisible by 4, truncated
+		LDW *+A4(3), A5
+
+No Assembly Errors, 1 Assembly Warning

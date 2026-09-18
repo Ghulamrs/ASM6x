@@ -1,0 +1,20 @@
+"295-set-forms.s", ERROR!   at line 3: [E0003] Unexpected trailing operand(s)
+		.set K3, 7
+
+"295-set-forms.s", ERROR!   at line 3: [E0100] Label required
+		.set K3, 7
+
+"295-set-forms.s", ERROR!   at line 4: [E0003] Unexpected trailing operand(s)
+		.equ K4, 8
+
+"295-set-forms.s", ERROR!   at line 4: [E0100] Label required
+		.equ K4, 8
+
+"295-set-forms.s", ERROR!   at EOF: [E0300] The following symbols are undefined:
+5 Assembly Errors, No Assembly Warnings
+  K4
+  K3
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

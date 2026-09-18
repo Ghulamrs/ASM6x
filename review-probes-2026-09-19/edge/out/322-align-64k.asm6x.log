@@ -1,0 +1,5 @@
+"322-align-64k.s", WARNING! at line 3: [W0001] Maximum alignment is to 32K
+                                               boundary - alignment ignored
+		.align 65536
+
+No Assembly Errors, 1 Assembly Warning

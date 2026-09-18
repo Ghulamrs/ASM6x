@@ -1,41 +1,45 @@
 #include "asm.h"
+#include "forms.h"
 
 #include <cstdio>
 #include <cstring>
 
-/* The C674x instructions the compilers write, encoded as asm6x encodes them. Every word
-   below was read back from asm6x (cl6x --no_compress, dis6x), one form per line, and the
-   probes are in tests/enc. The instruction word:
+/* The C674x instructions, encoded as asm6x encodes them. Every word here was read back from
+   asm6x (cl6x --no_compress, dis6x): tests/probes/ holds the probes, tools/forms.py turns the
+   register, constant and pair forms into src/forms.h, and the rest - the loads and stores,
+   the constant moves, the branches, NOP/SWE/IDLE, MVC, ZERO, the field instructions, the
+   15-bit address adds - is written out below from the same listings. The instruction word:
 
        31-29 creg   28 z   27-23 dst   22-18 src2   17-13 src1   12 x   11-2 the form   1 s   0 p
 
-   with the form's ten bits naming the unit and the operation. A unit is never written by
-   the compilers, so the choice is asm6x's default, also read back: register ADD/SUB/MV go to
-   .D, the logic ops to .D's C64x+ forms, compares to .L, shifts, branches, MVK and the
-   field ops to .S, multiplies to .M. s is the side of the destination (of the data register
-   for a store, always B for a branch), x says a source came over the cross path, and p
-   joins the word to the next in an execute packet. */
+   with the form's ten bits naming the unit and the operation. A unit may be named after the
+   mnemonic (.L1, .S2X, .D1T2, .M2); when it is not - the compilers never name one - the form
+   asm6x chooses on its own is taken, which is what the default rows of the table record. s is
+   the side of the destination (of the data register for a store, always B for a branch by
+   register), x says the source in src2 came over the cross path, and p joins the word to the
+   next in an execute packet. */
 
 namespace {
 
-enum OpKind { O_REG, O_PAIR, O_CST, O_MEM, O_EXPR };
-
-struct Operand {
-    OpKind kind;
-    int reg;            /* O_REG, O_PAIR (the even, low register), O_MEM the base */
-    int side;           /* 0 for A, 1 for B */
-    long long v;        /* O_CST; O_MEM the offset in bytes; O_EXPR the constant part */
-    bool minus;         /* O_MEM: *-R(n) */
-    int mode;           /* O_MEM: 0 plain or +, 1 pre-increment, 2 pre-decrement, 3 post-increment, 4 post-decrement */
-    Value val;          /* O_EXPR */
+/* forms asm6x has that tools/forms.py could not take from the probes: ADD of -16..-1, which
+   dis6x lists as SUB; LMBD with a constant (asm6x's own listing goes wrong after it, see
+   tests/probes/probe5.s); and SUB with the first source across on .L - the "xsrc1, src2"
+   forms, map 6: src1 over the cross path - read back from review-probes-2026-09-19/edge */
+const FormRow kMoreForms[] = {
+    { "ADD", 'D', "crr", 0, 0x2BC, { 3, 1, 0 }, 's', 1 },     /* ADD -3,A1,A2: the signed .D form, which dis6x lists as SUB 3 */
+    { "ADD", 'D', "rcr", 0, 0x2BC, { 1, 3, 0 }, 's', 1 },
+    { "LMBD", 'L', "crr", 0, 0x356, { 3, 1, 0 }, 's', 1 },
+    { "SUB", 'L', "rrp", 1, 0x1BE, { 6, 1, 0 }, '-', 1 },
+    { "SUB", 'L', "rrr", 1, 0x0BE, { 6, 1, 0 }, '-', 0 },     /* where .S1 is taken in a packet: SUB.L1X B1,A2,A3 */
 };
 
-bool reg_name(const std::string &t, int &reg, int &side)
+bool reg_name(const std::string &text, int &reg, int &side)
 {
-    if (t.size() < 2 || (t[0] != 'A' && t[0] != 'B')) return false;
+    std::string t = upper(text);
+    if (t.size() < 2 || t.size() > 3 || (t[0] != 'A' && t[0] != 'B')) return false;
     for (size_t i = 1; i < t.size(); i++) if (t[i] < '0' || t[i] > '9') return false;
     int n = atoi(t.c_str() + 1);
-    if (n > 31 || t.size() > 3) return false;
+    if (n > 31) return false;
     reg = n;
     side = t[0] == 'B';
     return true;
@@ -49,85 +53,17 @@ int predicate_code(int reg, int side)
     return side ? b[reg] : a[reg];
 }
 
-}
-
-C6xTarget::C6xTarget() : done(false), pass(0), parallel(false), last_at(0), units(0)
+bool parse_unit(const std::string &text, UnitName &u, std::string &why)
 {
-}
-
-void C6xTarget::begin_pass(int n)
-{
-    pass = n;
-    done = false;
-    parallel = false;
-    last_at = 0;
-    units = 0;
-}
-
-/* the end: asm6x pads every code section to the fetch packet, 32 bytes */
-void C6xTarget::end_of_file(Unit &u)
-{
-    for (size_t i = 0; i < u.sections.size(); i++)
-        if (u.sections[i].code)
-            while (u.sections[i].bytes.size() % 32) u.sections[i].bytes.push_back(0);
-    done = true;
-}
-
-/* a statement: [label:] [||] [[!]Rn] mnemonic operands, or a directive */
-void C6xTarget::statement(Unit &u, std::vector<Token> &t)
-{
-    size_t i = 0;
-    if (t.size() >= 2 && t[0].kind == T_NAME && is_punct(t, 1, ':')) {
-        /* a label: a .set with the name in the label column is a constant, not a place */
-        if (t.size() >= 3 && t[2].kind == T_NAME && (upper(t[2].text) == ".SET" || upper(t[2].text) == ".EQU")) {
-            long long v;
-            std::string err;
-            if (!eval_const(u, t, 3, t.size(), v, err)) u.error(err);
-            else u.constant(t[0].text, v);
-            return;
-        }
-        Section *s = u.cur();
-        if (!s) return;
-        u.define(t[0].text, s->code ? SYM_FUNC : SYM_OBJECT);
-        i = 2;
-        if (i >= t.size()) return;
-    }
-    if (t[i].kind == T_NAME && t[i].text[0] == '.') {
-        if (!directive(u, t, i)) u.error("'" + t[i].text + "' is not a directive this assembler knows");
-        return;
-    }
-    instruction(u, t, i);
-}
-
-namespace {
-
-/* the constant part and symbol of a data item, with the width its directive gives it */
-void data_item(Unit &u, const std::vector<Token> &t, size_t a, size_t b, int width)
-{
-    Value v;
-    std::string err;
-    if (!eval(u, t, a, b, v, err)) { u.error(err); return; }
-    unsigned long at = u.here();
-    if (v.sym >= 0) {
-        RelKind kind = v.operate ? v.op : width == 4 ? R_ABS32 : width == 2 ? R_ABS16 : R_ABS8;
-        if (v.operate && v.op == R_NONE) kind = width == 4 ? R_ABS32 : width == 2 ? R_ABS16 : R_ABS8;
-        if (v.sub >= 0) kind = width == 4 ? R_ABS32 : width == 2 ? R_ABS16 : R_ABS8;
-        if (v.sub < 0 && v.operate && v.op == R_NONE) {
-            u.error("a scope needs another scope to differ from");
-            return;
-        }
-        u.fixup(at, v.sym, kind, v.v, v.sub);
-        if (width == 4) u.emit32(0); else if (width == 2) u.emit16(0); else u.emit8(0);
-        return;
-    }
-    if (width == 4) u.emit32((unsigned long)v.v);
-    else if (width == 2) {
-        if (v.v < -32768 || v.v > 65535) u.error("a half word cannot hold " + std::to_string(v.v));
-        u.emit16((unsigned)v.v);
-    } else {
-        if (v.v < -128 || v.v > 255) u.error("a byte cannot hold " + std::to_string(v.v));
-        u.emit8((unsigned)v.v);
-    }
+    u.letter = 0; u.side = -1; u.cross = false; u.dataSide = -1; u.loose = false;
+    std::string t = upper(text);
+    if (t.size() < 2 || strchr("LSDM", t[0]) == 0 || (t[1] != '1' && t[1] != '2')) { why = "a unit is .L1, .S2, .D1, .M2, with X for the cross path and T1/T2 for a load's side"; return false; }
+    u.letter = t[0]; u.side = t[1] - '1';
+    size_t i = 2;
+    if (i < t.size() && t[i] == 'X') { u.cross = true; i++; }
+    if (i + 1 < t.size() && t[i] == 'T' && (t[i + 1] == '1' || t[i + 1] == '2')) { u.dataSide = t[i + 1] - '1'; i += 2; }
+    if (i != t.size()) { why = "'." + text + "' is not a unit this assembler knows"; return false; }
+    return true;
 }
 
 void split_items(const std::vector<Token> &t, size_t from, std::vector<size_t> &cuts)
@@ -143,64 +79,239 @@ void split_items(const std::vector<Token> &t, size_t from, std::vector<size_t> &
     cuts.push_back(t.size() + 1);
 }
 
+/* the operand count: none when nothing follows, and an empty item is an error */
+bool count_items(Unit &u, const std::vector<Token> &t, size_t from, std::vector<size_t> &cuts, size_t &n)
+{
+    split_items(t, from, cuts);
+    if (from >= t.size()) { n = 0; return true; }
+    n = cuts.size() - 1;
+    for (size_t k = 0; k < n; k++)
+        if (cuts[k + 1] - 1 <= cuts[k]) { u.error("an operand is missing"); return false; }
+    return true;
+}
+
+bool power_of_two(long long v) { return v > 0 && (v & (v - 1)) == 0; }
+
+/* an alignment as asm6x takes it: a power of two, else the next one up with a warning,
+   and nothing past 32K */
+long long rounded_alignment(Unit &u, long long a)
+{
+    if (a > 32768) { u.warn("the maximum alignment is 32768; ignored"); return 1; }
+    if (a < 1) { u.warn("the alignment must be a power of two; 1 assumed"); return 1; }
+    if (power_of_two(a)) return a;
+    long long p = 1;
+    while (p < a) p <<= 1;
+    u.warn("the alignment must be a power of two; " + std::to_string(p) + " assumed");
+    return p;
+}
+
+/* C's escapes as asm6x's .cstring takes them: \a \b \f \n \r \t \v \\ \" \' and \ooo; not \xHH */
+std::string c_escapes(const std::string &raw)
+{
+    std::string out;
+    for (size_t i = 0; i < raw.size(); i++) {
+        char c = raw[i];
+        if (c != '\\' || i + 1 >= raw.size()) { out += c; continue; }
+        char e = raw[++i];
+        switch (e) {
+        case 'a': out += '\a'; break; case 'b': out += '\b'; break; case 'f': out += '\f'; break;
+        case 'n': out += '\n'; break; case 'r': out += '\r'; break; case 't': out += '\t'; break;
+        case 'v': out += '\v'; break; case '\\': out += '\\'; break; case '"': out += '"'; break; case '\'': out += '\''; break;
+        case 'x': break;    /* asm6x drops \x and keeps the digits as letters: "\x41" is "41" */
+        default:
+            if (e >= '0' && e <= '7') {
+                int v = e - '0', k = 1;
+                while (i + 1 < raw.size() && k < 3 && raw[i + 1] >= '0' && raw[i + 1] <= '7') { v = v * 8 + (raw[++i] - '0'); k++; }
+                out += (char)v;
+            } else out += e;
+        }
+    }
+    return out;
+}
+
+/* one data item of a width: a constant (truncated with a warning, as asm6x does), or an
+   address as a relocation, or a difference of two labels */
+void data_item(Unit &u, const std::vector<Token> &t, size_t a, size_t b, int width)
+{
+    Value v;
+    std::string err;
+    if (!eval(u, t, a, b, v, err)) { u.error(err); return; }
+    unsigned long at = u.here();
+    if (v.sym >= 0 || v.secref >= 0) {
+        RelKind kind = width == 4 ? R_ABS32 : width == 2 ? R_ABS16 : R_ABS8;
+        if (v.operate && v.op != R_NONE) {
+            if (v.sub >= 0) { u.error("an exception-table operator cannot be differenced"); return; }
+            kind = v.op;
+        }
+        if (v.sub < 0 && v.operate && v.op == R_NONE) { u.error("a scope needs another scope to differ from"); return; }
+        if (width == 1 && v.sub < 0) { u.error("a byte cannot hold an address"); return; }
+        if (v.secref >= 0) u.fixup(at, -1, kind, v.v, -1, v.secref, width);
+        else u.fixup(at, v.sym, kind, v.v, v.sub, -1, width);
+        u.emitData(width, 0);
+        return;
+    }
+    long long lo = width == 4 ? -2147483648LL : width == 2 ? -32768 : -128;
+    long long hi = width == 4 ? 4294967295LL : width == 2 ? 65535 : 255;
+    if (v.v < lo || v.v > hi) u.warn("value truncated to " + std::to_string(width * 8) + " bits");
+    u.emitData(width, (unsigned long long)v.v);
+}
+
+}
+
+C6xTarget::C6xTarget() : done(false), pass(0), last_at(0), last_section(-1), units(0)
+{
+}
+
+void C6xTarget::begin_pass(int n)
+{
+    pass = n;
+    done = false;
+    last_at = 0;
+    last_section = -1;
+    units = 0;
+    aliases.clear();
+}
+
+/* the end: a label still waiting takes the end of its section; asm6x pads every section
+   holding code to the fetch packet, and marks the last data word a code section ends with
+   (R_C6000_NOCMP against the section itself) */
+void C6xTarget::end_of_file(Unit &u)
+{
+    u.placeLabel();
+    for (size_t i = 0; i < u.sections.size(); i++) {
+        Section &s = u.sections[i];
+        if (!s.code) continue;
+        if (s.dataLast && s.dataEnd >= 4) {
+            int was = u.current;
+            u.current = (int)i;
+            u.fixup(s.dataEnd - 4, -1, R_NOCMP, 0, -1, (int)i);
+            u.current = was;
+        }
+        if (s.hasCode) while (s.bytes.size() % 32) s.bytes.push_back(0);
+    }
+    done = true;
+}
+
+/* a statement: [label[:]] [||] [[!]Rn] mnemonic[.unit] operands, or [label] directive */
+void C6xTarget::statement(Unit &u, std::vector<Token> &t)
+{
+    size_t i = 0;
+    if (t.size() >= 2 && t[0].kind == T_NAME && is_punct(t, 1, ':') && t[1].value == 1) {
+        std::string label = t[0].text;
+        i = 2;
+        /* a .set with the name in the label column is a constant, not a place - a .set alias
+           of a label stands for the label, and is asm6x's absolute of the label's offset */
+        if (i < t.size() && t[i].kind == T_NAME && (upper(t[i].text) == ".SET" || upper(t[i].text) == ".EQU")) {
+            Value v;
+            std::string err;
+            if (!eval(u, t, i + 1, t.size(), v, err)) { u.error(err); return; }
+            if (v.sub >= 0 || v.secref >= 0 || v.operate) { u.error(".set takes a constant or a label"); return; }
+            if (v.sym >= 0) {
+                const Symbol &s = u.symbols[v.sym];
+                u.constant(label, (s.defined ? s.value : 0) + v.v, v.sym, v.v);
+            } else u.constant(label, v.v);
+            return;
+        }
+        u.placeLabel();
+        u.pendingLabel = label;
+        if (i >= t.size()) return;
+    }
+    /* .asg names stand for their text in the operands */
+    if (!aliases.empty() && !(t[i].kind == T_NAME && upper(t[i].text) == ".ASG")) {
+        std::vector<Token> out(t.begin(), t.begin() + (long)i + 1);
+        for (size_t k = i + 1; k < t.size(); k++) {
+            std::map<std::string, std::vector<Token> >::const_iterator al = t[k].kind == T_NAME ? aliases.find(t[k].text) : aliases.end();
+            if (al == aliases.end()) out.push_back(t[k]);
+            else out.insert(out.end(), al->second.begin(), al->second.end());
+        }
+        t.swap(out);
+    }
+    if (t[i].kind == T_NAME && t[i].text[0] == '.') {
+        if (!directive(u, t, i)) u.error("'" + t[i].text + "' is not a directive this assembler knows");
+        return;
+    }
+    instruction(u, t, i);
 }
 
 bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
 {
     std::string d = upper(t[i].text);
     std::vector<size_t> cuts;
-    split_items(t, i + 1, cuts);
-    size_t n = cuts.size() - 1;      /* operands */
+    size_t n;
+    if (!count_items(u, t, i + 1, cuts, n)) return true;
     std::string err;
+    #define ITEM(k) cuts[k], cuts[(k) + 1] - 1
 
-    if (d == ".TEXT") { u.section(".text", 32); parallel = false; return true; }
-    if (d == ".DATA") { u.section(".data", 1); parallel = false; return true; }
+    if (d == ".TEXT") { u.placeLabel(); u.section(".text", false); units = 0; return true; }
+    if (d == ".DATA") { u.placeLabel(); u.section(".data", true); units = 0; return true; }
     if (d == ".SECT") {
-        if (n < 1 || t[cuts[0]].kind != T_STR) { u.error(".sect needs a quoted name"); return true; }
+        u.placeLabel();
+        if (n < 1 || (t[cuts[0]].kind != T_STR && t[cuts[0]].kind != T_NAME) || cuts[1] - 1 != cuts[0] + 1) { u.error(".sect needs a name"); return true; }
         std::string name = t[cuts[0]].text;
-        u.section(name, name.compare(0, 5, ".text") == 0 ? 32 : 1);
-        parallel = false;
+        bool rw = false;
+        for (size_t k = 1; k < n; k++) {
+            std::string a = upper(t[cuts[k]].text);
+            if (a == "RW") rw = true;
+            else if (a != "RO") { u.error("'" + t[cuts[k]].text + "' is not a .sect attribute"); return true; }
+        }
+        int sec = u.section(name, rw);
+        if (u.sections[sec].bss) { u.error("'" + name + "' is uninitialised; .sect cannot reopen it"); return true; }
+        units = 0;
         return true;
     }
     if (d == ".BSS" || d == ".USECT") {
-        /* .bss sym, size[, align]   .usect "name", size[, align] - the symbol at the start of
-           the space, in .bss or in the named section, which is uninitialised */
-        size_t k = d == ".USECT" ? 1 : 0;
-        if (n < k + 2) { u.error(d + " needs a name and a size"); return true; }
+        /* .bss sym, size[, align]   name .usect "sect", size[, align] - the symbol at the start
+           of the space, in .bss or in the named section, which is uninitialised */
+        bool usect = d == ".USECT";
+        if (n < 1) { u.error(d + " needs a name and a size"); return true; }
+        std::string symbol = usect ? u.pendingLabel : t[cuts[0]].text;
+        if (usect && symbol.empty()) { u.error("a symbol is expected in the label field of .usect"); return true; }
+        if (usect && t[cuts[0]].kind != T_STR && t[cuts[0]].kind != T_NAME) { u.error(".usect needs a section name"); return true; }
+        if (!usect && t[cuts[0]].kind != T_NAME) { u.error(".bss needs a symbol"); return true; }
+        if (n < 2) { u.error(d + " needs a size"); return true; }
         long long size, align = 1;
-        if (!eval_const(u, t, cuts[k + 1], cuts[k + 2] - 1, size, err)) { u.error(err); return true; }
-        if (n > k + 2 && !eval_const(u, t, cuts[k + 2], cuts[k + 3] - 1, align, err)) { u.error(err); return true; }
-        if (align <= 0 || (align & (align - 1))) { u.error("the alignment must be a power of two"); return true; }
+        if (!eval_const(u, t, ITEM(1), size, err, true)) { u.error(err); return true; }
+        if (n > 2 && !eval_const(u, t, ITEM(2), align, err, true)) { u.error(err); return true; }
+        if (n > 3) { u.error(d + " takes a name, a size and an alignment"); return true; }
+        if (size < 0 || size > 0x7FFFFFFF) { u.error("the size is 0 to 2^31-1"); return true; }
+        align = rounded_alignment(u, align);
+        std::string name = usect ? t[cuts[0]].text : ".bss";
         int was = u.current;
-        std::string name = d == ".USECT" ? t[cuts[0]].text : ".bss";
-        if (d == ".USECT" && t[cuts[0]].kind != T_STR) { u.error(".usect needs a quoted section name"); return true; }
-        int sec = u.section(name, (int)align);
+        int sec = u.section(name, true);
+        if (u.sections[sec].code || (!u.sections[sec].bss && !u.sections[sec].bytes.empty())) { u.error("'" + name + "' holds data; it cannot be uninitialised"); u.current = was; return true; }
         u.sections[sec].bss = true;
         u.sections[sec].kind = SEC_NOBITS;
         u.align((int)align);
-        if (d == ".BSS" && u.define(t[cuts[0]].text, SYM_OBJECT)) u.symbols[u.find(t[cuts[0]].text)].size = size;
-        /* .usect's symbol is the label written before it, if any; the compilers use .bss */
+        if (usect) u.pendingLabel.clear(); else u.placeLabel();
+        if (u.define(symbol, SYM_OBJECT)) {
+            Symbol &s = u.symbols[u.find(symbol)];
+            s.size = size;
+            s.sized = usect;
+        }
         for (long long b = 0; b < size; b++) u.emit8(0);
         u.current = was;
         return true;
     }
     if (d == ".GLOBAL" || d == ".DEF" || d == ".REF" || d == ".WEAK") {
+        if (n < 1) { u.error(d + " names a symbol"); return true; }
         for (size_t k = 0; k < n; k++) {
-            if (t[cuts[k]].kind != T_NAME) { u.error(d + " names symbols"); return true; }
+            if (t[cuts[k]].kind != T_NAME || cuts[k + 1] - 1 != cuts[k] + 1) { u.error(d + " names symbols"); return true; }
             int s = u.ref(t[cuts[k]].text);
             Symbol &sym = u.symbols[s];
-            sym.referenced = true;
-            if (d == ".WEAK") sym.bind = B_WEAK;
-            else if (d == ".REF") { if (sym.bind == B_LOCAL) sym.bind = B_EXTERN; }
-            else if (sym.bind != B_WEAK) sym.bind = B_GLOBAL;
+            if (d == ".REF") { sym.referenced = true; if (sym.bind == B_LOCAL) sym.bind = B_EXTERN; }
+            else if (d == ".WEAK") { sym.bind = B_WEAK; sym.referenced = true; }
+            else if (d == ".DEF") { if (sym.bind != B_WEAK) sym.bind = B_GLOBAL; sym.mustDefine = true; }
+            else if (sym.bind != B_WEAK) sym.bind = B_GLOBAL;   /* .global: written only if defined or used */
         }
         return true;
     }
     if (d == ".ALIGN") {
-        long long a = 4;
-        if (n >= 1 && !eval_const(u, t, cuts[0], cuts[1] - 1, a, err)) { u.error(err); return true; }
-        if (a <= 0 || (a & (a - 1))) { u.error(".align takes a power of two"); return true; }
+        long long a = 1;
+        if (n > 1) { u.error(".align takes one value"); return true; }
+        if (n == 1 && !eval_const(u, t, ITEM(0), a, err, true)) { u.error(err); return true; }
+        a = rounded_alignment(u, a);
         u.align((int)a);
+        u.placeLabel();
         return true;
     }
     if (d == ".WORD" || d == ".LONG" || d == ".INT" || d == ".ULONG" || d == ".UINT" || d == ".UWORD" ||
@@ -210,77 +321,126 @@ bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
                   : (d == ".BYTE" || d == ".CHAR" || d == ".UBYTE" || d == ".UCHAR") ? 1 : 4;
         if (n < 1) { u.error(d + " needs a value"); return true; }
         if (width > 1) u.align(width);      /* a word or a half aligns itself, as TI's do */
+        u.placeLabel();
         for (size_t k = 0; k < n; k++) {
-            if (t[cuts[k]].kind == T_STR && width == 1 && cuts[k + 1] - 1 == cuts[k] + 1) {
-                for (size_t c = 0; c < t[cuts[k]].text.size(); c++) u.emit8((unsigned char)t[cuts[k]].text[c]);
+            /* a string is one item per character, as asm6x takes .half "ab" */
+            if (t[cuts[k]].kind == T_STR && cuts[k + 1] - 1 == cuts[k] + 1) {
+                for (size_t c = 0; c < t[cuts[k]].text.size(); c++) u.emitData(width, (unsigned char)t[cuts[k]].text[c]);
                 continue;
             }
-            data_item(u, t, cuts[k], cuts[k + 1] - 1, width);
+            data_item(u, t, ITEM(k), width);
         }
         return true;
     }
     if (d == ".STRING" || d == ".CSTRING") {
+        if (n < 1) { u.error(d + " needs a string"); return true; }
+        u.placeLabel();
         for (size_t k = 0; k < n; k++) {
             if (t[cuts[k]].kind == T_STR && cuts[k + 1] - 1 == cuts[k] + 1) {
-                for (size_t c = 0; c < t[cuts[k]].text.size(); c++) u.emit8((unsigned char)t[cuts[k]].text[c]);
-                if (d == ".CSTRING") u.emit8(0);
-            } else data_item(u, t, cuts[k], cuts[k + 1] - 1, 1);
+                std::string s = d == ".CSTRING" ? c_escapes(t[cuts[k]].text) : t[cuts[k]].text;
+                for (size_t c = 0; c < s.size(); c++) u.emitData(1, (unsigned char)s[c]);
+                if (d == ".CSTRING" && (s.empty() || s[s.size() - 1] != '\0')) u.emitData(1, 0);
+            } else data_item(u, t, ITEM(k), 1);
+        }
+        return true;
+    }
+    if (d == ".FLOAT" || d == ".DOUBLE") {
+        if (n < 1) { u.error(d + " needs a value"); return true; }
+        u.align(d == ".FLOAT" ? 4 : 8);
+        u.placeLabel();
+        for (size_t k = 0; k < n; k++) {
+            /* the item's text, as the lexer split it, read back as a real */
+            std::string text;
+            for (size_t j = cuts[k]; j < cuts[k + 1] - 1; j++) text += t[j].text;
+            char *end = 0;
+            double x = strtod(text.c_str(), &end);
+            if (end == text.c_str() || *end) { u.error("'" + text + "' is not a real"); return true; }
+            if (d == ".FLOAT") { float f = (float)x; unsigned long bits = 0; memcpy(&bits, &f, 4); u.emitData(4, bits); }
+            else { unsigned long long bits; memcpy(&bits, &x, 8); u.emitData(8, bits); }
         }
         return true;
     }
     if (d == ".SPACE" || d == ".BES") {
         long long b;
-        if (n < 1 || !eval_const(u, t, cuts[0], cuts[1] - 1, b, err)) { u.error(".space needs a count"); return true; }
-        for (long long k = 0; k < b; k++) u.emit8(0);
+        if (n != 1) { u.error(d + " takes a count"); return true; }
+        if (!eval_const(u, t, ITEM(0), b, err, true)) { u.error(err); return true; }
+        if (b < 0 || b > 0x7FFFFFFF) { u.error("the count is 0 to 2^31-1"); return true; }
+        if (d == ".BES") {
+            /* the label names the last byte of the space */
+            for (long long k = 0; k + 1 < b; k++) u.emitData(1, 0);
+            u.placeLabel();
+            if (b > 0) u.emitData(1, 0);
+        } else { u.placeLabel(); for (long long k = 0; k < b; k++) u.emitData(1, 0); }
         return true;
     }
-    if (d == ".SET" || d == ".EQU") {
-        if (n != 2 || t[cuts[0]].kind != T_NAME) { u.error(".set needs a name and a value"); return true; }
-        long long v;
-        if (!eval_const(u, t, cuts[1], cuts[2] - 1, v, err)) { u.error(err); return true; }
-        u.constant(t[cuts[0]].text, v);
+    if (d == ".SET" || d == ".EQU") { u.error(d + " takes its name from the label field"); return true; }
+    if (d == ".ASG") {
+        /* .asg text, name: from here the name stands for the text wherever it appears as an
+           operand - cl6x writes .asg A15, FP */
+        if (n != 2 || t[cuts[1]].kind != T_NAME || cuts[2] - 1 != cuts[1] + 1) { u.error(".asg takes a value and a name"); return true; }
+        std::vector<Token> value(t.begin() + (long)cuts[0], t.begin() + (long)(cuts[1] - 1));
+        if (value.size() == 1 && value[0].kind == T_STR) {
+            /* a quoted value is the text itself, read again */
+            std::vector<Token> inner;
+            if (!split_line(" " + value[0].text, inner, err)) { u.error(err); return true; }
+            value = inner;
+        }
+        aliases[t[cuts[1]].text] = value;
         return true;
     }
     if (d == ".SYMDEPEND") {
-        /* .symdepend "sym", "section": the section needs the symbol - an R_C6000_NONE
-           relocation at its start, as asm6x records it */
-        if (n != 2 || t[cuts[0]].kind != T_STR || t[cuts[1]].kind != T_STR) { u.error(".symdepend takes two quoted names"); return true; }
+        /* .symdepend "sym"[, "section"]: the section (the current one when unnamed) needs the
+           symbol - an R_C6000_NONE relocation at its start, as asm6x records it */
+        if (n < 1 || n > 2) { u.error(".symdepend takes a symbol and, optionally, a section"); return true; }
+        for (size_t k = 0; k < n; k++)
+            if ((t[cuts[k]].kind != T_STR && t[cuts[k]].kind != T_NAME) || cuts[k + 1] - 1 != cuts[k] + 1) { u.error(".symdepend takes names"); return true; }
         int s = u.ref(t[cuts[0]].text);
         u.symbols[s].referenced = true;
-        int sec = -1;
-        for (size_t k = 0; k < u.sections.size(); k++) if (u.sections[k].name == t[cuts[1]].text) sec = (int)k;
-        if (sec < 0) { u.error("'" + t[cuts[1]].text + "' is not a section of this file"); return true; }
-        u.depends.push_back(std::make_pair(s, sec));
+        std::string name = n == 2 ? t[cuts[1]].text : u.sections[u.current].name;
+        u.depends.push_back(std::make_pair(s, name));   /* the section may be opened later in the file */
         return true;
     }
     if (d == ".END") { done = true; return true; }
-    if (d == ".CLINK" || d == ".RETAIN" || d == ".NOCMP" || d == ".COMPILER_OPTS" || d == ".FILE" || d == ".ASG" ||
+    if (d == ".CLINK" || d == ".RETAIN" || d == ".NOCMP" || d == ".COMPILER_OPTS" || d == ".FILE" ||
         d == ".LIST" || d == ".NOLIST" || d == ".TITLE" || d == ".OPTION" || d == ".LENGTH" || d == ".WIDTH")
         return true;
+    #undef ITEM
     return false;
 }
 
 namespace {
 
-/* a memory operand: *R  *+R(n)  *-R(n)  *+R[n]  *R++(n)  *R--(n)  *++R(n)  *--R(n) */
+/* a memory operand: *R  *+R(n)  *-R(n)  *+R[n]  *-R[n]  *+R[Rn]  *-R[Rn]  *R++  *R--  *++R  *--R,
+   the last four with (n), [n] or [Rn] */
 bool mem_operand(Unit &u, const std::vector<Token> &t, size_t a, size_t b, Operand &o)
 {
     size_t i = a + 1;    /* past the * */
-    o.kind = O_MEM; o.minus = false; o.mode = 0; o.v = 0;
-    if (is_punct(t, i, '+') && t[i].text == "+") { i++; }
-    else if (is_punct(t, i, '-') && t[i].text == "-") { o.minus = true; i++; }
+    o.kind = O_MEM; o.minus = false; o.bracket = false; o.mode = 0; o.v = 0; o.offReg = -1;
+    if (is_punct(t, i, '+')) i++;
+    else if (is_punct(t, i, '-')) { o.minus = true; i++; }
     else if (i < b && t[i].kind == T_PUNCT && t[i].text == "++") { o.mode = 1; i++; }
     else if (i < b && t[i].kind == T_PUNCT && t[i].text == "--") { o.mode = 2; i++; }
-    if (i >= b || t[i].kind != T_NAME || !reg_name(t[i].text, o.reg, o.side)) { u.error("a base register expected in an address"); return false; }
+    if (i >= b || t[i].kind != T_NAME || !reg_name(t[i].text, o.reg, o.side)) { u.error("a base register is expected in an address"); return false; }
     i++;
-    if (i < b && t[i].kind == T_PUNCT && t[i].text == "++") { o.mode = 3; i++; }
-    else if (i < b && t[i].kind == T_PUNCT && t[i].text == "--") { o.mode = 4; i++; }
-    if (i >= b) { if (o.mode) o.v = -1; return true; }   /* -1: the access width, filled in by the load */
+    if (i < b && t[i].kind == T_PUNCT && t[i].text == "++") { if (o.mode || o.minus) { u.error("a bad address"); return false; } o.mode = 3; i++; }
+    else if (i < b && t[i].kind == T_PUNCT && t[i].text == "--") { if (o.mode || o.minus) { u.error("a bad address"); return false; } o.mode = 4; i++; }
+    if (i >= b) {
+        if (o.mode) { o.v = 1; o.bracket = true; }
+        else if (a + 1 < b && t[a + 1].kind == T_PUNCT && (t[a + 1].text == "+" || t[a + 1].text == "-")) { u.error("the address is missing its offset"); return false; }
+        return true;
+    }
     char open = t[i].text[0], close = open == '(' ? ')' : ']';
     if (!is_punct(t, i, open) || (open != '(' && open != '[') || !is_punct(t, b - 1, close)) { u.error("a bad address"); return false; }
+    o.bracket = open == '[';
+    int r, sd;
+    if (b - 1 == i + 2 && t[i + 1].kind == T_NAME && reg_name(t[i + 1].text, r, sd)) {
+        if (!o.bracket) { u.error("a register offset is written [Rn]"); return false; }
+        if (sd != o.side) { u.error("the offset register is on the base's side"); return false; }
+        o.offReg = r;
+        return true;
+    }
     std::string err;
     if (!eval_const(u, t, i + 1, b - 1, o.v, err)) { u.error(err); return false; }
-    if (open == '[') o.v = -2 - o.v;    /* [n] is in units of the access, told apart by sign */
     return true;
 }
 
@@ -298,63 +458,104 @@ bool operand(Unit &u, const std::vector<Token> &t, size_t a, size_t b, Operand &
     }
     std::string err;
     if (!eval(u, t, a, b, o.val, err)) { u.error(err); return false; }
+    if (o.val.sub >= 0) { u.error("a difference of labels in different sections cannot be an operand"); return false; }
+    if (o.val.secref >= 0) { u.error("$ is not an operand"); return false; }
+    if (o.val.operate) { u.error("an exception-table operator is not an operand"); return false; }
     if (o.val.sym < 0) { o.kind = O_CST; o.v = o.val.v; return true; }
     o.kind = O_EXPR;
     o.v = o.val.v;
     return true;
 }
 
-/* the ten form bits of each instruction, from the probes: the C64x+ D-unit forms end in
-   1100, the classic D forms in 0000 with the op above, L in 110, S in 1000, M in 00000 */
-struct Form { const char *name; unsigned form; };
-
-unsigned form_of(const Form *list, size_t count, const std::string &m)
+std::string shape_of(const std::vector<Operand> &o)
 {
-    for (size_t i = 0; i < count; i++) if (m == list[i].name) return list[i].form;
-    return 0xFFFF;
+    std::string shape;
+    for (size_t k = 0; k < o.size(); k++)
+        shape += o[k].kind == O_REG ? 'r' : o[k].kind == O_PAIR ? 'p' : o[k].kind == O_CST ? 'c' : o[k].kind == O_MEM ? 'm' : 's';
+    return shape;
 }
 
-/* src1, src2, dst: the L/S/M register form and the C64x+ D form */
-const Form kThreeReg[] = {
-    { "AND", 0x26C }, { "OR", 0x22C }, { "XOR", 0x2EC }, { "ANDN", 0x20C },
-    { "CMPEQ", 0x29E }, { "CMPGT", 0x23E }, { "CMPGTU", 0x27E }, { "CMPLT", 0x2BE }, { "CMPLTU", 0x2FE },
-    { "MPY32", 0x200 }, { "MPY", 0x320 }, { "MPYU", 0x3E0 }, { "MPYSU", 0x360 }, { "MPYUS", 0x3A0 },
-    { "MPYLH", 0x220 }, { "MPYHL", 0x120 }, { "MPYH", 0x020 }, { "MPYHU", 0x0E0 },
-    { "ADDSP", 0x386 }, { "SUBSP", 0x38E }, { "MPYSP", 0x380 }, { "CMPEQSP", 0x388 }, { "CMPGTSP", 0x398 }, { "CMPLTSP", 0x3A8 },
-    { "ADDDP", 0x396 }, { "SUBDP", 0x39E }, { "MPYDP", 0x1C0 }, { "CMPEQDP", 0x288 }, { "CMPGTDP", 0x298 }, { "CMPLTDP", 0x2A8 },
-    { "MPY32U", 0x18C }, { "MPY32SU", 0x2C0 }, { "MPY32US", 0x19C }, { "LMBD", 0x35E },
-};
-/* src2, src1, dst: the classic D form (ADD/SUB same side) and the shifts on .S */
-const Form kSrc2First[] = {
-    { "ADD", 0x210 }, { "SUB", 0x230 }, { "SHL", 0x338 }, { "SHR", 0x378 }, { "SHRU", 0x278 },
-    { "ADDAW", 0x310 }, { "ADDAH", 0x290 }, { "ADDAB", 0x210 }, { "ADDAD", 0x390 }, { "SUBAW", 0x330 },
-};
-/* src2, ucst5, dst */
-const Form kSrc2Cst[] = {
-    { "ADD", 0x250 }, { "SUB", 0x270 }, { "SHL", 0x328 }, { "SHR", 0x368 }, { "SHRU", 0x268 },
-    { "ADDAW", 0x350 }, { "ADDAH", 0x2D0 }, { "ADDAB", 0x250 }, { "ADDAD", 0x3B0 }, { "SUBAW", 0x370 },
-};
-/* scst5, src2, dst */
-const Form kCstFirst[] = {
-    { "CMPEQ", 0x296 }, { "CMPGT", 0x236 }, { "CMPGTU", 0x276 }, { "CMPLT", 0x2B6 }, { "CMPLTU", 0x2F6 },
-    { "XOR", 0x2FC }, { "AND", 0x27C }, { "OR", 0x23C }, { "ADD", 0x250 }, { "SUB", 0x168 },
-};
-/* src2, dst */
-const Form kUnary[] = {
-    { "MV", 0x23C }, { "NEG", 0x168 }, { "NOT", 0x2FC }, { "ABS", 0x0D6 }, { "NORM", 0x31E },
-    { "INTSP", 0x256 }, { "SPTRUNC", 0x05E }, { "SPINT", 0x056 }, { "INTSPU", 0x24E }, { "INTDP", 0x1CE },
-    { "INTDPU", 0x1DE }, { "SPDP", 0x028 }, { "RCPSP", 0x3D8 }, { "ABSSP", 0x3C8 },
-};
-/* a pair source in src2:src1 as odd:even, dst */
-const Form kPairIn[] = {
-    { "DPSP", 0x04E }, { "DPTRUNC", 0x00E }, { "DPINT", 0x046 }, { "RCPDP", 0x2D8 }, { "ABSDP", 0x2C8 },
-};
-/* the loads and stores: bits 2-8 with the mode and y cleared */
-const Form kMemory[] = {
-    { "LDB", 0x009 }, { "LDBU", 0x005 }, { "LDH", 0x011 }, { "LDHU", 0x001 }, { "LDW", 0x019 }, { "LDDW", 0x059 },
-    { "LDNW", 0x04D }, { "LDNDW", 0x049 },
-    { "STB", 0x00D }, { "STH", 0x015 }, { "STW", 0x01D }, { "STDW", 0x051 }, { "STNW", 0x055 }, { "STNDW", 0x05D },
-};
+bool commutative(const std::string &m)
+{
+    static const char *const list[] = {
+        "ADD", "AND", "OR", "XOR", "CMPEQ", "MPY32", "MPY", "MPYU", "ADDSP", "MPYSP", "CMPEQSP", "ADDDP", "MPYDP", "CMPEQDP",
+        "MPY32U", "ADDU", "MAX2", "MIN2", "ADD2", "ADD4", "CMPEQ2", "CMPEQ4", "SADD", "AVG2", "DOTP2", "MPY2", "SMPY", "SMPY2",
+        "MPYLI", "MPYHI", "MPYH", "MPYHU", 0 };
+    for (int k = 0; list[k]; k++) if (m == list[k]) return true;
+    return false;
+}
+
+/* the compare of the other sense, for the sources turned about */
+std::string turned(const std::string &m)
+{
+    if (m.compare(0, 5, "CMPLT") == 0) return "CMPGT" + m.substr(5);
+    if (m.compare(0, 5, "CMPGT") == 0) return "CMPLT" + m.substr(5);
+    return std::string();
+}
+
+/* the register, constant and pair forms, from the table. Without a unit named, the rows
+   asm6x chose on its own come first, then every row of that same unit (the probes named the
+   cross path of a form where its default did not); with one, the rows of that unit. Last, a
+   crossed source on an uncrossed row where the mnemonic, shape and unit have no crossed row
+   at all: the probes could not name every constant or unary form's cross path, and asm6x
+   encodes AND.D1X 3,B1,A2 and ABS.L1X B1,A2 as the plain row with x set. */
+bool table_form(const std::string &m, const UnitName &un, const std::vector<Operand> &o, Encoded &e)
+{
+    if (o.empty() || (o.back().kind != O_REG && o.back().kind != O_PAIR)) return false;
+    std::string shape = shape_of(o);
+    int dst = (int)o.size() - 1;
+    int s = o[dst].side;
+    const size_t nForms = sizeof kForms / sizeof *kForms, nMore = sizeof kMoreForms / sizeof *kMoreForms;
+    /* the units asm6x takes for this mnemonic and shape when none is named */
+    std::string dfltUnits;
+    for (size_t r = 0; r < nForms + nMore; r++) {
+        const FormRow &f = r < nForms ? kForms[r] : kMoreForms[r - nForms];
+        if (f.dflt && strcmp(f.name, m.c_str()) == 0 && strcmp(f.shape, shape.c_str()) == 0 && dfltUnits.find(f.unit) == std::string::npos) dfltUnits += f.unit;
+    }
+    for (int pass = 0; pass < 3; pass++) {
+        if (pass == 1 && un.letter) continue;
+        for (size_t r = 0; r < nForms + nMore; r++) {
+            const FormRow &f = r < nForms ? kForms[r] : kMoreForms[r - nForms];
+            if (strcmp(f.name, m.c_str()) != 0 || strcmp(f.shape, shape.c_str()) != 0) continue;
+            if (un.letter ? f.unit != un.letter : (pass == 0 ? !f.dflt : dfltUnits.find(f.unit) == std::string::npos)) continue;
+            bool cross = f.cross != 0;
+            if (pass == 2) {
+                if (cross || (f.form & 0x400)) continue;
+                bool any = false;
+                for (size_t q = 0; q < nForms + nMore && !any; q++) {
+                    const FormRow &g = q < nForms ? kForms[q] : kMoreForms[q - nForms];
+                    any = g.cross && g.unit == f.unit && strcmp(g.name, m.c_str()) == 0 && strcmp(g.shape, shape.c_str()) == 0;
+                }
+                if (any) continue;
+                cross = true;
+            }
+            if (un.letter && !un.loose && un.cross != cross) continue;
+            bool ok = true, crossed = false, src1cross = f.map[0] == 6 || f.map[1] == 6;
+            for (int k = 0; k < dst && ok; k++) {
+                int mp = f.map[k];
+                if (pass == 2 && o[k].kind == O_PAIR && o[k].side != s) { ok = false; break; }   /* a long operand never crosses */
+                if (mp == 1) { ok = (o[k].side != s) == (cross && !src1cross); crossed = crossed || o[k].side != s; }
+                else if (mp == 6) { ok = o[k].side != s; crossed = true; }
+                else if (mp == 2 || mp == 5) ok = o[k].side == s;
+                else if (mp == 3 || mp == 4) ok = f.cst == 'u' ? (o[k].v >= 0 && o[k].v <= 31) : (o[k].v >= -16 && o[k].v <= 15);
+            }
+            if (!ok || (pass == 2 && !crossed)) continue;
+            unsigned long w = ((unsigned long)(f.form & 0x3FF) << 2) | (f.form & 0x400 ? 1ul << 12 : 0) | (cross ? 1ul << 12 : 0) | ((unsigned long)s << 1);
+            for (int k = 0; k <= dst; k++) {
+                int mp = f.map[k];
+                unsigned long v = o[k].kind == O_CST ? ((unsigned long)o[k].v & 31) : (unsigned long)o[k].reg;
+                if (mp == 0) w |= v << 23;
+                else if (mp == 1 || mp == 4) w |= v << 18;
+                else if (mp == 2 || mp == 3 || mp == 6) w |= v << 13;
+                else if (mp == 5) w |= (v + 1) << 18 | v << 13;
+            }
+            if (m == "NOT") w |= 31ul << 13;    /* XOR with -1, on every unit */
+            e.w = w; e.unit = f.unit; e.side = s;
+            return true;
+        }
+    }
+    return false;
+}
 
 int access_width(const std::string &m)
 {
@@ -364,14 +565,358 @@ int access_width(const std::string &m)
     return 4;
 }
 
+/* the loads and stores: bits 2-8 with the mode and y cleared */
+struct MemForm { const char *name; unsigned form; };
+const MemForm kMemory[] = {
+    { "LDB", 0x009 }, { "LDBU", 0x005 }, { "LDH", 0x011 }, { "LDHU", 0x001 }, { "LDW", 0x019 }, { "LDDW", 0x059 },
+    { "LDNW", 0x04D }, { "LDNDW", 0x049 },
+    { "STB", 0x00D }, { "STH", 0x015 }, { "STW", 0x01D }, { "STDW", 0x051 }, { "STNW", 0x055 }, { "STNDW", 0x05D },
+};
+
+unsigned mem_form(const std::string &m)
+{
+    for (size_t k = 0; k < sizeof kMemory / sizeof *kMemory; k++) if (m == kMemory[k].name) return kMemory[k].form;
+    return 0xFFFF;
 }
 
-/* one instruction: the predicate and parallel bar first, then the mnemonic and its operands */
+bool encode_memory(Unit &u, const std::string &m, const UnitName &un, const std::vector<Operand> &o, Encoded &e)
+{
+    bool load = m[0] == 'L';
+    if (o.size() != 2 || (load ? o[0].kind != O_MEM : o[1].kind != O_MEM)) { u.error(m + " takes an address and a register" + (load ? std::string(", that way about") : std::string(", the other way about"))); return false; }
+    const Operand &mem = load ? o[0] : o[1];
+    const Operand &reg = load ? o[1] : o[0];
+    unsigned f = mem_form(m);
+    int width = access_width(m);
+    bool pair = width == 8;
+    if (pair ? reg.kind != O_PAIR : reg.kind != O_REG) { u.error(m + (pair ? " moves a register pair" : " moves one register")); return false; }
+    if (un.letter && (un.letter != 'D' || (un.cross && !un.loose))) { u.error(m + " is a .D instruction"); return false; }
+    if (un.letter && !un.loose && un.side != mem.side) { u.error("the base register is on the other side of the named unit"); return false; }
+    if (un.dataSide >= 0 && un.dataSide != reg.side) { u.error("the data register is on the other side of the named unit's T"); return false; }
+    unsigned long w;
+    if (mem.offReg >= 0) {
+        static const unsigned modes[5] = { 5, 13, 12, 15, 14 };
+        unsigned mode = mem.mode ? modes[mem.mode] : (mem.minus ? 4 : 5);
+        w = ((unsigned long)f << 2) | ((unsigned long)reg.reg << 23) | ((unsigned long)mem.reg << 18) | ((unsigned long)mem.offReg << 13) |
+            ((unsigned long)mode << 9) | ((unsigned long)mem.side << 7) | ((unsigned long)reg.side << 1);
+    } else {
+        long long off = mem.v;
+        bool minus = mem.minus;
+        if (off < 0) { off = -off; minus = !minus; }       /* asm6x turns *+R(-4) into *-R[1] */
+        if (!mem.bracket) {
+            if (off % width) { u.warn("the offset is not a multiple of the access; truncated"); off -= off % width; }
+            off /= width;
+        }
+        if (mem.mode && minus) { u.error("a bad address"); return false; }
+        if (off > 31 && mem.mode == 0 && !minus && mem.side == 1 && (mem.reg == 14 || mem.reg == 15) && off < 32768 && (f & 0x40) == 0) {
+            /* the 15-bit offset from the data or stack pointer: the constant in 8-22, the
+               pointer in bit 7, and 11 where the other form has 01 */
+            w = ((unsigned long)(f & 0x1C) << 2) | 0xC | ((unsigned long)reg.reg << 23) | ((unsigned long)off << 8) |
+                (mem.reg == 15 ? 1ul << 7 : 0) | ((unsigned long)reg.side << 1);
+        } else {
+            if (off > 31) { u.error("the offset is 0 to 31 units of the access, or up to 32767 from B14 or B15"); return false; }
+            static const unsigned modes[5] = { 1, 9, 8, 11, 10 };
+            unsigned mode = mem.mode ? modes[mem.mode] : (minus ? 0 : 1);
+            w = ((unsigned long)f << 2) | ((unsigned long)reg.reg << 23) | ((unsigned long)mem.reg << 18) | ((unsigned long)off << 13) |
+                ((unsigned long)mode << 9) | ((unsigned long)mem.side << 7) | ((unsigned long)reg.side << 1);
+        }
+    }
+    if (m == "LDNDW" || m == "STNDW") w = (w & ~(31ul << 23)) | ((unsigned long)(reg.reg + 1) << 23);
+    e.w = w; e.unit = 'D'; e.side = mem.side;
+    return true;
+}
+
+bool unit_is(Unit &u, const std::string &m, const UnitName &un, char letter, int side, bool cross)
+{
+    if (!un.letter) return true;
+    if (un.letter != letter || un.dataSide >= 0) { u.error(m + std::string(" is a .") + letter + " instruction"); return false; }
+    if (un.loose) return true;
+    if (side >= 0 && un.side != side) { u.error(m + " is not on the named unit's side"); return false; }
+    if (un.cross != cross) { u.error(m + (cross ? " crosses; the unit needs X" : " does not cross; the unit takes no X")); return false; }
+    return true;
+}
+
+/* MVK, MVKL, MVKH, MVKLH: the 16-bit constant in bits 7-22 of the .S form; MVK of -16..15 is
+   asm6x's MVK.L, the L form with the constant in src2 */
+bool encode_mvk(Unit &u, const std::string &m, const UnitName &un, const std::vector<Operand> &o, Encoded &e)
+{
+    if (o.size() != 2 || o[1].kind != O_REG || (o[0].kind != O_CST && o[0].kind != O_EXPR)) { u.error(m + " takes a constant or a symbol, and a register"); return false; }
+    int side = o[1].side;
+    unsigned long dst = ((unsigned long)o[1].reg << 23) | ((unsigned long)side << 1);
+    if (un.letter && !un.loose && un.cross) { u.error(m + " has no cross path"); return false; }
+    if (un.letter && !un.loose && un.side != side) { u.error(m + " is not on the named unit's side"); return false; }
+    e.side = side; e.unit = 'S';
+    if (o[0].kind == O_EXPR) {
+        if (m == "MVKLH") { u.error("MVKLH takes a constant"); return false; }
+        if (un.letter && un.letter != 'S') { u.error(m + " of a symbol is a .S instruction"); return false; }
+        e.w = (m == "MVKH" ? 0x68ul : 0x28ul) | dst;
+        e.fixSym = o[0].val.sym; e.fixKind = m == "MVK" ? R_ABS_S16 : m == "MVKL" ? R_ABS_L16 : R_ABS_H16; e.fixAdd = o[0].v;
+        return true;
+    }
+    long long c = o[0].v;
+    if (m == "MVK") {
+        bool small = c >= -16 && c <= 15;
+        if (c < -32768 || c > 32767) { u.warn("the constant is truncated to 16 bits"); c = (long long)(short)(c & 0xFFFF); small = false; }
+        if (un.letter == 'L' || (!un.letter && small)) {
+            if (c < -16 || c > 15) { u.error("MVK on .L takes -16 to 15"); return false; }
+            e.w = 0xA358 | dst | (((unsigned long)c & 31) << 18); e.unit = 'L';
+            return true;
+        }
+        if (un.letter == 'D') {
+            /* the C64x+ MVK .D, which asm6x takes when .L and .S are spoken for in a packet */
+            if (c < -16 || c > 15) { u.error("MVK on .D takes -16 to 15"); return false; }
+            e.w = 0x40 | dst | (((unsigned long)c & 31) << 13); e.unit = 'D';
+            return true;
+        }
+        if (un.letter && un.letter != 'S') { u.error("MVK is a .S or .L instruction"); return false; }
+        e.w = 0x28 | dst | (((unsigned long)c & 0xFFFF) << 7);
+        return true;
+    }
+    if (un.letter && un.letter != 'S') { u.error(m + " is a .S instruction"); return false; }
+    if (c < -2147483648LL || c > 4294967295LL) u.warn("the constant is truncated to 32 bits");
+    unsigned long half = m == "MVKH" ? ((unsigned long)c >> 16) & 0xFFFF : (unsigned long)c & 0xFFFF;
+    e.w = (m == "MVKL" ? 0x28ul : 0x68ul) | dst | (half << 7);
+    return true;
+}
+
+bool encode_branch(Unit &u, const std::string &m, const UnitName &un, const std::vector<Operand> &o, unsigned creg, Encoded &e)
+{
+    bool nop = m == "BNOP" || m == "RETNOP";
+    size_t need = m == "CALLP" ? 2 : 1;
+    if (o.size() < need || o.size() > need + (nop ? 1 : 0)) { u.error(m + " takes " + (m == "CALLP" ? "a target and the return register" : nop ? "a target and a count" : "a target")); return false; }
+    long long count = 0;
+    if (nop && o.size() == 2) {
+        if (o[1].kind != O_CST) { u.error(m + "'s count is a constant"); return false; }
+        count = o[1].v;
+        if (count < 0 || count > 7) { u.error(m + "'s count is 0 to 7"); return false; }
+    }
+    const Operand &tg = o[0];
+    if (tg.kind == O_REG) {
+        /* by register: always .S2, the cross path for an A register */
+        if (m == "CALLP") { u.error("CALLP takes a label"); return false; }
+        if (!unit_is(u, m, un, 'S', 1, tg.side == 0)) return false;
+        e.w = (nop ? 0x800362ul : 0x362ul) | ((unsigned long)tg.reg << 18) | (tg.side ? 0 : 1ul << 12) | ((unsigned long)count << 13);
+        e.unit = 'S'; e.side = 1;
+        return true;
+    }
+    if (m == "RET" || m == "RETNOP") { u.error(m + " takes a register"); return false; }
+    if (tg.kind != O_EXPR) { u.error(m + " takes a label or a register"); return false; }
+    int side;
+    if (m == "CALLP") {
+        if (o[1].kind != O_REG || o[1].reg != 3) { u.error("A3 or B3 is required as the return address"); return false; }
+        if (creg) { u.error("CALLP must be unconditional"); return false; }
+        side = o[1].side;
+        if (!unit_is(u, m, un, 'S', side, false)) return false;
+        e.w = 0x10000010ul | ((unsigned long)side << 1);
+    } else {
+        side = un.letter && !un.loose ? un.side : nop ? 0 : 1;      /* asm6x's defaults: B on .S2, BNOP on .S1 */
+        if (!unit_is(u, m, un, 'S', side, false)) return false;
+        e.w = (nop ? 0x120ul | ((unsigned long)count << 13) : 0x10ul) | ((unsigned long)side << 1);
+    }
+    e.unit = 'S'; e.side = side;
+    e.fixKind = nop ? R_PCR_S12 : R_PCR_S21;
+    e.fixSym = tg.val.sym; e.fixAdd = tg.v;
+    return true;
+}
+
+bool encode_mvc(Unit &u, const std::vector<Token> &t, const std::vector<size_t> &cuts, size_t n, const UnitName &un, Encoded &e)
+{
+    /* a control register in or out, on .S2: the register side is B, or crosses in. The
+       control register is a name, not a symbol, so it is read before the operands are. */
+    static const struct { const char *name; unsigned code; } cregs[] = {
+        { "AMR", 0 }, { "CSR", 1 }, { "IFR", 2 }, { "ISR", 2 }, { "ICR", 3 }, { "IER", 4 }, { "ISTP", 5 }, { "IRP", 6 },
+        { "NRP", 7 }, { "TSCL", 10 }, { "TSCH", 11 }, { "ILC", 13 }, { "RILC", 14 }, { "REP", 15 }, { "PCE1", 16 },
+        { "DNUM", 17 }, { "SSR", 21 }, { "GPLYA", 22 }, { "GPLYB", 23 }, { "GFPGFR", 24 }, { "DIER", 25 }, { "TSR", 26 },
+        { "ITSR", 27 }, { "NTSR", 28 }, { "EFR", 29 }, { "ECR", 29 }, { "IERR", 31 } };
+    if (n != 2 || cuts[1] - 1 != cuts[0] + 1 || cuts[2] - 1 != cuts[1] + 1 ||
+        t[cuts[0]].kind != T_NAME || t[cuts[1]].kind != T_NAME) { u.error("MVC takes a register and a control register"); return false; }
+    int reg, side, code = -1;
+    bool in = reg_name(t[cuts[0]].text, reg, side);
+    std::string cname = upper(t[in ? cuts[1] : cuts[0]].text);
+    if (!in && !reg_name(t[cuts[1]].text, reg, side)) { u.error("MVC takes a register and a control register"); return false; }
+    for (size_t k = 0; k < sizeof cregs / sizeof *cregs; k++) if (cname == cregs[k].name) code = (int)cregs[k].code;
+    if (code < 0) { u.error("'" + cname + "' is not a control register"); return false; }
+    if (!unit_is(u, "MVC", un, 'S', 1, in && !side)) return false;
+    if (in) e.w = 0x3A2 | ((unsigned long)code << 23) | ((unsigned long)reg << 18) | (side ? 0 : 1ul << 12);
+    else {
+        if (!side) { u.error("MVC out of a control register lands on the B side"); return false; }
+        e.w = 0x3E2 | ((unsigned long)reg << 23) | ((unsigned long)code << 18);
+    }
+    e.unit = 'S'; e.side = 1;
+    return true;
+}
+
+/* everything but MVC: the special forms first, then asm6x's rewrites, then the table */
+bool encode(Unit &u, std::string m, const UnitName &un, std::vector<Operand> &o, unsigned creg, Encoded &e)
+{
+    size_t n = o.size();
+    #define REG(k) (o[k].kind == O_REG)
+    #define PAIR(k) (o[k].kind == O_PAIR)
+    #define CST(k) (o[k].kind == O_CST)
+    #define SYM(k) (o[k].kind == O_EXPR)
+
+    if (m == "NOP") {
+        long long c = 1;
+        if (n == 1 && CST(0)) c = o[0].v;
+        else if (n != 0) { u.error("NOP takes a count"); return false; }
+        if (un.letter) { u.error("NOP takes no unit"); return false; }
+        if (c < 1) { u.error("NOP takes 1 to 9"); return false; }
+        if (c > 9) { u.warn("NOP takes 1 to 9; 9 taken"); c = 9; }
+        e.w = (unsigned long)(c - 1) << 13;
+        return true;
+    }
+    if (m == "SWE" || m == "IDLE") {
+        if (n || un.letter) { u.error(m + " takes nothing"); return false; }
+        e.w = m == "SWE" ? 0x10000000ul : 0x0001E000ul;
+        return true;
+    }
+    if (m == "B" || m == "RET" || m == "CALLP" || m == "BNOP" || m == "RETNOP") return encode_branch(u, m, un, o, creg, e);
+    if (mem_form(m) != 0xFFFF) return encode_memory(u, m, un, o, e);
+    if (m == "MVK" || m == "MVKL" || m == "MVKH" || m == "MVKLH") return encode_mvk(u, m, un, o, e);
+    if (m == "ADDK") {
+        if (n != 2 || !CST(0) || !REG(1)) { u.error("ADDK takes a constant and a register"); return false; }
+        if (!unit_is(u, m, un, 'S', o[1].side, false)) return false;
+        long long c = o[0].v;
+        if (c < -32768 || c > 32767) { u.error("ADDK's constant is 16 bits signed"); return false; }
+        e.w = 0x50 | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[1].side << 1) | (((unsigned long)c & 0xFFFF) << 7);
+        e.unit = 'S'; e.side = o[1].side;
+        return true;
+    }
+    if (m == "ZERO") {
+        if (n != 1 || (!REG(0) && !PAIR(0))) { u.error("ZERO takes a register or a pair"); return false; }
+        e.side = o[0].side;
+        if (PAIR(0)) {
+            if (!unit_is(u, m, un, 'L', e.side, false)) return false;
+            e.w = 0x4F8ul | ((unsigned long)o[0].reg << 23) | ((unsigned long)e.side << 1); e.unit = 'L';
+        } else if (un.letter == 'S') {
+            if (!unit_is(u, m, un, 'S', e.side, false)) return false;
+            e.w = 0x28ul | ((unsigned long)o[0].reg << 23) | ((unsigned long)e.side << 1); e.unit = 'S';
+        } else {
+            if (!unit_is(u, m, un, 'L', e.side, false)) return false;
+            e.w = 0xA358ul | ((unsigned long)o[0].reg << 23) | ((unsigned long)e.side << 1); e.unit = 'L';
+        }
+        return true;
+    }
+    if ((m == "EXT" || m == "EXTU" || m == "CLR" || m == "SET") && n == 4) {
+        if (!REG(0) || !CST(1) || !CST(2) || !REG(3)) { u.error(m + " takes a register, two constants and a register"); return false; }
+        if (o[0].side != o[3].side) { u.error(m + "'s source and destination are on one side"); return false; }
+        if (!unit_is(u, m, un, 'S', o[3].side, false)) return false;
+        if (o[1].v < 0 || o[1].v > 31 || o[2].v < 0 || o[2].v > 31) { u.error(m + "'s constants are 0 to 31"); return false; }
+        unsigned long base = m == "EXT" ? 0x48 : m == "EXTU" ? 0x08 : m == "CLR" ? 0xC8 : 0x88;
+        e.w = base | ((unsigned long)o[3].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].v << 13) |
+              ((unsigned long)o[2].v << 8) | ((unsigned long)o[3].side << 1);
+        e.unit = 'S'; e.side = o[3].side;
+        return true;
+    }
+    if ((m == "ADDAB" || m == "ADDAH" || m == "ADDAW") && n == 3 && REG(0) && CST(1) && REG(2) && o[0].side == 1 && (o[0].reg == 14 || o[0].reg == 15)) {
+        /* the C64x+ 15-bit address add from the data or stack pointer, which asm6x takes for
+           any constant from B14 or B15: the constant in 8-22, the pointer in bit 7, the op
+           in 4-6 and 11 in 2-3 */
+        long long c = o[1].v;
+        if (c < 0 || c > 32767) { u.warn("the constant is truncated to 15 bits"); }
+        if (!unit_is(u, m, un, 'D', o[2].side, o[2].side == 0)) return false;
+        e.w = 0x10000000ul | ((unsigned long)o[2].reg << 23) | (((unsigned long)c & 0x7FFF) << 8) | (o[0].reg == 15 ? 1ul << 7 : 0) |
+              ((unsigned long)(m == "ADDAB" ? 3 : m == "ADDAH" ? 5 : 7) << 4) | 0xC | ((unsigned long)o[2].side << 1);
+        e.unit = 'D'; e.side = o[2].side;
+        return true;
+    }
+
+    /* asm6x's rewrites, read back from it, for a register on the destination's side: ADD of
+       -16..-1 keeps the signed .D form (the table's 0x2BC, which dis6x lists as SUB), ADD of
+       -31..-17 is SUB of the positive, SUB r,-c is ADD r,c; across the cross path SUB r,c is
+       ADD r,-c in the signed form; a compare written register first is the constant-first
+       compare of the other sense */
+    if (n == 3 && REG(2) && (un.letter == 0 || un.letter == 'D')) {
+        int r = CST(0) && REG(1) ? 1 : REG(0) && CST(1) ? 0 : -1;
+        if (r >= 0) {
+            int c = 1 - r;
+            bool same = o[r].side == o[2].side;
+            if (m == "ADD" && o[c].v < -16 && o[c].v >= -31 && same) {
+                m = "SUB";
+                o[c].v = -o[c].v;
+                if (r == 1) { Operand x = o[0]; o[0] = o[1]; o[1] = x; }
+            } else if (m == "SUB" && r == 0 && o[c].v < 0 && o[c].v >= -31 && same) {
+                m = "ADD";
+                o[c].v = -o[c].v;
+            } else if (m == "SUB" && r == 0 && o[c].v > 0 && o[c].v <= 16 && !same) {
+                m = "ADD";
+                o[c].v = -o[c].v;
+            }
+        }
+    }
+    if (n == 3 && REG(0) && CST(1) && REG(2) && m.compare(0, 3, "CMP") == 0) {
+        std::string tm = turned(m);
+        Operand x = o[0]; o[0] = o[1]; o[1] = x;
+        if (!tm.empty()) m = tm;
+    }
+    for (int attempt = 0; attempt < 2; attempt++) {
+        if (table_form(m, un, o, e)) return true;
+        /* no row fits as written: asm6x turns the sources of a commutative operation about
+           when the first is the one across, and a compare with its sense */
+        if (attempt == 0 && n == 3 && (REG(0) || CST(0) || PAIR(0)) && (REG(1) || CST(1) || PAIR(1)) && (REG(2) || PAIR(2))) {
+            std::string tm = turned(m);
+            if (commutative(m) || !tm.empty()) {
+                Operand x = o[0]; o[0] = o[1]; o[1] = x;
+                if (!tm.empty()) m = tm;
+                continue;
+            }
+        }
+        break;
+    }
+    #undef REG
+    #undef PAIR
+    #undef CST
+    #undef SYM
+    std::string shape = shape_of(o);
+    if (shape.find('s') != std::string::npos) u.error(m + " does not take a symbol; a symbol's address comes by MVKL and MVKH");
+    else if (un.letter) u.error(m + " with these operands has no form on the named unit");
+    else u.error(m + " with these operands is not an instruction this assembler knows");
+    return false;
+}
+
+}
+
+namespace {
+
+unsigned unit_bit(const Encoded &e)
+{
+    if (!e.unit) return 0;
+    return 1u << ((e.unit == 'D' ? 0 : e.unit == 'L' ? 2 : e.unit == 'M' ? 4 : 6) + e.side);
+}
+
+}
+
+/* another unit for an instruction of a packet, free among `taken`: the units in asm6x's
+   order D, S, L, M after the one it has, each tried with only the letter asked for. With
+   keepUnit the instruction may stay where it is - it is an earlier one being asked to make
+   way, and the unit it holds is in `taken` for the asker's sake. */
+bool C6xTarget::retarget(Unit &u, Packet &p, unsigned taken, bool keepUnit)
+{
+    static const char order[] = "DSLM";
+    if (p.mnemonic == "MVC" || p.e.fixSym >= 0) return false;
+    size_t errs = u.errors.size(), warns = u.warnings.size();
+    for (int k = 0; k < 4; k++) {
+        if (order[k] == p.e.unit) continue;
+        UnitName un;
+        un.letter = order[k]; un.side = -1; un.cross = false; un.dataSide = -1; un.loose = true;
+        std::vector<Operand> o(p.operands);
+        Encoded e;
+        e.w = 0; e.unit = 0; e.side = -1; e.fixSym = -1; e.fixKind = R_NONE; e.fixAdd = 0;
+        bool ok = encode(u, p.mnemonic, un, o, p.creg, e);
+        u.errors.resize(errs);
+        u.warnings.resize(warns);
+        if (!ok || e.fixSym >= 0 || (taken & unit_bit(e)) || (!keepUnit && e.unit == p.e.unit)) continue;
+        p.e = e;
+        return true;
+    }
+    return false;
+}
+
+/* one instruction: the predicate and parallel bar first, then the mnemonic, a unit if one is
+   named, and the operands */
 void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
 {
     Section *sec = u.cur();
     if (!sec) return;
-    if (!sec->code) { u.error("an instruction outside a code section"); return; }
     bool par = false;
     unsigned creg = 0, z = 0;
     if (i < t.size() && t[i].kind == T_PUNCT && t[i].text == "||") { par = true; i++; }
@@ -388,307 +933,88 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
         creg = (unsigned)predicate_code(reg, side);
         z = neg ? 1 : 0;
         i += 2;
-        if (i < t.size() && t[i].kind == T_PUNCT && t[i].text == "||") { par = true; i++; }
+        if (i < t.size() && t[i].kind == T_PUNCT && t[i].text == "||") { u.error("|| comes before the predicate"); return; }
     }
-    if (i >= t.size() || t[i].kind != T_NAME) { u.error("an instruction expected"); return; }
+    if (i >= t.size() || t[i].kind != T_NAME) { u.error("an instruction is expected"); return; }
     std::string m = upper(t[i].text);
-    size_t dot = m.find('.');
-    std::string unit;
-    if (dot != std::string::npos) { unit = m.substr(dot + 1); m = m.substr(0, dot); }
-    if (!unit.empty()) { u.error("a unit is not taken here: the compilers never name one, and asm6x's own choice is what is encoded"); return; }
     i++;
-    std::vector<size_t> cuts;
-    split_items(t, i, cuts);
-    std::vector<Operand> o;
-    unsigned long w = 0;
-    bool have = false;
-    if (m == "MVC") {
-        /* a control register in or out, on .S2: the register side is B, or crosses in. The
-           control register is a name, not a symbol, so it is read before the operands are. */
-        static const struct { const char *name; unsigned code; } cregs[] = {
-            { "AMR", 0 }, { "CSR", 1 }, { "IFR", 2 }, { "ISR", 2 }, { "ICR", 3 }, { "IER", 4 }, { "ISTP", 5 }, { "IRP", 6 },
-            { "NRP", 7 }, { "TSCL", 10 }, { "TSCH", 11 }, { "ILC", 13 }, { "RILC", 14 }, { "REP", 15 }, { "PCE1", 16 },
-            { "DNUM", 17 }, { "SSR", 21 }, { "GPLYA", 22 }, { "GPLYB", 23 }, { "GFPGFR", 24 }, { "DIER", 25 }, { "TSR", 26 },
-            { "ITSR", 27 }, { "NTSR", 28 }, { "EFR", 29 }, { "ECR", 29 }, { "IERR", 31 } };
-        if (cuts.size() != 3 || cuts[1] - 1 != cuts[0] + 1 || cuts[2] - 1 != cuts[1] + 1 ||
-            t[cuts[0]].kind != T_NAME || t[cuts[1]].kind != T_NAME) { u.error("MVC takes a register and a control register"); return; }
-        int reg, side, code = -1;
-        bool in = reg_name(t[cuts[0]].text, reg, side);
-        std::string cname = upper(t[in ? cuts[1] : cuts[0]].text);
-        if (!in && !reg_name(t[cuts[1]].text, reg, side)) { u.error("MVC takes a register and a control register"); return; }
-        for (size_t k = 0; k < sizeof cregs / sizeof *cregs; k++) if (cname == cregs[k].name) code = (int)cregs[k].code;
-        if (code < 0) { u.error("'" + cname + "' is not a control register"); return; }
-        if (in) w = 0x3A2 | ((unsigned long)code << 23) | ((unsigned long)reg << 18) | (side ? 0 : 1ul << 12);
-        else {
-            if (!side) { u.error("MVC out of a control register lands on the B side"); return; }
-            w = 0x3E2 | ((unsigned long)reg << 23) | ((unsigned long)code << 18);
-        }
-        have = true;
+    UnitName un;
+    un.letter = 0; un.side = -1; un.cross = false; un.dataSide = -1; un.loose = false;
+    std::string why;
+    size_t dot = m.find('.');
+    if (dot != std::string::npos) {
+        if (!parse_unit(m.substr(dot + 1), un, why)) { u.error(why); return; }
+        m = m.substr(0, dot);
+    } else if (i < t.size() && t[i].kind == T_NAME && t[i].text[0] == '.') {
+        if (!parse_unit(t[i].text.substr(1), un, why)) { u.error(why); return; }
+        i++;
     }
-    if (!have && i < t.size())
-        for (size_t k = 0; k + 1 < cuts.size(); k++) {
+
+    /* the section is code from here; an instruction after data takes the next word, and a
+       label waiting from the line before takes that word too */
+    if (!sec->code) sec->code = true;
+    if (!sec->hasCode) { sec->hasCode = true; if (sec->align < 32) sec->align = 32; }
+    u.align(4);
+    if (par) {
+        if (!u.pendingLabel.empty()) { u.error("|| cannot follow a label"); return; }
+        if (last_section != u.current || last_at + 4 != u.here()) { u.error("|| needs an instruction just before it"); return; }
+    }
+    u.placeLabel();
+
+    std::vector<size_t> cuts;
+    size_t n;
+    if (!count_items(u, t, i, cuts, n)) return;
+    Encoded e;
+    e.w = 0; e.unit = 0; e.side = -1; e.fixSym = -1; e.fixKind = R_NONE; e.fixAdd = 0;
+    std::vector<Operand> operands;
+    if (m == "MVC") {
+        if (!encode_mvc(u, t, cuts, n, un, e)) return;
+    } else {
+        for (size_t k = 0; k < n; k++) {
             Operand x;
             if (!operand(u, t, cuts[k], cuts[k + 1] - 1, x)) return;
-            o.push_back(x);
+            operands.push_back(x);
         }
-    size_t n = o.size();
-
-    int fix_sym = -1;
-    RelKind fix_kind = R_NONE;
-    long long fix_add = 0;
-
-    #define REG(k) (o[k].kind == O_REG)
-    #define PAIR(k) (o[k].kind == O_PAIR)
-    #define CST(k) (o[k].kind == O_CST)
-    #define MEM(k) (o[k].kind == O_MEM)
-    #define SYM(k) (o[k].kind == O_EXPR)
-
-    if (have) {
-    } else if (m == "NOP") {
-        long long c = 1;
-        if (n == 1 && CST(0)) c = o[0].v;
-        else if (n != 0) { u.error("NOP takes a count"); return; }
-        if (c < 1 || c > 9) { u.error("NOP takes 1 to 9"); return; }
-        w = (unsigned long)(c - 1) << 13;
-        have = true;
-    } else if (m == "SWE") { w = 0x10000000; have = true; }
-    else if (m == "IDLE") { w = 0x0001E000; have = true; }
-    else if ((m == "B" || m == "RET") && n == 1 && REG(0)) {
-        /* B .S2 reg: always the B side, the cross path for an A register */
-        w = 0x362 | ((unsigned long)o[0].reg << 18) | (o[0].side ? 0 : 1ul << 12);
-        have = true;
-    } else if (m == "B" && n == 1 && SYM(0)) {
-        w = 0x12;
-        fix_sym = o[0].val.sym; fix_kind = R_PCR_S21; fix_add = o[0].v;
-        have = true;
-    } else if (m == "B" && n == 1 && CST(0)) { u.error("B needs a label or a register"); return; }
-    else if (m == "CALLP" && n == 2 && SYM(0) && REG(1)) {
-        w = 0x10000010 | ((unsigned long)o[1].side << 1);
-        fix_sym = o[0].val.sym; fix_kind = R_PCR_S21; fix_add = o[0].v;
-        have = true;
-    } else if (m == "BNOP" && n == 2 && CST(1)) {
-        if (o[1].v < 0 || o[1].v > 5) { u.error("BNOP's count is 0 to 5"); return; }
-        if (REG(0)) w = 0x800362 | ((unsigned long)o[0].reg << 18) | (o[0].side ? 0 : 1ul << 12) | ((unsigned long)o[1].v << 13);
-        else if (SYM(0)) { w = 0x120 | ((unsigned long)o[1].v << 13); fix_sym = o[0].val.sym; fix_kind = R_PCR_S10; fix_add = o[0].v; }
-        else { u.error("BNOP needs a label or a register"); return; }
-        have = true;
-    } else if (m == "RETNOP" && n == 2 && REG(0) && CST(1)) {
-        w = 0x800362 | ((unsigned long)o[0].reg << 18) | (o[0].side ? 0 : 1ul << 12) | ((unsigned long)o[1].v << 13);
-        have = true;
-    } else if (m == "ZERO" && n == 1 && (REG(0) || PAIR(0))) {
-        w = (PAIR(0) ? 0x4F8ul : 0xA358ul) | ((unsigned long)o[0].reg << 23) | ((unsigned long)o[0].side << 1);
-        have = true;
-    } else if ((m == "MVK" || m == "MVKL" || m == "MVKH" || m == "MVKLH") && n == 2 && REG(1)) {
-        unsigned long dst = ((unsigned long)o[1].reg << 23) | ((unsigned long)o[1].side << 1);
-        if (CST(0)) {
-            long long c = o[0].v;
-            if (m == "MVK" && c >= -16 && c <= 15) {
-                w = 0xA358 | dst | (((unsigned long)c & 31) << 18);   /* the .L form asm6x prefers */
-            } else if (m == "MVK" || m == "MVKL") {
-                if (m == "MVK" && (c < -32768 || c > 32767)) { u.error("MVK's constant is 16 bits; MVKL and MVKH take a wider one in halves"); return; }
-                w = 0x28 | dst | (((unsigned long)c & 0xFFFF) << 7);
-            } else {
-                w = 0x68 | dst | ((((unsigned long)c >> (m == "MVKH" ? 16 : 0)) & 0xFFFF) << 7);
-            }
-        } else if (SYM(0)) {
-            if (m == "MVK") { u.error("MVK takes a constant; a symbol's address needs MVKL and MVKH"); return; }
-            w = (m == "MVKL" ? 0x28ul : 0x68ul) | dst;
-            fix_sym = o[0].val.sym; fix_kind = m == "MVKL" ? R_ABS_L16 : R_ABS_H16; fix_add = o[0].v;
-        } else { u.error(m + " takes a constant or a symbol, and a register"); return; }
-        have = true;
-    } else if (m == "ADDK" && n == 2 && CST(0) && REG(1)) {
-        if (o[0].v < -32768 || o[0].v > 32767) { u.error("ADDK's constant is 16 bits"); return; }
-        w = 0x50 | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[1].side << 1) | (((unsigned long)o[0].v & 0xFFFF) << 7);
-        have = true;
-    } else if ((m == "EXT" || m == "EXTU" || m == "CLR" || m == "SET") && n == 4 && REG(0) && CST(1) && CST(2) && REG(3)) {
-        if (o[0].side != o[3].side) { u.error(m + "'s source and destination are on one side"); return; }
-        if (o[1].v < 0 || o[1].v > 31 || o[2].v < 0 || o[2].v > 31) { u.error(m + "'s constants are 0 to 31"); return; }
-        unsigned long base = m == "EXT" ? 0x48 : m == "EXTU" ? 0x08 : m == "CLR" ? 0xC8 : 0x88;
-        w = base | ((unsigned long)o[3].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].v << 13) |
-            ((unsigned long)o[2].v << 8) | ((unsigned long)o[3].side << 1);
-        have = true;
-    } else if (n == 3 && (REG(0) || PAIR(0)) && (REG(1) || PAIR(1)) && (REG(2) || PAIR(2))) {
-        unsigned f;
-        if (REG(0) && REG(1) && REG(2) && o[0].side != o[2].side && o[1].side == o[2].side &&
-            m != "SHL" && m != "SHR" && m != "SHRU" && m != "EXT" && m != "EXTU" && m != "SET" && m != "CLR") {
-            /* only the second source may cross: asm6x swaps a commutative operation's sources,
-               turns a compare about, and has an .S form of SUB and SUBSP that takes the first
-               crossed - all read back from it */
-            if (m == "ADD" || m == "AND" || m == "OR" || m == "XOR" || m == "CMPEQ" || m == "MPY32" || m == "ADDSP" ||
-                m == "MPYSP" || m == "CMPEQSP") {
-                Operand x = o[0]; o[0] = o[1]; o[1] = x;
-            } else if (m == "CMPLT" || m == "CMPGT" || m == "CMPLTU" || m == "CMPGTU" || m == "CMPLTSP" || m == "CMPGTSP") {
-                Operand x = o[0]; o[0] = o[1]; o[1] = x;
-                m = m.compare(0, 5, "CMPLT") == 0 ? "CMPGT" + m.substr(5) : "CMPLT" + m.substr(5);
-            } else if (m == "SUB" || m == "SUBSP") {
-                w = ((m == "SUB" ? 0x35Cul : 0x3AEul) << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) |
-                    ((unsigned long)o[1].reg << 13) | (1ul << 12) | ((unsigned long)o[2].side << 1);
-                have = true;
-            } else { u.error(m + "'s first source is on the destination's side; only the second may cross"); return; }
-        }
-        bool same = o[0].side == o[2].side && o[1].side == o[2].side;
-        if (have) {
-        } else
-        if ((m == "ADD" || m == "SUB") && PAIR(2) && REG(0) && REG(1)) {
-            /* the 40-bit forms on .L */
-            f = m == "ADD" ? 0x11E : 0x13E;
-            if (!same) { u.error(m + " into a pair takes sources of its side"); return; }
-            w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13);
-        } else if ((m == "ADDU" || m == "SUBU") && PAIR(2) && REG(0) && REG(1) && same) {
-            w = ((m == "ADDU" ? 0x15Eul : 0x17Eul) << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13);
-        } else if ((m == "EXT" || m == "EXTU" || m == "SET" || m == "CLR") && REG(0) && REG(1) && REG(2)) {
-            /* the field pair in a register: src2 the value, src1 the csta:cstb register of the
-               destination's side, the value alone may cross */
-            if (o[1].side != o[2].side) { u.error(m + "'s field register is on the destination's side"); return; }
-            unsigned fm = m == "EXT" ? 0x2F8 : m == "EXTU" ? 0x2B8 : m == "SET" ? 0x3B8 : 0x3F8;
-            w = ((unsigned long)fm << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].reg << 13) |
-                (o[0].side != o[2].side ? 1ul << 12 : 0);
-        } else if ((f = form_of(kSrc2First, sizeof kSrc2First / sizeof *kSrc2First, m)) != 0xFFFF && REG(0) && REG(1) && REG(2) &&
-                   (same || m == "SHL" || m == "SHR" || m == "SHRU")) {
-            /* ADD/SUB register forms of the classic D unit take both sources from their side; the
-               shifts on .S take the value shifted over the cross path but never the count */
-            if (m == "ADD" || m == "SUB" || m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "ADDAD" || m == "SUBAW") {
-                if (!same) { u.error(m + "'s sources are on the destination's side, or the second crosses"); return; }
-                w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].reg << 13);
-                if (m != "ADD" && m != "SUB") w |= 1ul << 12;   /* asm6x sets x in the address forms */
-            } else {
-                if (o[1].side != o[2].side) { u.error("a shift count comes from the destination's side"); return; }
-                w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)o[1].reg << 13) |
-                    (o[0].side != o[2].side ? 1ul << 12 : 0);
-            }
-        } else if ((m == "ADD" || m == "SUB") && REG(0) && REG(1) && REG(2)) {
-            /* the C64x+ D form with the cross path: src1, src2 the other way about */
-            if (o[0].side != o[2].side) { u.error(m + "'s first source is on the destination's side"); return; }
-            w = ((m == "ADD" ? 0x2ACul : 0x2CCul) << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) |
-                ((unsigned long)o[0].reg << 13) | (1ul << 12);
-        } else if ((f = form_of(kThreeReg, sizeof kThreeReg / sizeof *kThreeReg, m)) != 0xFFFF) {
-            if (o[0].side != o[2].side) { u.error(m + "'s first source is on the destination's side; only the second may cross"); return; }
-            w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)o[0].reg << 13) |
-                (o[1].side != o[2].side ? 1ul << 12 : 0);
-        } else { u.error(m + " does not take three registers this way"); return; }
-        if (!have) w |= (unsigned long)o[2].side << 1;
-        have = true;
-    } else if (n == 3 && REG(0) && CST(1) && REG(2) && m.compare(0, 3, "CMP") == 0) {
-        /* a compare written register first: asm6x takes it as the constant-first form */
-        Operand x = o[0]; o[0] = o[1]; o[1] = x;
-        goto cst_first;
-    } else if (n == 3 && REG(0) && CST(1) && REG(2)) {
-        /* src2, constant, dst: ADD/SUB with a ucst5, and asm6x's turn of a negative one into
-           the other instruction; the shifts with a count */
-        long long c = o[1].v;
-        if (o[0].side != o[2].side) { u.error(m + " with a constant takes its register from the destination's side"); return; }
-        unsigned f;
-        if ((m == "ADD" || m == "SUB") && c < 0) {
-            if (m == "SUB") { m = "ADD"; c = -c; }
-            else {
-                if (c < -16) { u.error("ADD's negative constant is -16 to -1"); return; }
-                w = (0x2BCul << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | (((unsigned long)c & 31) << 13) |
-                    ((unsigned long)o[2].side << 1);
-                have = true;
-            }
-        }
-        if (!have) {
-            f = form_of(kSrc2Cst, sizeof kSrc2Cst / sizeof *kSrc2Cst, m);
-            if (f == 0xFFFF) { u.error(m + " does not take a constant here"); return; }
-            if (c < 0 || c > 31) { u.error(m + "'s constant is 0 to 31"); return; }
-            w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[0].reg << 18) | ((unsigned long)c << 13) |
-                ((unsigned long)o[2].side << 1);
-            if (m == "ADDAW" || m == "ADDAH" || m == "ADDAB" || m == "ADDAD" || m == "SUBAW") w |= 1ul << 12;
-            have = true;
-        }
-    } else if (n == 3 && CST(0) && REG(1) && REG(2)) {
-        /* constant, src2, dst: the compares on .L, the logic on .D, with a scst5 */
-        long long c;
-    cst_first:
-        c = o[0].v;
-        unsigned f = form_of(kCstFirst, sizeof kCstFirst / sizeof *kCstFirst, m);
-        if (f == 0xFFFF) { u.error(m + " does not take a constant first"); return; }
-        if (m == "ADD") {
-            if (c < 0 || c > 31 || o[1].side != o[2].side) { u.error("ADD's constant first takes 0 to 31 on one side"); return; }
-            w = (0x250ul << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | ((unsigned long)c << 13);
-        } else {
-            bool unsignedc = m == "CMPGTU" || m == "CMPLTU";
-            if (unsignedc ? (c < 0 || c > 15) : (c < -16 || c > 15)) { u.error(m + "'s constant is out of range"); return; }
-            w = ((unsigned long)f << 2) | ((unsigned long)o[2].reg << 23) | ((unsigned long)o[1].reg << 18) | (((unsigned long)c & 31) << 13) |
-                (o[1].side != o[2].side ? 1ul << 12 : 0);
-        }
-        w |= (unsigned long)o[2].side << 1;
-        have = true;
-    } else if (n == 2 && (REG(0) || PAIR(0)) && (REG(1) || PAIR(1))) {
-        unsigned f;
-        if (PAIR(0) && (f = form_of(kPairIn, sizeof kPairIn / sizeof *kPairIn, m)) != 0xFFFF) {
-            if (o[0].side != o[1].side) { u.error(m + " takes its pair from the destination's side"); return; }
-            w = ((unsigned long)f << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)(o[0].reg + 1) << 18) | ((unsigned long)o[0].reg << 13);
-        } else if (PAIR(0) && PAIR(1) && (m == "MV" || m == "ABS" || m == "NEG")) {
-            if (o[0].side != o[1].side) { u.error("a pair " + m + " stays within its side"); return; }
-            w = ((m == "MV" ? 0x106ul : m == "ABS" ? 0x1C6ul : 0x126ul) << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[0].reg << 18);
-        } else if ((f = form_of(kUnary, sizeof kUnary / sizeof *kUnary, m)) != 0xFFFF && REG(0)) {
-            w = ((unsigned long)f << 2) | ((unsigned long)o[1].reg << 23) | ((unsigned long)o[0].reg << 18) |
-                (o[0].side != o[1].side ? 1ul << 12 : 0);
-            if (m == "NOT") w |= 31ul << 13;
-        } else { u.error(m + " does not take these two registers"); return; }
-        w |= (unsigned long)o[1].side << 1;
-        have = true;
-    } else if (n == 2 && ((MEM(0) && (REG(1) || PAIR(1))) || ((REG(0) || PAIR(0)) && MEM(1)))) {
-        bool load = MEM(0);
-        const Operand &mem = load ? o[0] : o[1];
-        const Operand &reg = load ? o[1] : o[0];
-        unsigned f = form_of(kMemory, sizeof kMemory / sizeof *kMemory, m);
-        if (f == 0xFFFF) { u.error(m + " is not a load or a store"); return; }
-        if (load != (m[0] == 'L')) { u.error(m + "'s operands are the wrong way about"); return; }
-        int width = access_width(m);
-        long long off = mem.v;
-        if (mem.v <= -2) off = (-2 - mem.v) * width;       /* [n] was in units */
-        else if (mem.v == -1) off = width;                 /* *R++ with no count: one unit */
-        if (off % width) { u.error("the offset is not a multiple of the access width"); return; }
-        long long count = off / width;
-        if (count > 31 && mem.mode == 0 && !mem.minus && mem.side == 1 && (mem.reg == 14 || mem.reg == 15) && count < 32768 && (f & 0x40) == 0) {
-            /* the 15-bit offset from the data or stack pointer: the constant in 8-22, the
-               pointer in bit 7, and 11 where the other form has 01 */
-            w = ((unsigned long)(f & 0x1C) << 2) | 0xC | ((unsigned long)reg.reg << 23) | ((unsigned long)count << 8) |
-                (mem.reg == 15 ? 1ul << 7 : 0) | ((unsigned long)reg.side << 1);
-        } else {
-            if (count < 0 || count > 31) { u.error("the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15"); return; }
-            unsigned mode;
-            switch (mem.mode) {
-            case 0: mode = mem.minus ? 0 : 1; break;
-            case 1: mode = 9; break;   /* *++R */
-            case 2: mode = 8; break;   /* *--R */
-            case 3: mode = 11; break;  /* *R++ */
-            default: mode = 10; break; /* *R-- */
-            }
-            w = ((unsigned long)f << 2) | ((unsigned long)reg.reg << 23) | ((unsigned long)mem.reg << 18) | ((unsigned long)count << 13) |
-                ((unsigned long)mode << 9) | ((unsigned long)mem.side << 7) | ((unsigned long)reg.side << 1);
-        }
-        if ((m == "LDNDW" || m == "STNDW") && PAIR(load ? 1 : 0)) w = (w & ~(31ul << 23)) | ((unsigned long)(reg.reg + 1) << 23);
-        have = true;
+        std::vector<Operand> o(operands);
+        if (!encode(u, m, un, o, creg, e)) return;
     }
-    #undef REG
-    #undef PAIR
-    #undef CST
-    #undef MEM
-    #undef SYM
-
-    if (!have) { u.error("'" + m + "' with these operands is not an instruction this assembler knows"); return; }
     if (creg && (m == "NOP" || m == "SWE" || m == "IDLE")) { u.error(m + " cannot be predicated"); return; }
-    w |= ((unsigned long)creg << 29) | ((unsigned long)z << 28);
-    /* the unit the word names, for a packet: asm6x moves an instruction to another unit
-       when two collide, which the compilers never ask of it; here a collision is refused */
-    unsigned want = 0;
-    if (m != "NOP" && m != "SWE" && m != "IDLE") {
-        unsigned low = (unsigned)(w >> 2) & 0x1F;
-        bool ldst = (low & 3) == 1 || (low & 3) == 3;
-        int side = ldst ? (int)((w >> 7) & 1) : (int)((w >> 1) & 1);
-        char kind = ldst || low == 0x10 || low == 0x1C ? 'D' : (low & 7) == 6 ? 'L' : (low & 0xF) == 0 ? 'M' : 'S';
-        want = 1u << ((kind == 'D' ? 0 : kind == 'L' ? 2 : kind == 'M' ? 4 : 6) + side);
-    }
+    /* the unit the word takes, for a packet. When two instructions of one packet want one
+       unit, asm6x moves one of them to a unit that is free and has a form for it: the later
+       instruction if it can move, else an earlier one that can - read back from it in
+       tests/probes and review-probes-2026-09-19/edge/15*-16*. A unit named in the source
+       is not moved. */
+    unsigned want = unit_bit(e);
     if (par) {
-        if (u.here() == 0 || last_at + 4 != u.here()) { u.error("|| needs an instruction before it"); return; }
-        if (units & want) { u.error("two instructions of one packet want the same unit; asm6x would move one, this assembler does not"); return; }
+        if (units & want) {
+            Packet mine;
+            mine.mnemonic = m; mine.operands = operands; mine.creg = creg; mine.z = z; mine.at = u.here(); mine.e = e;
+            if (!un.letter && retarget(u, mine, units, false)) { e = mine.e; want = unit_bit(e); }
+            else {
+                bool moved = false;
+                for (size_t k = 0; k < packet.size() && !moved; k++) {
+                    if (unit_bit(packet[k].e) != want || packet[k].named) continue;
+                    unsigned others = units & ~want;
+                    for (size_t j = 0; j < packet.size(); j++) if (j != k) others |= unit_bit(packet[j].e);
+                    if (!retarget(u, packet[k], others | want, true)) continue;
+                    unsigned long pw = (packet[k].e.w | ((unsigned long)packet[k].creg << 29) | ((unsigned long)packet[k].z << 28)) | (sec->bytes[packet[k].at] & 1);
+                    for (int b = 0; b < 4; b++) sec->bytes[packet[k].at + (unsigned long)b] = (unsigned char)(pw >> (8 * b));
+                    units = others | want | unit_bit(packet[k].e);
+                    moved = true;
+                }
+                if (!moved) { u.error("two instructions of one packet want the same unit, and neither has a form on a free one"); return; }
+                units &= ~want;     /* the mover's old unit is this instruction's now */
+            }
+        }
         sec->bytes[last_at] |= 1;
         units |= want;
-    } else units = want;
+    } else { units = want; packet.clear(); }
+    unsigned long w = e.w | ((unsigned long)creg << 29) | ((unsigned long)z << 28);
+    Packet entry;
+    entry.mnemonic = m; entry.operands = operands; entry.creg = creg; entry.z = z; entry.at = u.here(); entry.e = e; entry.named = un.letter != 0;
+    packet.push_back(entry);
     last_at = u.here();
-    if (fix_sym >= 0) u.fixup(last_at, fix_sym, fix_kind, fix_add);
-    u.emit32(w);
+    last_section = u.current;
+    if (e.fixSym >= 0) u.fixup(last_at, e.fixSym, e.fixKind, e.fixAdd);
+    u.emitWord(w);
 }

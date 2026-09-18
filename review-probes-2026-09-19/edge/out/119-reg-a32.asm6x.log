@@ -1,0 +1,11 @@
+"119-reg-a32.s", ERROR!   at line 4: [E0004] Operand #1, A32, not legal:
+                                             register or regpair expected
+		MV A32, A1
+
+"119-reg-a32.s", ERROR!   at EOF: [E0300] The following symbols are undefined:
+2 Assembly Errors, No Assembly Warnings
+  A32
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

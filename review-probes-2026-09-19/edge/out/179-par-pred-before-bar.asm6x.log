@@ -1,0 +1,9 @@
+"179-par-pred-before-bar.s", ERROR!   at line 5: [E0002] Illegal mnemonic
+                                                         specified
+		[A0] || ADD B1, B2, B3
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

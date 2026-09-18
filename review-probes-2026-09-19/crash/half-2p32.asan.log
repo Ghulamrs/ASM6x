@@ -1,0 +1,2 @@
+crash/half-2p32.s: line 2: a half word cannot hold 4295032831
+crash/half-2p32.s: line 3: a byte cannot hold 4294967551

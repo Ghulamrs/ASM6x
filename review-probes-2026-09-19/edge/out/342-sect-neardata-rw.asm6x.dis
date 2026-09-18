@@ -1,0 +1,5 @@
+
+Disassembly of 342-sect-neardata-rw.asm6x.obj:
+
+DATA Section .neardata (Little Endian), 0x4 bytes at 0x0 
+00000000   00000001           .word 0x00000001

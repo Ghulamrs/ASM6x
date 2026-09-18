@@ -17,13 +17,16 @@ void Unit::begin_pass(int n)
         prev_sizes.push_back((unsigned long)sections[i].bytes.size());
     sections.clear();
     depends.clear();
-    /* asm6x numbers .text first whatever the source opens first; its alignment is the
-       fetch packet's, 32 */
+    pendingLabel.clear();
+    /* asm6x numbers .text first whatever the source opens first; it is executable from the
+       start, and its alignment is the fetch packet's once an instruction lands in it */
     current = -1;
-    section(".text", 32);
+    section(".text", false);
+    sections[0].code = true;
     current = 0;
     fixups.clear();
     errors.clear();
+    warnings.clear();
     line = 0;
     for (size_t i = 0; i < symbols.size(); i++) {
         symbols[i].prev_section = symbols[i].section;
@@ -54,34 +57,38 @@ void Unit::error(const std::string &msg)
     errors.push_back(buf + msg);
 }
 
-/* the section of that name, opened on first use with the character its name gives it:
-   .text and .text:<x> hold code; .bss and .far are uninitialised; .const, .rodata, .switch
-   and the exception tables are read-only; an exidx table is SHT_C6000_UNWIND linked to the
-   code section it describes. Everything the compilers write is loaded. */
-int Unit::section(const std::string &name, int align)
+void Unit::warn(const std::string &msg)
+{
+    char buf[40];
+    snprintf(buf, sizeof buf, "line %d: warning: ", line);
+    warnings.push_back(buf + msg);
+}
+
+/* the section of that name, opened on first use. asm6x's rule is the content, not the name: a
+   section is loaded and read-only unless `.sect "x", RW` or .data says it is writable; it
+   becomes executable, 32-aligned and padded to 32 when an instruction lands in it; only .bss
+   and .usect make it NOBITS; and an exidx table is SHT_C6000_UNWIND, linked to the code
+   section its name ends with. */
+int Unit::section(const std::string &name, bool writable)
 {
     for (size_t i = 0; i < sections.size(); i++)
         if (sections[i].name == name) {
             current = (int)i;
-            if (align > sections[i].align) sections[i].align = align;
+            if (writable) sections[i].writable = true;
             return current;
         }
     Section s;
     s.name = name;
     std::string head = name.substr(0, name.find(':'));
-    s.code = head == ".text";
-    s.bss = head == ".bss" || head == ".far";
-    s.readonly = head == ".const" || head == ".rodata" || head == ".switch" || head == ".init_array" ||
-                 head == ".c6xabi.exidx" || head == ".c6xabi.extab";
+    s.code = false;
+    s.hasCode = false;
+    s.bss = false;
+    s.writable = writable;
     s.alloc = true;
-    s.kind = s.bss ? SEC_NOBITS : head == ".c6xabi.exidx" ? SEC_UNWIND : SEC_PROGBITS;
-    s.align = align;
-    s.linked = -1;
-    if (head == ".c6xabi.exidx" && name.size() > head.size()) {
-        std::string code = name.substr(head.size() + 1);
-        for (size_t i = 0; i < sections.size(); i++)
-            if (sections[i].name == code) s.linked = (int)i;
-    }
+    s.kind = head == ".c6xabi.exidx" ? SEC_UNWIND : SEC_PROGBITS;
+    s.align = 1;
+    s.dataLast = false;
+    s.dataEnd = 0;
     sections.push_back(s);
     current = (int)sections.size() - 1;
     return current;
@@ -127,6 +134,10 @@ int Unit::ref(const std::string &name)
     s.prev_value = 0;
     s.referenced = false;
     s.size = 0;
+    s.sized = false;
+    s.mustDefine = false;
+    s.alias = -1;
+    s.aliasAdd = 0;
     symbols.push_back(s);
     return (int)symbols.size() - 1;
 }
@@ -151,18 +162,20 @@ bool Unit::define(const std::string &name, int type)
     return true;
 }
 
-/* .set: an absolute value, section -1 */
-bool Unit::constant(const std::string &name, long long v)
+/* .set: an absolute value, section -1; or an alias of a label */
+bool Unit::constant(const std::string &name, long long v, int alias, long long aliasAdd)
 {
     int i = ref(name);
     Symbol &s = symbols[i];
-    if (s.defined && s.pass == pass && (s.section >= 0 || s.value != v)) {
+    if (s.defined && s.pass == pass && (s.section >= 0 || s.value != v || s.alias != alias)) {
         error("'" + name + "' is already defined");
         return false;
     }
     s.defined = true;
     s.section = -1;
     s.value = v;
+    s.alias = alias;
+    s.aliasAdd = aliasAdd;
     s.pass = pass;
     return true;
 }
@@ -174,6 +187,19 @@ void Unit::align(int bytes)
     if (bytes > s->align) s->align = bytes;
     while (s->bytes.size() % (size_t)bytes)
         s->bytes.push_back(0);
+}
+
+/* a label that stood alone on its line takes the address of what comes next, after that has
+   aligned itself - asm6x's placing, which puts `fwd:` before an instruction after data at the
+   padded word, not at the byte after the data */
+void Unit::placeLabel()
+{
+    if (pendingLabel.empty()) return;
+    std::string name = pendingLabel;
+    pendingLabel.clear();
+    Section *s = cur();
+    if (!s) return;
+    define(name, s->code ? SYM_FUNC : SYM_OBJECT);
 }
 
 void Unit::emit8(unsigned v)
@@ -195,12 +221,31 @@ void Unit::emit32(unsigned long v)
     emit16((unsigned)((v >> 16) & 0xFFFF));
 }
 
-void Unit::fixup(unsigned long at, int sym, RelKind kind, long long addend, int sub)
+void Unit::emitData(int width, unsigned long long v)
+{
+    Section *s = cur();
+    if (!s) return;
+    for (int k = 0; k < width; k++) emit8((unsigned)(v >> (8 * k)));
+    s->dataLast = true;
+    s->dataEnd = here();
+}
+
+void Unit::emitWord(unsigned long v)
+{
+    Section *s = cur();
+    if (!s) return;
+    emit32(v);
+    s->dataLast = false;
+}
+
+void Unit::fixup(unsigned long at, int sym, RelKind kind, long long addend, int sub, int secref, int width)
 {
     Fixup f;
+    f.width = width;
     f.section = current;
     f.at = at;
     f.symbol = sym;
+    f.secref = secref;
     f.sub = sub;
     f.kind = kind;
     f.addend = addend;
@@ -208,63 +253,102 @@ void Unit::fixup(unsigned long at, int sym, RelKind kind, long long addend, int 
     fixups.push_back(f);
 }
 
+namespace {
+
+unsigned long word_at(const Section &sec, unsigned long at)
+{
+    return (unsigned long)sec.bytes[at] | ((unsigned long)sec.bytes[at + 1] << 8) |
+           ((unsigned long)sec.bytes[at + 2] << 16) | ((unsigned long)sec.bytes[at + 3] << 24);
+}
+
+void put_word(Section &sec, unsigned long at, unsigned long w)
+{
+    for (int k = 0; k < 4; k++) sec.bytes[at + (unsigned long)k] = (unsigned char)(w >> (8 * k));
+}
+
+}
+
 /* after a pass: every fixup becomes a value in place, or a relocation. A branch to a label
    of its own section is settled here, as asm6x settles it; its displacement is in words from
    the start of the fetch packet holding the branch, not from the branch. A label difference
    is a constant once both sit in one section. Everything else - an address in a data word,
    the halves of an MVKL/MVKH pair, a branch out of the section, an exception-table entry -
-   goes to the linker, with the addend in place for the kinds asm6x writes as REL and in the
-   entry for the two it writes as RELA. */
+   goes to the linker: the addend written in place for every kind asm6x writes as REL (in the
+   branch's own displacement field for PCR_S21 and PCR_S12), and in the entry, and the field
+   too, for the three halves it writes as RELA. */
 void Unit::resolve()
 {
     for (size_t i = 0; i < symbols.size(); i++) {
         Symbol &s = symbols[i];
-        if (!s.defined && s.bind != B_EXTERN && s.bind != B_GLOBAL && s.bind != B_WEAK) {
+        if (!s.defined && s.bind != B_EXTERN && s.bind != B_GLOBAL && s.bind != B_WEAK && s.referenced) {
             line = s.line;
             error("'" + s.name + "' is not defined");
+        }
+        if (!s.defined && s.mustDefine) {
+            line = s.line;
+            error("'" + s.name + "' is declared with .def but not defined");
         }
     }
     for (size_t i = 0; i < fixups.size(); i++) {
         const Fixup &f = fixups[i];
-        const Symbol &s = symbols[f.symbol];
         line = f.line;
         Section &sec = sections[f.section];
-        if (s.defined && s.section < 0) {
-            error("'" + s.name + "' is a constant, not an address");
+        if (f.symbol < 0) {
+            /* $: against the section symbol, the offset as the addend; a NOCMP marker leaves
+               the data word as it is */
+            Reloc r;
+            r.offset = f.at; r.symbol = -1; r.section = f.secref; r.kind = f.kind; r.addend = f.addend; r.order = (unsigned long)i;
+            int width = f.kind == R_NOCMP ? 0 : f.width;
+            for (int k = 0; k < width; k++) sec.bytes[f.at + (unsigned long)k] = (unsigned char)((unsigned long long)f.addend >> (8 * k));
+            sec.relocs.push_back(r);
             continue;
         }
+        const Symbol &s = symbols[f.symbol];
         if (f.sub >= 0) {
             const Symbol &b = symbols[f.sub];
             if (!s.defined || !b.defined) continue;
             if (s.section != b.section) { error("labels in different sections cannot be subtracted"); continue; }
             long long d = s.value - b.value + f.addend;
-            int width = f.kind == R_ABS32 ? 4 : f.kind == R_ABS16 ? 2 : 1;
-            for (int k = 0; k < width; k++)
+            for (int k = 0; k < f.width; k++)
                 sec.bytes[f.at + (unsigned long)k] = (unsigned char)((unsigned long long)d >> (8 * k));
             continue;
         }
-        if ((f.kind == R_PCR_S21 || f.kind == R_PCR_S10) && s.defined && s.section == f.section && s.bind != B_WEAK) {
-            long long disp = (s.value + f.addend - (long long)(f.at & ~31ul)) / 4;
-            int bits = f.kind == R_PCR_S21 ? 21 : 10, shift = f.kind == R_PCR_S21 ? 7 : 16;
+        if (s.defined && s.section < 0 && f.kind != R_PCR_S21 && f.kind != R_PCR_S12) {
+            error("'" + s.name + "' is a constant, not an address");
+            continue;
+        }
+        bool branch = f.kind == R_PCR_S21 || f.kind == R_PCR_S12;
+        if (branch && s.defined && (s.section == f.section || s.section < 0) && s.bind != B_WEAK) {
+            /* in the section - or a .set alias of a label, which asm6x takes as an offset here */
+            long long target = s.value + f.addend;
+            if (target % 4) { error("branch to '" + s.name + "' is not word-aligned"); continue; }
+            long long disp = (target - (long long)(f.at & ~31ul)) / 4;
+            int bits = f.kind == R_PCR_S21 ? 21 : 12, shift = f.kind == R_PCR_S21 ? 7 : 16;
             if (disp < -(1LL << (bits - 1)) || disp >= (1LL << (bits - 1))) { error("branch to '" + s.name + "' is too far"); continue; }
-            unsigned long w = (unsigned long)sec.bytes[f.at] | ((unsigned long)sec.bytes[f.at + 1] << 8) |
-                              ((unsigned long)sec.bytes[f.at + 2] << 16) | ((unsigned long)sec.bytes[f.at + 3] << 24);
-            w |= ((unsigned long)disp & ((1ul << bits) - 1)) << shift;
-            for (int k = 0; k < 4; k++) sec.bytes[f.at + (unsigned long)k] = (unsigned char)(w >> (8 * k));
+            put_word(sec, f.at, word_at(sec, f.at) | (((unsigned long)disp & ((1ul << bits) - 1)) << shift));
             continue;
         }
         Reloc r;
         r.offset = f.at;
         r.symbol = f.symbol;
+        r.section = -1;
         r.kind = f.kind;
         r.addend = f.addend;
         r.order = (unsigned long)i;
-        if (f.kind != R_ABS_L16 && f.kind != R_ABS_H16) {
-            /* REL: the addend is in the field */
-            int width = f.kind == R_ABS16 ? 2 : f.kind == R_ABS8 ? 1 : 4;
-            if (f.kind == R_ABS32 || f.kind == R_ABS16 || f.kind == R_ABS8)
-                for (int k = 0; k < width; k++)
-                    sec.bytes[f.at + (unsigned long)k] = (unsigned char)((unsigned long long)f.addend >> (8 * k));
+        if (branch) {
+            /* the addend in the displacement field, in words */
+            if (f.addend % 4) { error("a branch addend must be a multiple of 4"); continue; }
+            long long disp = f.addend / 4;
+            int bits = f.kind == R_PCR_S21 ? 21 : 12, shift = f.kind == R_PCR_S21 ? 7 : 16;
+            if (disp < -(1LL << (bits - 1)) || disp >= (1LL << (bits - 1))) { error("a branch addend does not fit its field"); continue; }
+            put_word(sec, f.at, word_at(sec, f.at) | (((unsigned long)disp & ((1ul << bits) - 1)) << shift));
+        } else if (f.kind == R_ABS_L16 || f.kind == R_ABS_H16 || f.kind == R_ABS_S16) {
+            /* RELA, and the half in the constant field as well, as asm6x writes it */
+            unsigned long half = f.kind == R_ABS_H16 ? ((unsigned long)f.addend >> 16) & 0xFFFF : (unsigned long)f.addend & 0xFFFF;
+            put_word(sec, f.at, word_at(sec, f.at) | (half << 7));
+        } else {
+            for (int k = 0; k < f.width; k++)
+                sec.bytes[f.at + (unsigned long)k] = (unsigned char)((unsigned long long)f.addend >> (8 * k));
         }
         sec.relocs.push_back(r);
     }

@@ -1,0 +1,5 @@
+"001-mvk-65535.s", WARNING! at line 4: [W0001] Value out of range; converted to
+                                               -1
+		MVK 65535, A0
+
+No Assembly Errors, 1 Assembly Warning

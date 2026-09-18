@@ -1,0 +1,5 @@
+
+Disassembly of 217-string-n.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   626e5c61           .word 0x626e5c61

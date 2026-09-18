@@ -1,0 +1,7 @@
+
+Disassembly of 267-expr-and-or.asm6x.obj:
+
+DATA Section .data (Little Endian), 0xC bytes at 0x0 
+00000000   0000000f           .word 0x0000000f
+00000004   00000003           .word 0x00000003
+00000008   00000004           .word 0x00000004

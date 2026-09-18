@@ -1,0 +1,5 @@
+
+Disassembly of 354-sect-init-array.asm6x.obj:
+
+DATA Section .init_array (Little Endian), 0x4 bytes at 0x0 
+00000000   00000000           .word 0x00000000

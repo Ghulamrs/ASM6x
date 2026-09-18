@@ -1,0 +1,6 @@
+"421-reloc-scope-alone.s", WARNING! at line 5: [W1500] warning:  relocation
+                                                       template 0 not found;
+                                                       returning OFR_INVALID
+		.word $EXTAB_SCOPE(f)
+
+No Assembly Errors, 1 Assembly Warning

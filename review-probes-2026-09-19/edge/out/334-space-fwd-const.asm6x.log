@@ -1,0 +1,9 @@
+"334-space-fwd-const.s", ERROR!   at line 2: [E0004] Absolute, well-defined
+                                                     integer value expected
+		.space N
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

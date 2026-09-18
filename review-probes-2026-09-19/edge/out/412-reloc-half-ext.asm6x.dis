@@ -1,0 +1,5 @@
+
+Disassembly of 412-reloc-half-ext.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x2 bytes at 0x0 
+00000000       0000           .word 0x00000000

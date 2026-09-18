@@ -1,0 +1,16 @@
+"122-pair-cross-sides.s", ERROR!   at line 4: [E0009] Invalid symbol 'B4' in
+                                                      register operand
+		STDW A5:B4, *A1
+
+"122-pair-cross-sides.s", ERROR!   at line 4: [E0200] Bad term in expression
+		STDW A5:B4, *A1
+
+"122-pair-cross-sides.s", ERROR!   at line 4: [E0004] Operand #1 not legal:
+                                                      regpair expected
+		STDW A5:B4, *A1
+
+3 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,14 @@
+
+Disassembly of 166-par-mvk-cmpeq.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   0080a041           MVK.D1        5,A1
+00000004   020c4a78 ||        CMPEQ.L1      A2,A3,A4
+00000008            fwd:
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

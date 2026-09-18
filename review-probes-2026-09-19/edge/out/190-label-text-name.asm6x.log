@@ -1,0 +1,8 @@
+"190-label-text-name.s", ERROR!   at EOF: [E0300] The following symbols are
+                                                  undefined:
+1 Assembly Error, No Assembly Warnings
+  .text
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

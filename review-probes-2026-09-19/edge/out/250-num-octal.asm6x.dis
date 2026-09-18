@@ -1,0 +1,6 @@
+
+Disassembly of 250-num-octal.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   0000000f           .word 0x0000000f
+00000004   0000000f           .word 0x0000000f

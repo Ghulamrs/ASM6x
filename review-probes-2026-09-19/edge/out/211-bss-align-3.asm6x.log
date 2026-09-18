@@ -1,0 +1,4 @@
+"211-bss-align-3.s", WARNING! at line 1: [W0001] Power of 2 required, 32 assumed
+		.bss z1, 4, 3
+
+No Assembly Errors, 1 Assembly Warning

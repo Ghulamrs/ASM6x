@@ -1,0 +1,8 @@
+"181-col1-global.s", ERROR!   at line 1: [E0002] Illegal mnemonic specified
+	.global fwd
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

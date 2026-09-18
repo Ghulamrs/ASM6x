@@ -5,8 +5,9 @@
 #include <thread>
 
 /* asm6x: assemble each file named, on its own thread, into <name>.obj beside it or where -o
-   says for a single file. The errors of every job are printed after all have joined, each
-   line as file:line: message, and the exit status is the number of files that failed. */
+   says for a single file. The warnings and errors of every job are printed after all have
+   joined, each line as file: line N: message, and the exit status is the number of files
+   that failed - a warning is a mended value, as asm6x mends it, not a failure. */
 
 static int usage()
 {
@@ -21,7 +22,7 @@ int main(int argc, char **argv)
     std::string output;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) output = argv[++i];
-        else if (strcmp(argv[i], "--version") == 0) { printf("\xc2\xa9" "2026 G. R. Akhtar - asm6x 0.1, a TMS320C6000 assembler writing TI ELF\n"); return 0; }
+        else if (strcmp(argv[i], "--version") == 0) { printf("\xc2\xa9" "2026 G. R. Akhtar - asm6x 0.2, a TMS320C6000 assembler writing TI ELF\n"); return 0; }
         else if (argv[i][0] == '-') return usage();
         else inputs.push_back(argv[i]);
     }
@@ -49,6 +50,8 @@ int main(int argc, char **argv)
     for (size_t i = 0; i < threads.size(); i++) threads[i].join();
     int failed = 0;
     for (size_t i = 0; i < jobs.size(); i++) {
+        const std::vector<std::string> &w = jobs[i]->warnings();
+        for (size_t k = 0; k < w.size(); k++) fprintf(stderr, "%s: %s\n", inputs[i].c_str(), w[k].c_str());
         const std::vector<std::string> &e = jobs[i]->errors();
         if (!e.empty()) failed++;
         for (size_t k = 0; k < e.size(); k++) fprintf(stderr, "%s: %s\n", inputs[i].c_str(), e[k].c_str());

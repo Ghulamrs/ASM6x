@@ -1,0 +1,10 @@
+
+Disassembly of 270-expr-arith.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x18 bytes at 0x0 
+00000000   0000000a           .word 0x0000000a
+00000004   00000014           .word 0x00000014
+00000008   fffffffd           .word 0xfffffffd
+0000000c   00000003           .word 0x00000003
+00000010   0000000e           .word 0x0000000e
+00000014   00000000           .word 0x00000000

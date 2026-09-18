@@ -1,0 +1,8 @@
+"393-ref-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.ref
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

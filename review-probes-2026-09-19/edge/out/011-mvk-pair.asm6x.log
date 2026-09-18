@@ -1,0 +1,9 @@
+"011-mvk-pair.s", ERROR!   at line 4: [E0004] Operand #2, A0, not legal:
+                                              register expected
+		MVK 5, A1:A0
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

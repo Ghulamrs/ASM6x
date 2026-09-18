@@ -1,0 +1,9 @@
+"310-symdepend-no-section.s", ERROR!   at line 4: [E0300] Symbol .nosuch not
+                                                          defined
+		.symdepend "dep", ".nosuch"
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

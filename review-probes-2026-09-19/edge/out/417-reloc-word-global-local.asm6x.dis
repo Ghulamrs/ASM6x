@@ -1,0 +1,8 @@
+
+Disassembly of 417-reloc-word-global-local.asm6x.obj:
+
+DATA Section .data (Little Endian), 0xC bytes at 0x0 
+00000000            g:
+00000000   00000001           .word 0x00000001
+00000004   00000000           .word 0x00000000
+00000008   00000004           .word 0x00000004

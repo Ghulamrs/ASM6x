@@ -1,0 +1,6 @@
+
+Disassembly of 302-set-negative.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   ffffffff           .word 0xffffffff
+00000004   ffff00ff           .word 0xffff00ff

@@ -1,0 +1,9 @@
+"101-callp-b4.s", ERROR!   at line 4: [E0009] A3 or B3 required as return
+                                              address register
+		CALLP ext, B4
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

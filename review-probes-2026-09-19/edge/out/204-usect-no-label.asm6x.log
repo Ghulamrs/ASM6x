@@ -1,0 +1,9 @@
+"204-usect-no-label.s", ERROR!   at line 1: [E0300] Symbol expected in label
+                                                    field
+		.usect ".far", 4, 4
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

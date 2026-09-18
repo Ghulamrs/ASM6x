@@ -1,0 +1,9 @@
+"326-align-fwd-const.s", ERROR!   at line 3: [E0004] Absolute, well-defined
+                                                     integer value expected
+		.align K
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

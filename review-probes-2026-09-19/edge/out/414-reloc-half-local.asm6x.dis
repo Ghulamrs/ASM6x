@@ -1,0 +1,7 @@
+
+Disassembly of 414-reloc-half-local.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x6 bytes at 0x0 
+00000000            l:
+00000000   00000001           .word 0x00000001
+00000004       0000           .word 0x00000000

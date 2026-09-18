@@ -1,0 +1,9 @@
+"079-mv-cst.s", ERROR!   at line 4: [E0004] Operand #1 not legal: register or
+                                            regpair expected
+		MV 5, A0
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

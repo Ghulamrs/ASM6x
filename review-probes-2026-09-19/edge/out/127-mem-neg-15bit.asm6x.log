@@ -1,0 +1,9 @@
+"127-mem-neg-15bit.s", ERROR!   at line 4: [E0004] Illegal offset mode for 15
+                                                   bit constant
+		LDW *-B15(128), A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

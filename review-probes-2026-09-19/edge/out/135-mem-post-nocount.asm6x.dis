@@ -1,0 +1,14 @@
+
+Disassembly of 135-mem-post-nocount.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   013c36e4           LDW.D2T1      *B15++[1],A2
+00000004   02903424           LDB.D1T1      *A4--[1],A5
+00000008   02103364           LDDW.D1T1     *++A4[1],A5:A4
+0000000c            fwd:
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

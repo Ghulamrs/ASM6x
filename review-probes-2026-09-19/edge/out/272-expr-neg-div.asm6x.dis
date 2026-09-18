@@ -1,0 +1,6 @@
+
+Disassembly of 272-expr-neg-div.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   fffffffd           .word 0xfffffffd
+00000004   fffffffd           .word 0xfffffffd

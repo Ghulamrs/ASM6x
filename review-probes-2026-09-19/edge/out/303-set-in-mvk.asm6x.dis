@@ -1,0 +1,12 @@
+
+Disassembly of 303-set-in-mvk.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000   00003228           MVK.S1        0x0064,A0
+00000004   00003228           MVK.S1        0x0064,A0
+00000008   00000068           MVKH.S1       0x0000,A0
+0000000c   01054940           ADD.D1        A1,0xa,A2
+00000010   00002000           NOP           2
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

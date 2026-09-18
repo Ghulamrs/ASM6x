@@ -1,0 +1,8 @@
+"249-num-hex-suffix-nolead.s", ERROR!   at EOF: [E0300] The following symbols
+                                                        are undefined:
+1 Assembly Error, No Assembly Warnings
+  FFh
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

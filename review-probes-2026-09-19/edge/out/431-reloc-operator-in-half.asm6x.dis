@@ -1,0 +1,16 @@
+
+Disassembly of 431-reloc-operator-in-half.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            f:
+00000000   00000000           NOP           
+00000004   00000000           NOP           
+00000008   00000000           NOP           
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           
+
+DATA Section .c6xabi.extab:f (Little Endian), 0x2 bytes at 0x0 
+00000000       0000           .word 0x00000000

@@ -1,0 +1,12 @@
+"428-reloc-unknown-operator.s", ERROR!   at line 5: [E0000] Commas must separate
+                                                            directive elements
+		.word $FOO(f)
+
+"428-reloc-unknown-operator.s", ERROR!   at EOF: [E0300] The following symbols
+                                                         are undefined:
+2 Assembly Errors, No Assembly Warnings
+  $FOO
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

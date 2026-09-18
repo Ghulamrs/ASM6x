@@ -1,0 +1,6 @@
+"252-num-word-33bit.s", WARNING! at line 2: [W0001] Constant value out of range,
+                                                    will be truncated to 32
+                                                    bits
+		.word 0x100000000
+
+No Assembly Errors, 1 Assembly Warning

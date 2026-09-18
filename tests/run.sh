@@ -27,4 +27,10 @@ for f in tests/refuse/*.s; do
     same=$((same + 1))
 done
 echo "run.sh: $files files, $same as asm6x, $differ differ, $refused refused"
-[ "$differ" = 0 ] && [ "$refused" = 0 ]
+# the review's probes, against the objects asm6x wrote for them on the box (2026-09-19)
+bad=0
+for d in edge linkcheck fresh; do
+    T="$T/review-$d" ASM="$ASM" sh review-probes-2026-09-19/recheck.sh "review-probes-2026-09-19/$d" > "$T/review-$d.log"; bad=$((bad + $?))
+    sed "s/^/review $d: /" "$T/review-$d.log"
+done
+[ "$differ" = 0 ] && [ "$refused" = 0 ] && [ "$bad" = 0 ]

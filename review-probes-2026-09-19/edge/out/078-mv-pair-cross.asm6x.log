@@ -1,0 +1,9 @@
+"078-mv-pair-cross.s", ERROR!   at line 4: [E0800] Erroneous use of cross path
+                                                   with long operand
+		MV A5:A4, B5:B4
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,14 @@
+"304-set-label-collision.s", ERROR!   at line 4: [E0300] Redefinition of fwd
+                                                         attempted
+	fwd	.set 5
+
+"304-set-label-collision.s", ERROR!   at line 4: [E0300] Symbol can't be defined
+                                                         in terms of itself:
+                                                         "fwd"
+	fwd	.set 5
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

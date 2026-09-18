@@ -1,0 +1,11 @@
+"399-set-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.set
+
+"399-set-noarg.s", ERROR!   at line 1: [E0100] Label required
+		.set
+
+2 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

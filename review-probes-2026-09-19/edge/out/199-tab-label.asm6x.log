@@ -1,0 +1,8 @@
+"199-tab-label.s", ERROR!   at line 2: [E0002] Illegal mnemonic specified
+		foo:
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,6 @@
+
+Disassembly of 409-label-in-bss-sect.asm6x.obj:
+
+DATA Section .bss (Little Endian), 0x4 bytes at 0x0 
+00000000            l:
+00000000   00000000           .word 0x00000000

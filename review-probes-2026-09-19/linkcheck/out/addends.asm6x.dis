@@ -1,0 +1,40 @@
+
+Disassembly of addends.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x40 bytes at 0x0 
+00000000            main:
+00000000   00000000           NOP           
+00000004   00000112           B.S2          dat (PC+8 = 0x00000008)
+00000008   00008000           NOP           5
+0000000c   007ffc28           MVK.S1        0xfffffff8,A0
+00000010   007fffe8           MVKH.S1       0xffff0000,A0
+00000014   0091a2a8           MVK.S1        0x2345,A1
+00000018   008000e8           MVKH.S1       0x10000,A1
+0000001c   01000228           MVK.S1        0x0004,A2
+00000020   01000068           MVKH.S1       0x0000,A2
+00000024   0fffff92           B.S2          0x00001c
+00000028   00008000           NOP           5
+0000002c   00000000           NOP           
+00000030   00000000           NOP           
+00000034   00000000           NOP           
+00000038   00000000           NOP           
+0000003c   00000000           NOP           
+
+TEXT Section .text:far (Little Endian), 0x20 bytes at 0x0 
+00000000   00000000           NOP           
+00000004   00000000           NOP           
+00000008   00000000           NOP           
+0000000c            far:
+0000000c   00000012           B.S2           (PC+0 = 0x00000000)
+00000010   00008000           NOP           5
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           
+
+DATA Section .data (Little Endian), 0x14 bytes at 0x0 
+00000000   00000008           .word 0x00000008
+00000004   00000004           .word 0x00000004
+00000008            dat:
+00000008   00000001           .word 0x00000001
+0000000c   00000002           .word 0x00000002
+00000010   00000003           .word 0x00000003

@@ -1,0 +1,14 @@
+
+Disassembly of 140-mem-b14-store-h.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   0103e85c           STH.D2T1      A2,*+B14[1000]
+00000004   0107d03c           STB.D2T1      A2,*+B14[2000]
+00000008   0103e80c           LDHU.D2T1     *+B14[1000],A2
+0000000c   0107d01c           LDBU.D2T1     *+B14[2000],A2
+00000010            fwd:
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

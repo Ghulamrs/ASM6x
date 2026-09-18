@@ -1,0 +1,2 @@
+	.data
+	.word 0xFF & 0x0F, 1|2, 5^1

@@ -1,0 +1,9 @@
+"061-shl-32.s", ERROR!   at line 4: [E1400] Operand #2 out of range: 5bit
+                                            unsigned constant expected
+		SHL A1, 32, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

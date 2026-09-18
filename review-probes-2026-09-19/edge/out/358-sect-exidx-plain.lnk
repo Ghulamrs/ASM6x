@@ -1,0 +1,8 @@
+
+ undefined first referenced                                                     
+  symbol       in file                                                          
+ --------- ----------------                                                     
+ main      C:\Users\GRA\Documents\VM6747\tilib\rts6740_elf_eh.lib<args_main.obj>
+
+error: unresolved symbols remain
+error: errors encountered during linking; "358-sect-exidx-plain.out" not built

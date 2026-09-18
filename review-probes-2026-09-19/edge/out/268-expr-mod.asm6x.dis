@@ -1,0 +1,5 @@
+
+Disassembly of 268-expr-mod.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   00003f01           .word 0x00003f01

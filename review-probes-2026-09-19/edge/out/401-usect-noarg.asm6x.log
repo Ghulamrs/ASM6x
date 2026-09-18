@@ -1,0 +1,14 @@
+"401-usect-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.usect
+
+"401-usect-noarg.s", ERROR!   at line 1: [E0005] Operand missing
+		.usect
+
+"401-usect-noarg.s", ERROR!   at line 1: [E0300] Symbol expected in label field
+		.usect
+
+3 Assembly Errors, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

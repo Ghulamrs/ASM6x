@@ -1,0 +1,9 @@
+"012-addk-32768.s", ERROR!   at line 4: [E1400] Operand #1 out of range: 16bit
+                                                signed constant expected
+		ADDK 32768, A0
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -1,0 +1,6 @@
+
+Disassembly of 378-weak-defined.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000            w:
+00000000   00000001           .word 0x00000001

@@ -1,0 +1,14 @@
+
+Disassembly of 437-reloc-mvkl-label-addend.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   00000028           MVK.S1        0x0000,A0
+00000004   007fffe8           MVKH.S1       0xffff0000,A0
+00000008   007fffa8           MVK.S1        0xffffffff,A0
+0000000c            fwd:
+0000000c   00000000           NOP           
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

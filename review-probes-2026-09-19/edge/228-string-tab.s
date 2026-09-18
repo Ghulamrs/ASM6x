@@ -1,0 +1,2 @@
+	.data
+	.string "t\tt"

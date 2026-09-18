@@ -1,0 +1,6 @@
+
+Disassembly of 317-align-3.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x5 bytes at 0x0 
+00000000   00000001           .word 0x00000001
+00000004         02           .word 0x00000002

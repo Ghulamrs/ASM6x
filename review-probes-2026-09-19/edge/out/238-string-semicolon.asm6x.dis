@@ -1,0 +1,5 @@
+
+Disassembly of 238-string-semicolon.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x3 bytes at 0x0 
+00000000     3b6162           .word 0x003b6162

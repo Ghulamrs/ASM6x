@@ -1,0 +1,5 @@
+
+Disassembly of 231-string-numbers.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   000a6261           .word 0x000a6261

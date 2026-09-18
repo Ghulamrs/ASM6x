@@ -1,0 +1,9 @@
+"178-par-section-switch.s", ERROR!   at line 6: [E0002] Illegal mnemonic
+                                                        specified
+		|| NOP
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

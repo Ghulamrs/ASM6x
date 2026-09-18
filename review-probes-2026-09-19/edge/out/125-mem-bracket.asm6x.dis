@@ -1,0 +1,14 @@
+
+Disassembly of 125-mem-bracket.asm6x.obj:
+
+TEXT Section .text (Little Endian), 0x20 bytes at 0x0 
+00000000            back:
+00000000   02902264           LDW.D1T1      *+A4[1],A5
+00000004   02904064           LDW.D1T1      *-A4[2],A5
+00000008   02906224           LDB.D1T1      *+A4[3],A5
+0000000c   0213e364           LDDW.D1T1     *+A4[31],A5:A4
+00000010            fwd:
+00000010   00000000           NOP           
+00000014   00000000           NOP           
+00000018   00000000           NOP           
+0000001c   00000000           NOP           

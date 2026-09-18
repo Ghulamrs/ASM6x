@@ -1,0 +1,5 @@
+
+Disassembly of 262-num-float.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   3fc00000           .word 0x3fc00000

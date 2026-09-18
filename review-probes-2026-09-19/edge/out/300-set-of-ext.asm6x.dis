@@ -1,0 +1,5 @@
+
+Disassembly of 300-set-of-ext.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   00000000           .word 0x00000000

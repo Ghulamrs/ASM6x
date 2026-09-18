@@ -1,0 +1,5 @@
+
+Disassembly of 368-sect-vm6747-eh.asm6x.obj:
+
+DATA Section .vm6747.eh (Little Endian), 0x4 bytes at 0x0 
+00000000   00000001           .word 0x00000001

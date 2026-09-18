@@ -1,0 +1,9 @@
+"086-mvc-a-out.s", ERROR!   at line 4: [E0004] B side register required for
+                                               destination register A1
+		MVC CSR, A1
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

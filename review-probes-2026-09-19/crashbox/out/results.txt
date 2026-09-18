@@ -1,0 +1,28 @@
+align-1g
+  asm6x: accepted, warning: "align-1g.s", WARNING! at line 3: [W0001] Maximum alignment is to 32K boundary -
+  ASM6x: accepted
+  tables: DIFFER 4: section .data: mine type PROGBITS flags 0x3 align 1073741824 size 0x40000001, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+align-256m
+  asm6x: accepted, warning: "align-256m.s", WARNING! at line 3: [W0001] Maximum alignment is to 32K boundary
+  ASM6x: accepted
+  tables: DIFFER 4: section .data: mine type PROGBITS flags 0x3 align 268435456 size 0x10000001, asm6x type PROGBITS flags 0x3 align 1 size 0x2
+align-2p31
+  asm6x: accepted, warning: "align-2p31.s", WARNING! at line 3: [W0001] Power of 2 required, 1 assumed
+  ASM6x: CRASH (signal 9)
+  tables: -
+align-2p32
+  asm6x: accepted, warning: "align-2p32.s", WARNING! at line 3: [W0001] Constant value out of range, will be
+  ASM6x: CRASH (signal 15)
+  tables: -
+align-32k
+  asm6x: accepted
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+bss-2p32
+  asm6x: accepted, warning: "bss-2p32.s", WARNING! at line 1: [W0001] Constant value out of range, will be
+  ASM6x: accepted
+  tables: DIFFER 1: section .text: mine type PROGBITS flags 0x6 align 32 size 0x0, asm6x type PROGBITS flags 0x6 align 1 size 0x0
+bss-align-2p32
+  asm6x: REFUSED: "bss-align-2p32.s", ERROR!   at line 1: [E0900] alignment parameter value for
+  ASM6x: accepted
+  tables: -

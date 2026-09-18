@@ -1,0 +1,5 @@
+
+Disassembly of 228-string-tab.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x4 bytes at 0x0 
+00000000   74745c74           .word 0x74745c74

@@ -1,0 +1,8 @@
+"130-mem-ldb-b14-32768.s", ERROR!   at line 4: [E0800] Offset too large
+		LDB *+B14(32768), A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

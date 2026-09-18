@@ -1,0 +1,8 @@
+"396-byte-noarg.s", ERROR!   at line 2: [E0005] Operand missing
+		.byte
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

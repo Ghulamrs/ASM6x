@@ -1,0 +1,6 @@
+"257-num-half-65536.s", WARNING! at line 2: [W0001] Constant value out of range,
+                                                    will be truncated to 16
+                                                    bits
+		.half 65536
+
+No Assembly Errors, 1 Assembly Warning

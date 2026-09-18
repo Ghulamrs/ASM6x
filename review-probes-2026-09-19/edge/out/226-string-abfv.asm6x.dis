@@ -1,0 +1,6 @@
+
+Disassembly of 226-string-abfv.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000   625c615c           .word 0x625c615c
+00000004   765c665c           .word 0x765c665c

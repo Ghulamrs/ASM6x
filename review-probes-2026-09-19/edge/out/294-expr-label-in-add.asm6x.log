@@ -1,0 +1,11 @@
+"294-expr-label-in-add.s", ERROR!   at line 4: [E0004] Operand #1, fwd, not
+                                                       legal: register or
+                                                       regpair or 5bit constant
+                                                       expected
+		ADD fwd, A1, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

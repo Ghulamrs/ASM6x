@@ -1,0 +1,3 @@
+	.global g
+	.text
+	NOP

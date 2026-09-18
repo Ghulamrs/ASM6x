@@ -1,0 +1,14 @@
+"bss-align-2p32.s", WARNING! at line 1: [W0001] Constant value out of range,
+                                                will be truncated to 32 bits
+		.bss b, 4, 0x100000000
+
+"bss-align-2p32.s", ERROR!   at line 1: [E0900] alignment parameter value for
+                                                .bss/.usect less than 1 is
+                                                illegal
+		.bss b, 4, 0x100000000
+
+1 Assembly Error, 1 Assembly Warning
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

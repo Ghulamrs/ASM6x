@@ -1,0 +1,9 @@
+"137-mem-plus-noparen.s", ERROR!   at line 4: [E0003] Memory operand missing
+                                                      offset amount
+		LDW *+B15, A2
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

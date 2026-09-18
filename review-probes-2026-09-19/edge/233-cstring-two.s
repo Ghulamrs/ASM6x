@@ -1,0 +1,2 @@
+	.data
+	.cstring "a", "b"

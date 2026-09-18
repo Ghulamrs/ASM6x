@@ -1,0 +1,8 @@
+crashbox: ASM6x's own behaviour on the size-limit probes, run here with a 30 s alarm (the box run for asm6x's verdicts is in out/*.asm6x.log):
+align-1g: accepted: .data type PROGBITS flags 0x3 align 1073741824 size 0x40000001 link 0 info 0
+align-256m: accepted: .data type PROGBITS flags 0x3 align 268435456 size 0x10000001 link 0 info 0
+align-2p31: HANG (killed after 30 s)
+align-2p32: HANG (killed after 30 s)
+align-32k: accepted: .data type PROGBITS flags 0x3 align 32768 size 0x8001 link 0 info 0
+bss-2p32: accepted: .bss type NOBITS flags 0x3 align 4 size 0x0 link 0 info 0
+bss-align-2p32: accepted: .bss type NOBITS flags 0x3 align 0 size 0x4 link 0 info 0

@@ -1,0 +1,7 @@
+
+Disassembly of 440-reloc-weak-word.asm6x.obj:
+
+DATA Section .data (Little Endian), 0x8 bytes at 0x0 
+00000000            w:
+00000000   00000001           .word 0x00000001
+00000004   00000000           .word 0x00000000
