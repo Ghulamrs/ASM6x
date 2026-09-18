@@ -18,6 +18,19 @@ mkdir -p "$T"
 ssh -n -o BatchMode=yes "$BOX" "if not exist $W mkdir $W & if not exist $W\\tests mkdir $W\\tests" > /dev/null || exit 1
 scp -q tests/windows/*.cmd "$BOX:$ROOT/tests/" || exit 1
 
+# the cl build, and its objects for the encoding files against this machine's
+COPYFILE_DISABLE=1 tar -C . --no-xattrs -czf "$T/tree.tgz" src tests/enc || exit 1
+scp -q "$T/tree.tgz" "$BOX:$ROOT/" || exit 1
+ssh -n -o BatchMode=yes "$BOX" "cd /d $W & tar xzf tree.tgz & $W\\tests\\build.cmd $W & tar czf enc-out.tgz build\\enc\\*.obj" | grep -v "^$" | grep -v BUILD-DONE
+rm -rf "$T/box-enc" && mkdir -p "$T/box-enc" && scp -q "$BOX:$ROOT/enc-out.tgz" "$T/" && tar xzf "$T/enc-out.tgz" -C "$T/box-enc" --strip-components 2
+same=0; differ=0
+for f in tests/enc/*.s; do
+    b=$(basename "$f" .s)
+    "$ASM" "$f" -o "$T/$b.mac.obj" > /dev/null 2>&1
+    if cmp -s "$T/$b.mac.obj" "$T/box-enc/$b.obj"; then same=$((same + 1)); else differ=$((differ + 1)); echo "DIFFER $b: the cl build's object is not the clang build's"; fi
+done
+echo "windows.sh: $same encoding objects identical from both builds, $differ differ"
+
 if [ "${1:-}" = record ]; then
     COPYFILE_DISABLE=1 tar -C tests/enc --no-xattrs -czf "$T/enc.tgz" $(cd tests/enc && ls *.s) || exit 1
     ssh -n -o BatchMode=yes "$BOX" "if exist $W\\enc rmdir /s /q $W\\enc" > /dev/null; ssh -n -o BatchMode=yes "$BOX" "mkdir $W\\enc" > /dev/null
