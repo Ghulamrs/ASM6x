@@ -1,0 +1,2937 @@
+	.sect	".const"
+L$str$0:
+	.byte	126, 66, 100, 32, 37, 100, 10, 0
+L$str$1:
+	.byte	126, 79, 110, 108, 121, 32, 37, 100, 10, 0
+L$str$2:
+	.byte	126, 86, 100, 32, 37, 100, 10, 0
+L$str$3:
+	.byte	126, 72, 10, 0
+L$str$4:
+	.byte	111, 110, 108, 121, 45, 115, 99, 111, 112, 101, 32, 100, 111, 110, 101, 10
+	.byte	0
+L$str$5:
+	.byte	100, 100, 50, 45, 115, 99, 111, 112, 101, 32, 100, 111, 110, 101, 10, 0
+L$str$6:
+	.byte	68, 100, 32, 100, 111, 110, 101, 10, 0
+L$str$7:
+	.byte	86, 100, 32, 100, 111, 110, 101, 10, 0
+L$str$8:
+	.byte	109, 101, 109, 98, 101, 114, 32, 100, 111, 110, 101, 10, 0
+L$str$9:
+	.byte	101, 110, 100, 10, 0
+	.weak	_ZTS2Vd
+	.sect	".const"
+_ZTS2Vd:
+	.byte	50
+	.byte	86
+	.byte	100
+	.byte	0
+	.weak	_ZTI2Vd
+	.sect	".const"
+	.align	4
+_ZTI2Vd:
+	.word	_ZTVN10__cxxabiv117__class_type_infoE+8
+	.word	_ZTS2Vd
+	.weak	_ZTV2Vd
+	.sect	".const"
+	.align	4
+_ZTV2Vd:
+	.word	0
+	.word	_ZTI2Vd
+	.word	_ZN2VdD1Ev
+	.word	_ZN2VdD0Ev
+	.global gonly
+	.bss	gonly, 8, 4
+	.bss	_ZL4gdd2, 4, 4
+	.bss	main$s, 8, 4
+	.bss	main$s$guard, 8, 8
+	.text
+	.weak	_ZN2BdC1Ev
+_ZN2BdC1Ev:
+	.weak	_ZN2BdC2Ev
+_ZN2BdC2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	ZERO	A4
+L$return$_ZN2BdC1Ev:
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2BdC1Ev)
+	.ulong	0x83ff0007
+	.text
+	.text
+	.weak	_ZN2BdD1Ev
+_ZN2BdD1Ev:
+	.weak	_ZN2BdD2Ev
+_ZN2BdD2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 16, B15
+	MVKL	L$str$0, A4
+	MVKH	L$str$0, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	LDW	*A4, A4
+	NOP	4
+	ADD	B15, 8, B0
+	STW	A4, *B0
+	MVKL	L$_ZN2BdD1Ev$ret0, B3
+	MVKH	L$_ZN2BdD1Ev$ret0, B3
+	B	printf
+	NOP	5
+L$_ZN2BdD1Ev$ret0:
+	ADD	B15, 16, B15
+	ZERO	A4
+L$return$_ZN2BdD1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2BdD1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN4OnlyD1Ev
+_ZN4OnlyD1Ev:
+	.weak	_ZN4OnlyD2Ev
+_ZN4OnlyD2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 16, B15
+	MVKL	L$str$1, A4
+	MVKH	L$str$1, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	LDW	*A4, A4
+	NOP	4
+	ADD	B15, 8, B0
+	STW	A4, *B0
+	MVKL	L$_ZN4OnlyD1Ev$ret0, B3
+	MVKH	L$_ZN4OnlyD1Ev$ret0, B3
+	B	printf
+	NOP	5
+L$_ZN4OnlyD1Ev$ret0:
+	ADD	B15, 16, B15
+	ZERO	A4
+L$return$_ZN4OnlyD1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN4OnlyD1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN2VdC1Ev
+_ZN2VdC1Ev:
+	.weak	_ZN2VdC2Ev
+_ZN2VdC2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	_ZTV2Vd, A4
+	MVKH	_ZTV2Vd, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	ADD	A4, 4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	ZERO	A4
+L$return$_ZN2VdC1Ev:
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2VdC1Ev)
+	.ulong	0x83ff0007
+	.text
+	.text
+	.weak	_ZN2VdD1Ev
+_ZN2VdD1Ev:
+	.weak	_ZN2VdD2Ev
+_ZN2VdD2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	_ZTV2Vd, A4
+	MVKH	_ZTV2Vd, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 16, B15
+	MVKL	L$str$2, A4
+	MVKH	L$str$2, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	ADD	A4, 4, A4
+	LDW	*A4, A4
+	NOP	4
+	ADD	B15, 8, B0
+	STW	A4, *B0
+	MVKL	L$_ZN2VdD1Ev$ret0, B3
+	MVKH	L$_ZN2VdD1Ev$ret0, B3
+	B	printf
+	NOP	5
+L$_ZN2VdD1Ev$ret0:
+	ADD	B15, 16, B15
+	ZERO	A4
+L$return$_ZN2VdD1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2VdD1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN2VdD0Ev
+_ZN2VdD0Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MVKL	L$_ZN2VdD0Ev$ret0, B3
+	MVKH	L$_ZN2VdD0Ev$ret0, B3
+	B	_ZN2VdD1Ev
+	NOP	5
+L$_ZN2VdD0Ev$ret0:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MVKL	L$_ZN2VdD0Ev$ret1, B3
+	MVKH	L$_ZN2VdD0Ev$ret1, B3
+	B	_ZdlPv
+	NOP	5
+L$_ZN2VdD0Ev$ret1:
+	ADD	B15, 8, B15
+	B	L$return$_ZN2VdD0Ev
+	NOP	5
+	ZERO	A4
+L$return$_ZN2VdD0Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2VdD0Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN1HD1Ev
+_ZN1HD1Ev:
+	.weak	_ZN1HD2Ev
+_ZN1HD2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	L$str$3, A4
+	MVKH	L$str$3, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$_ZN1HD1Ev$ret0, B3
+	MVKH	L$_ZN1HD1Ev$ret0, B3
+	B	printf
+	NOP	5
+L$_ZN1HD1Ev$ret0:
+	ADD	B15, 8, B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$_ZN1HD1Ev$begin1:
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPLT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$_ZN1HD1Ev$end1
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	SUB	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$_ZN1HD1Ev$ret2, B3
+	MVKH	L$_ZN1HD1Ev$ret2, B3
+	B	_ZN4OnlyD1Ev
+	NOP	5
+L$_ZN1HD1Ev$ret2:
+	ADD	B15, 8, B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	B	L$_ZN1HD1Ev$begin1
+	NOP	5
+L$_ZN1HD1Ev$end1:
+	ZERO	A4
+L$return$_ZN1HD1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN1HD1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_del_4Only:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_del_4Only$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPGT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_del_4Only$end0
+	NOP	5
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	SUB	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_del_4Only$ret1, B3
+	MVKH	L$__cxx1_vec_del_4Only$ret1, B3
+	B	_ZN4OnlyD1Ev
+	NOP	5
+L$__cxx1_vec_del_4Only$ret1:
+	ADD	B15, 8, B15
+	B	L$__cxx1_vec_del_4Only$begin0
+	NOP	5
+L$__cxx1_vec_del_4Only$end0:
+	B	L$return$__cxx1_vec_del_4Only
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_del_4Only:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_del_4Only)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_exit_gonly:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$__cxx1_vec_exit_gonly$ret0, B3
+	MVKH	L$__cxx1_vec_exit_gonly$ret0, B3
+	B	__cxx1_vec_del_4Only
+	NOP	5
+L$__cxx1_vec_exit_gonly$ret0:
+	ADD	B15, 8, B15
+	B	L$return$__cxx1_vec_exit_gonly
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_exit_gonly:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_exit_gonly)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_del_3Dd2:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_del_3Dd2$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPGT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_del_3Dd2$end0
+	NOP	5
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	SUB	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_del_3Dd2$ret1, B3
+	MVKH	L$__cxx1_vec_del_3Dd2$ret1, B3
+	B	_ZN3Dd2D1Ev
+	NOP	5
+L$__cxx1_vec_del_3Dd2$ret1:
+	ADD	B15, 8, B15
+	B	L$__cxx1_vec_del_3Dd2$begin0
+	NOP	5
+L$__cxx1_vec_del_3Dd2$end0:
+	B	L$return$__cxx1_vec_del_3Dd2
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_del_3Dd2:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_del_3Dd2)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_exit__ZL4gdd2:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$__cxx1_vec_exit__ZL4gdd2$ret0, B3
+	MVKH	L$__cxx1_vec_exit__ZL4gdd2$ret0, B3
+	B	__cxx1_vec_del_3Dd2
+	NOP	5
+L$__cxx1_vec_exit__ZL4gdd2$ret0:
+	ADD	B15, 8, B15
+	B	L$return$__cxx1_vec_exit__ZL4gdd2
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_exit__ZL4gdd2:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_exit__ZL4gdd2)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_new_2Dd:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_new_2Dd$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPLT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_new_2Dd$end0
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_new_2Dd$ret1, B3
+	MVKH	L$__cxx1_vec_new_2Dd$ret1, B3
+	B	_ZN2DdC1Ev
+	NOP	5
+L$__cxx1_vec_new_2Dd$ret1:
+	ADD	B15, 8, B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	B	L$__cxx1_vec_new_2Dd$begin0
+	NOP	5
+L$__cxx1_vec_new_2Dd$end0:
+	B	L$return$__cxx1_vec_new_2Dd
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_new_2Dd:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_new_2Dd)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_del_2Dd:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_del_2Dd$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPGT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_del_2Dd$end0
+	NOP	5
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	SUB	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_del_2Dd$ret1, B3
+	MVKH	L$__cxx1_vec_del_2Dd$ret1, B3
+	B	_ZN2DdD1Ev
+	NOP	5
+L$__cxx1_vec_del_2Dd$ret1:
+	ADD	B15, 8, B15
+	B	L$__cxx1_vec_del_2Dd$begin0
+	NOP	5
+L$__cxx1_vec_del_2Dd$end0:
+	B	L$return$__cxx1_vec_del_2Dd
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_del_2Dd:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_del_2Dd)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_new_2Vd:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_new_2Vd$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPLT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_new_2Vd$end0
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_new_2Vd$ret1, B3
+	MVKH	L$__cxx1_vec_new_2Vd$ret1, B3
+	B	_ZN2VdC1Ev
+	NOP	5
+L$__cxx1_vec_new_2Vd$ret1:
+	ADD	B15, 8, B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	B	L$__cxx1_vec_new_2Vd$begin0
+	NOP	5
+L$__cxx1_vec_new_2Vd$end0:
+	B	L$return$__cxx1_vec_new_2Vd
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_new_2Vd:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_new_2Vd)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_del_2Vd:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MV	B4, A4
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$__cxx1_vec_del_2Vd$begin0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPGT	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$__cxx1_vec_del_2Vd$end0
+	NOP	5
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	SUB	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$__cxx1_vec_del_2Vd$ret1, B3
+	MVKH	L$__cxx1_vec_del_2Vd$ret1, B3
+	B	_ZN2VdD1Ev
+	NOP	5
+L$__cxx1_vec_del_2Vd$ret1:
+	ADD	B15, 8, B15
+	B	L$__cxx1_vec_del_2Vd$begin0
+	NOP	5
+L$__cxx1_vec_del_2Vd$end0:
+	B	L$return$__cxx1_vec_del_2Vd
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_del_2Vd:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_del_2Vd)
+	.ulong	0x83ff0207
+	.text
+	.text
+__cxx1_vec_exit_main$s:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$__cxx1_vec_exit_main$s$ret0, B3
+	MVKH	L$__cxx1_vec_exit_main$s$ret0, B3
+	B	__cxx1_vec_del_4Only
+	NOP	5
+L$__cxx1_vec_exit_main$s$ret0:
+	ADD	B15, 8, B15
+	B	L$return$__cxx1_vec_exit_main$s
+	NOP	5
+	ZERO	A4
+L$return$__cxx1_vec_exit_main$s:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(__cxx1_vec_exit_main$s)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.global main
+main:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	136, B0
+	MVKH	136, B0
+	SUB	B15, B0, B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	gonly, A4
+	MVKH	gonly, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	2, A4
+	MVKH	2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	gonly, A4
+	MVKH	gonly, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	9, A4
+	MVKH	9, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	_ZL4gdd2, A4
+	MVKH	_ZL4gdd2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+L$main$try0:
+	MVKL	5, A4
+	MVKH	5, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	6, A4
+	MVKH	6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret1, B3
+	MVKH	L$main$ret1, B3
+	B	__cxx1_vec_del_4Only
+	NOP	5
+L$main$ret1:
+	ADD	B15, 8, B15
+L$main$tryend0:
+	B	L$main$caught0
+	NOP	5
+L$main$pad0:
+	MVKL	52, A0
+	MVKH	52, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	56, A0
+	MVKH	56, A0
+	SUB	A15, A0, A0
+	STW	B4, *A0
+	MV	A15, B15
+	MVKL	136, B0
+	MVKH	136, B0
+	SUB	B15, B0, B15
+L$main$cleanup2:
+	SUB	B15, 8, B15
+	MVKL	48, A0
+	MVKH	48, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret3, B3
+	MVKH	L$main$ret3, B3
+	B	__cxx1_vec_del_4Only
+	NOP	5
+L$main$ret3:
+	ADD	B15, 8, B15
+L$main$cleanupend2:
+	SUB	B15, 8, B15
+	MVKL	L$main$ret4, B3
+	MVKH	L$main$ret4, B3
+	B	__cxa_end_cleanup
+	NOP	5
+L$main$ret4:
+	ADD	B15, 8, B15
+L$main$caught0:
+	SUB	B15, 8, B15
+	MVKL	L$str$4, A4
+	MVKH	L$str$4, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret5, B3
+	MVKH	L$main$ret5, B3
+	B	printf
+	NOP	5
+L$main$ret5:
+	ADD	B15, 8, B15
+L$main$try6:
+	MVKL	15, A4
+	MVKH	15, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	64, A0
+	MVKH	64, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	16, A4
+	MVKH	16, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	64, A0
+	MVKH	64, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	64, A0
+	MVKH	64, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret7, B3
+	MVKH	L$main$ret7, B3
+	B	__cxx1_vec_del_3Dd2
+	NOP	5
+L$main$ret7:
+	ADD	B15, 8, B15
+L$main$tryend6:
+	B	L$main$caught6
+	NOP	5
+L$main$pad6:
+	MVKL	68, A0
+	MVKH	68, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	72, A0
+	MVKH	72, A0
+	SUB	A15, A0, A0
+	STW	B4, *A0
+	MV	A15, B15
+	MVKL	136, B0
+	MVKH	136, B0
+	SUB	B15, B0, B15
+L$main$cleanup8:
+	SUB	B15, 8, B15
+	MVKL	64, A0
+	MVKH	64, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	2, A4
+	MVKH	2, A4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret9, B3
+	MVKH	L$main$ret9, B3
+	B	__cxx1_vec_del_3Dd2
+	NOP	5
+L$main$ret9:
+	ADD	B15, 8, B15
+L$main$cleanupend8:
+	SUB	B15, 8, B15
+	MVKL	L$main$ret10, B3
+	MVKH	L$main$ret10, B3
+	B	__cxa_end_cleanup
+	NOP	5
+L$main$ret10:
+	ADD	B15, 8, B15
+L$main$caught6:
+	SUB	B15, 8, B15
+	MVKL	L$str$5, A4
+	MVKH	L$str$5, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret11, B3
+	MVKH	L$main$ret11, B3
+	B	printf
+	NOP	5
+L$main$ret11:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	2, A4
+	MVKH	2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	76, A0
+	MVKH	76, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$main$ret12, B3
+	MVKH	L$main$ret12, B3
+	B	_Znaj
+	NOP	5
+L$main$ret12:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	80, A0
+	MVKH	80, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	76, A0
+	MVKH	76, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	80, A0
+	MVKH	80, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	80, A0
+	MVKH	80, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	84, A0
+	MVKH	84, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	84, A0
+	MVKH	84, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	76, A0
+	MVKH	76, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret13, B3
+	MVKH	L$main$ret13, B3
+	B	__cxx1_vec_new_2Dd
+	NOP	5
+L$main$ret13:
+	ADD	B15, 8, B15
+	MVKL	84, A0
+	MVKH	84, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	88, A0
+	MVKH	88, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	7, A4
+	MVKH	7, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	88, A0
+	MVKH	88, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	8, A4
+	MVKH	8, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	88, A0
+	MVKH	88, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	88, A0
+	MVKH	88, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	92, A0
+	MVKH	92, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	92, A0
+	MVKH	92, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPEQ	A4, A6, A4
+	XOR	1, A4, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$main$else14
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	92, A0
+	MVKH	92, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	92, A0
+	MVKH	92, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	-4, A4
+	MVKH	-4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret15, B3
+	MVKH	L$main$ret15, B3
+	B	__cxx1_vec_del_2Dd
+	NOP	5
+L$main$ret15:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	92, A0
+	MVKH	92, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	-4, A4
+	MVKH	-4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$main$ret16, B3
+	MVKH	L$main$ret16, B3
+	B	_ZdaPv
+	NOP	5
+L$main$ret16:
+	ADD	B15, 8, B15
+	MVKL	1, A4
+	MVKH	1, A4
+	B	L$main$end14
+	NOP	5
+L$main$else14:
+	MVKL	0, A4
+	MVKH	0, A4
+L$main$end14:
+	SUB	B15, 8, B15
+	MVKL	L$str$6, A4
+	MVKH	L$str$6, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret17, B3
+	MVKH	L$main$ret17, B3
+	B	printf
+	NOP	5
+L$main$ret17:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	2, A4
+	MVKH	2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	96, A0
+	MVKH	96, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$main$ret18, B3
+	MVKH	L$main$ret18, B3
+	B	_Znaj
+	NOP	5
+L$main$ret18:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	100, A0
+	MVKH	100, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	96, A0
+	MVKH	96, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	100, A0
+	MVKH	100, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	100, A0
+	MVKH	100, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	104, A0
+	MVKH	104, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	104, A0
+	MVKH	104, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	96, A0
+	MVKH	96, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret19, B3
+	MVKH	L$main$ret19, B3
+	B	__cxx1_vec_new_2Vd
+	NOP	5
+L$main$ret19:
+	ADD	B15, 8, B15
+	MVKL	104, A0
+	MVKH	104, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	108, A0
+	MVKH	108, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	40, A4
+	MVKH	40, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	108, A0
+	MVKH	108, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	ADD	A4, 4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	41, A4
+	MVKH	41, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	108, A0
+	MVKH	108, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	8, A4
+	MVKH	8, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	ADD	A4, 4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	108, A0
+	MVKH	108, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	112, A0
+	MVKH	112, A0
+	SUB	A15, A0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	112, A0
+	MVKH	112, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPEQ	A4, A6, A4
+	XOR	1, A4, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$main$else20
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	112, A0
+	MVKH	112, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	112, A0
+	MVKH	112, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	-4, A4
+	MVKH	-4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	LDW	*A4, A4
+	NOP	4
+	MV	A4, B4
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret21, B3
+	MVKH	L$main$ret21, B3
+	B	__cxx1_vec_del_2Vd
+	NOP	5
+L$main$ret21:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	112, A0
+	MVKH	112, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	-4, A4
+	MVKH	-4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MVKL	L$main$ret22, B3
+	MVKH	L$main$ret22, B3
+	B	_ZdaPv
+	NOP	5
+L$main$ret22:
+	ADD	B15, 8, B15
+	MVKL	1, A4
+	MVKH	1, A4
+	B	L$main$end20
+	NOP	5
+L$main$else20:
+	MVKL	0, A4
+	MVKH	0, A4
+L$main$end20:
+	SUB	B15, 8, B15
+	MVKL	L$str$7, A4
+	MVKH	L$str$7, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret23, B3
+	MVKH	L$main$ret23, B3
+	B	printf
+	NOP	5
+L$main$ret23:
+	ADD	B15, 8, B15
+L$main$try24:
+	MVKL	50, A4
+	MVKH	50, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	120, A0
+	MVKH	120, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	51, A4
+	MVKH	51, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	120, A0
+	MVKH	120, A0
+	SUB	A15, A0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	120, A0
+	MVKH	120, A0
+	SUB	A15, A0, A4
+	MVKL	L$main$ret25, B3
+	MVKH	L$main$ret25, B3
+	B	_ZN1HD1Ev
+	NOP	5
+L$main$ret25:
+	ADD	B15, 8, B15
+L$main$tryend24:
+	B	L$main$caught24
+	NOP	5
+L$main$pad24:
+	MVKL	124, A0
+	MVKH	124, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	MVKL	128, A0
+	MVKH	128, A0
+	SUB	A15, A0, A0
+	STW	B4, *A0
+	MV	A15, B15
+	MVKL	136, B0
+	MVKH	136, B0
+	SUB	B15, B0, B15
+L$main$cleanup26:
+	SUB	B15, 8, B15
+	MVKL	120, A0
+	MVKH	120, A0
+	SUB	A15, A0, A4
+	MVKL	L$main$ret27, B3
+	MVKH	L$main$ret27, B3
+	B	_ZN1HD1Ev
+	NOP	5
+L$main$ret27:
+	ADD	B15, 8, B15
+L$main$cleanupend26:
+	SUB	B15, 8, B15
+	MVKL	L$main$ret28, B3
+	MVKH	L$main$ret28, B3
+	B	__cxa_end_cleanup
+	NOP	5
+L$main$ret28:
+	ADD	B15, 8, B15
+L$main$caught24:
+	SUB	B15, 8, B15
+	MVKL	L$str$8, A4
+	MVKH	L$str$8, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret29, B3
+	MVKH	L$main$ret29, B3
+	B	printf
+	NOP	5
+L$main$ret29:
+	ADD	B15, 8, B15
+	MVKL	main$s$guard, A4
+	MVKH	main$s$guard, A4
+	LDBU	*A4, A4
+	NOP	4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	CMPEQ	A4, A6, A4
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$main$end30
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	main$s$guard, A4
+	MVKH	main$s$guard, A4
+	MVKL	L$main$ret32, B3
+	MVKH	L$main$ret32, B3
+	B	__cxa_guard_acquire
+	NOP	5
+L$main$ret32:
+	ADD	B15, 8, B15
+	CMPEQ	0, A4, A4
+	XOR	1, A4, A4
+	MV	A4, A1
+	[!A1]	B	L$main$end31
+	NOP	5
+	SUB	B15, 8, B15
+	MVKL	__cxx1_vec_exit_main$s, A4
+	MVKH	__cxx1_vec_exit_main$s, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	main$s, A4
+	MVKH	main$s, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	__dso_handle, A4
+	MVKH	__dso_handle, A4
+	MV	A4, A6
+	LDW	*B15, B4
+	NOP	4
+	ADD	B15, 8, B15
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$main$ret33, B3
+	MVKH	L$main$ret33, B3
+	B	__cxa_atexit
+	NOP	5
+L$main$ret33:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	main$s$guard, A4
+	MVKH	main$s$guard, A4
+	MVKL	L$main$ret34, B3
+	MVKH	L$main$ret34, B3
+	B	__cxa_guard_release
+	NOP	5
+L$main$ret34:
+	ADD	B15, 8, B15
+L$main$end31:
+L$main$end30:
+	MVKL	60, A4
+	MVKH	60, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	main$s, A4
+	MVKH	main$s, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	0, A4
+	MVKH	0, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	MVKL	61, A4
+	MVKH	61, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	main$s, A4
+	MVKH	main$s, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	1, A4
+	MVKH	1, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	4, A4
+	MVKH	4, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MPY32	A4, A6, A4
+	NOP	3
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	ADD	A4, A6, A4
+	MV	A4, A6
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	STW	A4, *A6
+	SUB	B15, 8, B15
+	MVKL	L$str$9, A4
+	MVKH	L$str$9, A4
+	ADD	B15, 4, B0
+	STW	A4, *B0
+	MVKL	L$main$ret35, B3
+	MVKH	L$main$ret35, B3
+	B	printf
+	NOP	5
+L$main$ret35:
+	ADD	B15, 8, B15
+	MVKL	0, A4
+	MVKH	0, A4
+	B	L$return$main
+	NOP	5
+	ZERO	A4
+L$return$main:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+L$main$pad0$s0:
+	MVK	0, B4
+	B	L$main$pad0
+	NOP	5
+L$main$pad6$s0:
+	MVK	0, B4
+	B	L$main$pad6
+	NOP	5
+L$main$pad24$s0:
+	MVK	0, B4
+	B	L$main$pad24
+	NOP	5
+L$main$fnend:
+	.sect	".c6xabi.extab:main"
+	.align	4
+__c6xabi_extab$main:
+	.ulong	0x83ff0207
+	.half	$EXTAB_SCOPE(L$main$cleanupend2) - $EXTAB_SCOPE(L$main$cleanup2) + 1
+	.half	$EXTAB_SCOPE(L$main$cleanup2) - $EXTAB_SCOPE(main) + 2
+	.ulong	0
+	.ulong	0xfffffffe
+	.half	$EXTAB_SCOPE(L$main$tryend0) - $EXTAB_SCOPE(L$main$try0)
+	.half	$EXTAB_SCOPE(L$main$try0) - $EXTAB_SCOPE(main) + 2
+	.ulong	$EXTAB_LP(L$main$pad0$s0)
+	.half	$EXTAB_SCOPE(L$main$cleanupend8) - $EXTAB_SCOPE(L$main$cleanup8) + 1
+	.half	$EXTAB_SCOPE(L$main$cleanup8) - $EXTAB_SCOPE(main) + 2
+	.ulong	0
+	.ulong	0xfffffffe
+	.half	$EXTAB_SCOPE(L$main$tryend6) - $EXTAB_SCOPE(L$main$try6)
+	.half	$EXTAB_SCOPE(L$main$try6) - $EXTAB_SCOPE(main) + 2
+	.ulong	$EXTAB_LP(L$main$pad6$s0)
+	.half	$EXTAB_SCOPE(L$main$cleanupend26) - $EXTAB_SCOPE(L$main$cleanup26) + 1
+	.half	$EXTAB_SCOPE(L$main$cleanup26) - $EXTAB_SCOPE(main) + 2
+	.ulong	0
+	.ulong	0xfffffffe
+	.half	$EXTAB_SCOPE(L$main$tryend24) - $EXTAB_SCOPE(L$main$try24)
+	.half	$EXTAB_SCOPE(L$main$try24) - $EXTAB_SCOPE(main) + 2
+	.ulong	$EXTAB_LP(L$main$pad24$s0)
+	.ulong	0
+	.symdepend	"__c6xabi_unwind_cpp_pr3", ".c6xabi.extab:main"
+	.text
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(main)
+	.ulong	$EXIDX_EXTAB("__c6xabi_extab$main")
+	.text
+	.text
+	.weak	_ZN2DdD1Ev
+_ZN2DdD1Ev:
+	.weak	_ZN2DdD2Ev
+_ZN2DdD2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MVKL	L$_ZN2DdD1Ev$ret0, B3
+	MVKH	L$_ZN2DdD1Ev$ret0, B3
+	B	_ZN2BdD2Ev
+	NOP	5
+L$_ZN2DdD1Ev$ret0:
+	ADD	B15, 8, B15
+	ZERO	A4
+L$return$_ZN2DdD1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2DdD1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN2DdC1Ev
+_ZN2DdC1Ev:
+	.weak	_ZN2DdC2Ev
+_ZN2DdC2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MVKL	L$_ZN2DdC1Ev$ret0, B3
+	MVKH	L$_ZN2DdC1Ev$ret0, B3
+	B	_ZN2BdC2Ev
+	NOP	5
+L$_ZN2DdC1Ev$ret0:
+	ADD	B15, 8, B15
+	ZERO	A4
+L$return$_ZN2DdC1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN2DdC1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+	.weak	_ZN3Dd2D1Ev
+_ZN3Dd2D1Ev:
+	.weak	_ZN3Dd2D2Ev
+_ZN3Dd2D2Ev:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	56, B0
+	MVKH	56, B0
+	SUB	B15, B0, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A0
+	STW	A4, *A0
+	SUB	B15, 8, B15
+	MVKL	44, A0
+	MVKH	44, A0
+	SUB	A15, A0, A4
+	LDW	*A4, A4
+	NOP	4
+	MVKL	L$_ZN3Dd2D1Ev$ret0, B3
+	MVKH	L$_ZN3Dd2D1Ev$ret0, B3
+	B	_ZN4OnlyD2Ev
+	NOP	5
+L$_ZN3Dd2D1Ev$ret0:
+	ADD	B15, 8, B15
+	ZERO	A4
+L$return$_ZN3Dd2D1Ev:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_ZN3Dd2D1Ev)
+	.ulong	0x83ff0207
+	.text
+	.text
+_GLOBAL__sub_I_array_destructor_only$cpp:
+	STW	A15, *B15
+	MV	B15, A15
+	STW	B3, *-A15(4)
+	MVKL	40, B0
+	MVKH	40, B0
+	SUB	B15, B0, B15
+	SUB	B15, 8, B15
+	MVKL	__cxx1_vec_exit_gonly, A4
+	MVKH	__cxx1_vec_exit_gonly, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	gonly, A4
+	MVKH	gonly, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	__dso_handle, A4
+	MVKH	__dso_handle, A4
+	MV	A4, A6
+	LDW	*B15, B4
+	NOP	4
+	ADD	B15, 8, B15
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$_GLOBAL__sub_I_array_destructor_only$cpp$ret0, B3
+	MVKH	L$_GLOBAL__sub_I_array_destructor_only$cpp$ret0, B3
+	B	__cxa_atexit
+	NOP	5
+L$_GLOBAL__sub_I_array_destructor_only$cpp$ret0:
+	ADD	B15, 8, B15
+	SUB	B15, 8, B15
+	MVKL	__cxx1_vec_exit__ZL4gdd2, A4
+	MVKH	__cxx1_vec_exit__ZL4gdd2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	_ZL4gdd2, A4
+	MVKH	_ZL4gdd2, A4
+	SUB	B15, 8, B15
+	STW	A4, *B15
+	MVKL	__dso_handle, A4
+	MVKH	__dso_handle, A4
+	MV	A4, A6
+	LDW	*B15, B4
+	NOP	4
+	ADD	B15, 8, B15
+	LDW	*B15, A4
+	NOP	4
+	ADD	B15, 8, B15
+	MVKL	L$_GLOBAL__sub_I_array_destructor_only$cpp$ret1, B3
+	MVKH	L$_GLOBAL__sub_I_array_destructor_only$cpp$ret1, B3
+	B	__cxa_atexit
+	NOP	5
+L$_GLOBAL__sub_I_array_destructor_only$cpp$ret1:
+	ADD	B15, 8, B15
+	ZERO	A4
+L$return$_GLOBAL__sub_I_array_destructor_only$cpp:
+	LDW	*-A15(4), B3
+	MV	A15, B15
+	LDW	*A15, A15
+	NOP	4
+	B	B3
+	NOP	5
+	.sect	".c6xabi.exidx:.text"
+	.align	4
+	.ulong	$EXIDX_FUNC(_GLOBAL__sub_I_array_destructor_only$cpp)
+	.ulong	0x83ff0207
+	.text
+	.sect	".init_array"
+	.align	4
+	.word	_GLOBAL__sub_I_array_destructor_only$cpp
+	.global	__c6xabi_unwind_cpp_pr3
+	.symdepend	"__c6xabi_unwind_cpp_pr3", ".c6xabi.exidx:.text"
+	.ref	_ZTVN10__cxxabiv117__class_type_infoE
+	.ref	_ZdaPv
+	.ref	_ZdlPv
+	.ref	_Znaj
+	.ref	__cxa_atexit
+	.ref	__cxa_end_cleanup
+	.ref	__cxa_guard_acquire
+	.ref	__cxa_guard_release
+	.ref	__dso_handle
+	.ref	printf

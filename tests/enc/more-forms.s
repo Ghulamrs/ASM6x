@@ -1,0 +1,192 @@
+; a02 (was probe2): the forms outside the corpus, the field ambiguities of the first probe settled, and the 15-bit stack offsets
+	.text
+back:
+P0:
+	DPSP A9:A8, A1
+P1:
+	DPTRUNC A9:A8, A1
+P2:
+	DPSP B7:B6, B2
+P3:
+	INTDP A3, A9:A8
+P4:
+	SPDP A3, A9:A8
+P5:
+	INTSP A3, A9
+P6:
+	SPTRUNC A3, A9
+P7:
+	SHL B1, A2, A3
+P8:
+	SHR B1, A2, A3
+P9:
+	SHRU B1, A2, A3
+P10:
+	ADD A1, 31, A3
+P11:
+	ADD A1, -16, A3
+P12:
+	ADD A1, -1, A3
+P13:
+	SUB A1, 31, A3
+P14:
+	SUB A1, -16, A3
+P15:
+	MVK 15, A1
+P16:
+	MVK -16, A1
+P17:
+	MVK 16, A1
+P18:
+	MVK -17, A1
+P19:
+	MVK 100, B2
+P20:
+	CMPGTU 5, A1, A3
+P21:
+	CMPLTU 5, A1, A3
+P22:
+	CMPGT -3, A1, A3
+P23:
+	CMPLT -3, A1, A3
+P24:
+	CMPEQ 3, B1, A3
+P25:
+	XOR 3, B1, A3
+P26:
+	AND 3, A1, A3
+P27:
+	OR 3, A1, A3
+P28:
+	ADD 3, A1, A3
+P29:
+	SUB 3, A1, A3
+P30:
+	LDW *+B15(124), A2
+P31:
+	LDW *-B15(124), A2
+P32:
+	LDB *+A1(31), A2
+P33:
+	LDW *+A1(124), A2
+P34:
+	STW A2, *+B15(124)
+P35:
+	LDDW *+A1(248), A5:A4
+P36:
+	LDW *+B15(128), A2
+P37:
+	NOP
+P38:
+	LDW *B15++(8), A2
+P39:
+	LDW *++B15(8), A2
+P40:
+	LDW *B15--(8), A2
+P41:
+	LDW *--B15(8), A2
+P42:
+	ADD A1, A2, A5:A4
+P43:
+	ADDU A1, A2, A5:A4
+P44:
+	SUB A1, A2, A5:A4
+P45:
+	MV A5:A4, A7:A6
+P46:
+	ABS A1, A2
+P47:
+	NORM A1, A2
+P48:
+	LMBD A1, A2, A3
+P49:
+	ADDAW A1, A2, A3
+P50:
+	ADDAW A1, 2, A3
+P51:
+	ADDAH A1, 2, A3
+P52:
+	ADDAB A1, 2, A3
+P53:
+	SUBAW A1, 2, A3
+P54:
+	ADDK 100, A1
+P55:
+	NOP
+P56:
+	SET A1, 3, 7, A3
+P57:
+	CMPEQ A1, 3, A3
+P58:
+	MPYSU A1, A2, A3
+P59:
+	MPYU A1, A2, A3
+P60:
+	MPY A1, A2, A3
+P61:
+	MPYLH A1, A2, A3
+P62:
+	MPYHL A1, A2, A3
+P63:
+	MPY32SU A1, A2, A5:A4
+P64:
+	B A3
+P65:
+	CALLP fwd, B3
+P66:
+	CALLP fwd, A3
+P67:
+	BNOP fwd, 3
+P68:
+	BNOP B3, 4
+P69:
+	RET B3
+P70:
+	RETNOP B3, 5
+P71:
+	NOP
+P72:
+	SWE
+P73:
+	IDLE
+P74:
+	STB A2, *-A1(31)
+P75:
+	STNW A2, *A1
+P76:
+	LDNW *A1, A2
+P77:
+	LDNDW *A1, A5:A4
+P78:
+	STNDW A5:A4, *A1
+P79:
+	RCPSP A1, A2
+P80:
+	RCPDP A5:A4, A7:A6
+P81:
+	ABSSP A1, A2
+P82:
+	ABSDP A5:A4, A7:A6
+P83:
+	SPINT A1, A2
+P84:
+	DPINT A5:A4, A1
+P85:
+	INTSPU A1, A2
+P86:
+	INTDPU A1, A5:A4
+P87:
+	MPY32US A1, A2, A5:A4
+P88:
+	MPYH A1, A2, A3
+P89:
+	MPYHU A1, A2, A3
+P90:
+	MPYUS A1, A2, A3
+P91:
+	MVKLH 0x1234, A1
+P92:
+	ADD A1, A2, A3
+	|| B fwd
+fwd:
+	NOP
