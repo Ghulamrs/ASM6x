@@ -5,7 +5,7 @@
 # three machines.
 #   ASM=build/asm6x sh tests/run.sh
 cd "$(dirname "$0")/.." || exit 1
-ASM=${ASM:-build/asm6x}
+ASM=${ASM:-build/asm6x.exe}
 T=${T:-build/test/enc}
 mkdir -p "$T"
 files=0; same=0; differ=0; refused=0

@@ -9,7 +9,7 @@
 #                                          that directory's .s too - shci's runtime for its programs
 set -u
 cd "$(dirname "$0")/.." || exit 1
-ASM=${ASM:-build/asm6x}
+ASM=${ASM:-build/asm6x.exe}
 BOX=${BOX:-windows}
 ROOT='C:/asm6x-tests'
 W='C:\asm6x-tests'

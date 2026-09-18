@@ -610,14 +610,14 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
         if (mem.v <= -2) off = (-2 - mem.v) * width;       /* [n] was in units */
         else if (mem.v == -1) off = width;                 /* *R++ with no count: one unit */
         if (off % width) { u.error("the offset is not a multiple of the access width"); return; }
-        long long units = off / width;
-        if (units > 31 && mem.mode == 0 && !mem.minus && mem.side == 1 && (mem.reg == 14 || mem.reg == 15) && units < 32768 && (f & 0x40) == 0) {
+        long long count = off / width;
+        if (count > 31 && mem.mode == 0 && !mem.minus && mem.side == 1 && (mem.reg == 14 || mem.reg == 15) && count < 32768 && (f & 0x40) == 0) {
             /* the 15-bit offset from the data or stack pointer: the constant in 8-22, the
                pointer in bit 7, and 11 where the other form has 01 */
-            w = ((unsigned long)(f & 0x1C) << 2) | 0xC | ((unsigned long)reg.reg << 23) | ((unsigned long)units << 8) |
+            w = ((unsigned long)(f & 0x1C) << 2) | 0xC | ((unsigned long)reg.reg << 23) | ((unsigned long)count << 8) |
                 (mem.reg == 15 ? 1ul << 7 : 0) | ((unsigned long)reg.side << 1);
         } else {
-            if (units < 0 || units > 31) { u.error("the offset is 0 to 31 units of the access, or up to 32767 from B14 or B15"); return; }
+            if (count < 0 || count > 31) { u.error("the offset is 0 to 31 count of the access, or up to 32767 from B14 or B15"); return; }
             unsigned mode;
             switch (mem.mode) {
             case 0: mode = mem.minus ? 0 : 1; break;
@@ -626,7 +626,7 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
             case 3: mode = 11; break;  /* *R++ */
             default: mode = 10; break; /* *R-- */
             }
-            w = ((unsigned long)f << 2) | ((unsigned long)reg.reg << 23) | ((unsigned long)mem.reg << 18) | ((unsigned long)units << 13) |
+            w = ((unsigned long)f << 2) | ((unsigned long)reg.reg << 23) | ((unsigned long)mem.reg << 18) | ((unsigned long)count << 13) |
                 ((unsigned long)mode << 9) | ((unsigned long)mem.side << 7) | ((unsigned long)reg.side << 1);
         }
         if ((m == "LDNDW" || m == "STNDW") && PAIR(load ? 1 : 0)) w = (w & ~(31ul << 23)) | ((unsigned long)(reg.reg + 1) << 23);
