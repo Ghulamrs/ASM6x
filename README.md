@@ -69,6 +69,15 @@ moves one; here it is refused), the compact 16-bit instructions asm6x writes by 
 (the oracle runs with `--no_compress`), DWARF, `MVC`, `ADDKPC`, `.field`, the register
 addressing modes beyond a constant offset.
 
+## In RIDE
+
+RStudio's workspace builds `asm6x.exe` into its `bin` beside `vm6747.exe` (make-projects.py
+knows it as the sixth product, on all three machines). Every project build for `tms6747`
+then assembles the `.vm` directory's assembly into TI objects, and with TI's C6000
+compiler directory named (Tools > TI compiler for tms6747..., or `--ti dir [--tilib dir]`)
+lnk6x links them against TI's runtime into `<program>.out`. TriLab's CCS leg says
+`RIDE-OUT` for its C and C++ labs.
+
 ## Tests
 
 `sh tests/run.sh` assembles `tests/enc/*.s` and compares each object with the one asm6x
