@@ -1,0 +1,14 @@
+# What each settled difference has to be, by section and byte offset; check.sh reads
+# ASM6x's object and compares. Confirmed 2026-09-19 on the box: TI's dis6x reads every
+# one of these objects and shows these values (out/*.asm6x-dis.txt), and lnk6x links each
+# against rts6740_elf_eh.lib (out/*.lnk) - asm6x itself cannot assemble the sources.
+147-mem-offset-label-diff   .text 4  word 0x013c22e4    ; LDW.D2T1 *+B15[1],A2 - fwd-back is 4 bytes, one word
+276-expr-labels-fwd         .data 0  word 12
+276-expr-labels-fwd         .data 4  word 16
+293-expr-label-diff-in-mvk  .text 4  word 0x0020a358    ; MVK.L1 8,A0
+293-expr-label-diff-in-mvk  .text 8  word 0x01050940    ; ADD.D1 A1,0x8,A2
+306-set-of-label-diff       .data 0  word 4
+415-reloc-half-diff         .data 4  half 4
+415-reloc-half-diff         .data 6  half -4
+434-reloc-mvkl-same-diff    .text 4  word 0x00000428    ; MVK.S1 0x0008,A0 (MVKL)
+434-reloc-mvkl-same-diff    .text 8  word 0x00000068    ; MVKH.S1 0x0000,A0

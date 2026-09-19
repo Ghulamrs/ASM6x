@@ -110,7 +110,9 @@ writes by default (the oracle runs with `--no_compress`), DWARF, `ADDKPC`, `.fie
 macros. Where asm6x itself fails — a difference of two labels it has not both placed
 (its "relocation template 275 not found"), `%`, an exidx table holding a byte, an
 operator alone or in an instruction — this one does the sound thing instead;
-`review-probes-2026-09-19/known.txt` lists those sixteen probes.
+`review-probes-2026-09-19/known.txt` lists those eleven probes, and `labeldiff/`
+holds the six label differences to what TI's dis6x and lnk6x said of ASM6x's
+objects, since asm6x's own word is not to be had for them.
 
 ## In RIDE
 

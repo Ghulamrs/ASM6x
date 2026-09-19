@@ -1,0 +1,10 @@
+"445-bnop-reach-true-over.s", ERROR!   at line 2: [E0800] Specified label is too
+                                                          far away; max range
+                                                          is [-8192,8191]
+		BNOP fwd, 0
+
+1 Assembly Error, No Assembly Warnings
+
+Errors in Source - Assembler Aborted
+
+>> Compilation failure

@@ -18,14 +18,17 @@ for f in "$dir"/*.s; do
     b=$(basename "$f" .s)
     if grep -qx "$b" "$here/known.txt" 2>/dev/null; then known=$((known + 1)); continue; fi
     theirs=accepted
-    [ -f "$out/$b.asm6x.obj" ] || theirs=refused
+    # a 4 MB reach probe's object is kept gzipped - it is 4 KB of zeros and a branch
+    ref="$out/$b.asm6x.obj"
+    if [ -f "$ref.gz" ]; then ref="$T/$b.asm6x.obj"; gunzip -c "$out/$b.asm6x.obj.gz" > "$ref"; fi
+    [ -f "$ref" ] || theirs=refused
     if "$ASM" "$f" -o "$T/$b.obj" > "$T/$b.log" 2>&1; then mine=accepted; else mine="refused: $(head -1 "$T/$b.log" | sed 's/^[^:]*: //')"; rm -f "$T/$b.obj"; fi
     if [ "$theirs" = refused ]; then
         if [ "$mine" = accepted ]; then bad=$((bad + 1)); echo "$b: asm6x refused, ASM6x accepted"; else agree_refuse=$((agree_refuse + 1)); fi
         continue
     fi
     if [ "$mine" != accepted ]; then bad=$((bad + 1)); echo "$b: asm6x accepted, ASM6x $mine"; continue; fi
-    if python3 "$root/tests/c6xdiff.py" "$T/$b.obj" "$out/$b.asm6x.obj" > "$T/$b.diff"; then same=$((same + 1))
+    if python3 "$root/tests/c6xdiff.py" "$T/$b.obj" "$ref" > "$T/$b.diff"; then same=$((same + 1))
     else bad=$((bad + 1)); echo "$b: tables differ: $(head -1 "$T/$b.diff")"; fi
 done
 echo "recheck: $same identical, $agree_refuse refused by both, $known known differences (known.txt), $bad disagree"
