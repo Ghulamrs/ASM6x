@@ -35,7 +35,8 @@ def tables(path):
             secs[cur][1].append(line.strip())
         elif line.startswith('symbol '):
             parts = line.split()
-            if parts[2] == 'local' and parts[3] == 'file': continue
+            # the file symbol names the input, which a driver's temporary does not share
+            if len(parts) > 4 and parts[3] == 'local' and parts[4] == 'file': continue
             syms.add(' '.join(parts[2:]))
     return (secs, rels, syms), None
 
