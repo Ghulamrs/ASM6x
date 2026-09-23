@@ -1,7 +1,7 @@
 # asm6x
 
 An assembler for the TMS320C6000 — the C674x core of the C6747 — in C-style ISO C++14.
-It takes the assembly the `cc1i`, `cxx1i` and `shci` compilers write for their `tms6747`
+It takes the assembly the `c90`, `cpp11` and `shalimar` compilers write for their `tms6747`
 target and writes the ELF object TI's own `asm6x` writes for it, which `lnk6x` links
 against TI's runtime. It is the C6000 counterpart of [MASM](../MASM), the x86-64
 assembler, and lives beside it rather than inside it.
@@ -134,9 +134,9 @@ python3 only, so it runs on all three machines.
 
 `sh tests/windows.sh <dir>` ships a directory of `.s` to the box, has asm6x assemble
 each, assembles each here, diffs every pair, then links ours with lnk6x against
-`rts6740_elf_eh.lib` (`WITH=<dir>` adds a runtime's objects to every link, for shci's
-programs). On 2026-09-19, after the review: cc1i 403 of 403 identical and linked, cxx1i
-302 of 302, shci 58 of 58 with 57 linked — the one that does not borrows `cbrt`, which
+`rts6740_elf_eh.lib` (`WITH=<dir>` adds a runtime's objects to every link, for shalimar's
+programs). On 2026-09-19, after the review: c90 403 of 403 identical and linked, cpp11
+302 of 302, shalimar 58 of 58 with 57 linked — the one that does not borrows `cbrt`, which
 TI's runtime lacks; the cl build on the box writes the same objects as the clang build;
 all 763 on 763 threads in one invocation under ThreadSanitizer, byte-identical to the
 one-at-a-time objects; every probe under AddressSanitizer and UBSan, clean.
