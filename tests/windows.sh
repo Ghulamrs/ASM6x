@@ -6,7 +6,7 @@
 #   sh tests/windows.sh record             re-record tests/enc/*.asm6x.obj from asm6x
 #   sh tests/windows.sh <corpus dir>       assemble the corpus both ways, diff, and link ours
 #   WITH=<dir> sh tests/windows.sh <dir>   the same, every program linked with the objects of
-#                                          that directory's .s too - shci's runtime for its programs
+#                                          that directory's .s too - shalimar's runtime for its programs
 set -u
 cd "$(dirname "$0")/.." || exit 1
 ASM=${ASM:-build/asm6x.exe}

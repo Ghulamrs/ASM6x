@@ -2,7 +2,7 @@
 #define ASM_H
 
 /* asm6x: an assembler for the TMS320C6000 - the C674x of the C6747 - taking the assembly the
-   cc1i, cxx1i and shci compilers write for their tms6747 target and writing the ELF object
+   c90, cpp11 and shalimar compilers write for their tms6747 target and writing the ELF object
    TI's own asm6x writes, which lnk6x links against TI's runtime. asm6x is the oracle: every
    encoding here was read back from it, one form per line, and the tests hold it to that.
 
