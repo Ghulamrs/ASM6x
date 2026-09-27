@@ -24,9 +24,11 @@ scp -q "$T/tree.tgz" "$BOX:$ROOT/" || exit 1
 ssh -n -o BatchMode=yes "$BOX" "cd /d $W & tar xzf tree.tgz & $W\\tests\\build.cmd $W & tar czf enc-out.tgz build\\enc\\*.obj" | grep -v "^$" | grep -v BUILD-DONE
 rm -rf "$T/box-enc" && mkdir -p "$T/box-enc" && scp -q "$BOX:$ROOT/enc-out.tgz" "$T/" && tar xzf "$T/enc-out.tgz" -C "$T/box-enc" --strip-components 2
 same=0; differ=0
+rm -f "${T:?}"/*.mac.obj
+for f in tests/enc/*.s; do "$ASM" "$f" -o "$T/$(basename "$f" .s).mac.obj" > /dev/null 2>&1 & done
+wait
 for f in tests/enc/*.s; do
     b=$(basename "$f" .s)
-    "$ASM" "$f" -o "$T/$b.mac.obj" > /dev/null 2>&1
     if cmp -s "$T/$b.mac.obj" "$T/box-enc/$b.obj"; then same=$((same + 1)); else differ=$((differ + 1)); echo "DIFFER $b: the cl build's object is not the clang build's"; fi
 done
 echo "windows.sh: $same encoding objects identical from both builds, $differ differ"
@@ -49,14 +51,19 @@ mkdir -p "$T/$name"
 COPYFILE_DISABLE=1 tar -C "$corpus" --no-xattrs -czf "$T/$name.tgz" $(cd "$corpus" && ls *.s | grep -v ' ') || exit 1
 ssh -n -o BatchMode=yes "$BOX" "if exist $W\\corpus\\$name rmdir /s /q $W\\corpus\\$name" > /dev/null; ssh -n -o BatchMode=yes "$BOX" "if not exist $W\\corpus mkdir $W\\corpus"; ssh -n -o BatchMode=yes "$BOX" "mkdir $W\\corpus\\$name" > /dev/null
 scp -q "$T/$name.tgz" "$BOX:$ROOT/corpus/$name/" || exit 1
-ssh -n -o BatchMode=yes "$BOX" "cd /d $W\\corpus\\$name & tar xzf $name.tgz & $W\\tests\\record.cmd $W\\corpus\\$name & tar czf out.tgz *.asm6x.obj" | grep -v "^$" | grep -v RECORD-DONE
-scp -q "$BOX:$ROOT/corpus/$name/out.tgz" "$T/$name/" && tar xzf "$T/$name/out.tgz" -C "$T/$name"
+# TI's assembler on the box and ours here at once - the reference and the assembler under test side
+# by side - and the comparison once both are done.
+( ssh -n -o BatchMode=yes "$BOX" "cd /d $W\\corpus\\$name & tar xzf $name.tgz & $W\\tests\\record.cmd $W\\corpus\\$name & tar czf out.tgz *.asm6x.obj" | grep -v "^$" | grep -v RECORD-DONE
+  scp -q "$BOX:$ROOT/corpus/$name/out.tgz" "$T/$name/" && tar xzf "$T/$name/out.tgz" -C "$T/$name" ) &
+box=$!
+ls "$corpus"/*.s | grep -v ' ' | ASM="$ASM" D="$T/$name" xargs -P 8 -I{} sh -c 'b=$(basename "{}" .s); "$ASM" "{}" -o "$D/$b.obj" > "$D/$b.err" 2>&1; echo $? > "$D/$b.rc"'
+wait $box
 n=0; same=0; differ=0; refused=0
 for f in "$corpus"/*.s; do
     b=$(basename "$f" .s)
     case "$b" in *" "*) continue;; esac
     n=$((n + 1))
-    if ! "$ASM" "$f" -o "$T/$name/$b.obj" > "$T/$name/$b.err" 2>&1; then
+    if [ "$(cat "$T/$name/$b.rc")" != 0 ]; then
         refused=$((refused + 1)); echo "REFUSED $b: $(head -1 "$T/$name/$b.err" | sed 's/^[^:]*: //')"; continue
     fi
     [ -f "$T/$name/$b.asm6x.obj" ] || { echo "NO-REFERENCE $b (asm6x refused it)"; continue; }
