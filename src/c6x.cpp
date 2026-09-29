@@ -892,8 +892,23 @@ unsigned unit_bit(const Encoded &e)
 bool C6xTarget::retarget(Unit &u, Packet &p, unsigned taken, bool keepUnit)
 {
     static const char order[] = "DSLM";
-    if (p.mnemonic == "MVC" || p.e.fixSym >= 0) return false;
     size_t errs = u.errors.size(), warns = u.warnings.size();
+    /* A branch to a label may take .S on either side - asm6x moves `B` to .S1 when .S2 is
+       spoken for, as `MVK 32, B0 || B label` needs. Its fixup names the side in no way, so
+       one already recorded for an earlier instruction of the packet stays right. */
+    if ((p.mnemonic == "B" || p.mnemonic == "BNOP") && p.e.unit == 'S' && p.e.side >= 0 && p.e.fixSym >= 0) {
+        UnitName un;
+        un.letter = 'S'; un.side = 1 - p.e.side; un.cross = false; un.dataSide = -1; un.loose = false;
+        std::vector<Operand> o(p.operands);
+        Encoded e;
+        e.w = 0; e.unit = 0; e.side = -1; e.fixSym = -1; e.fixKind = R_NONE; e.fixAdd = 0;
+        bool ok = encode(u, p.mnemonic, un, o, p.creg, e);
+        u.errors.resize(errs);
+        u.warnings.resize(warns);
+        if (ok && e.fixKind == p.e.fixKind && !(taken & unit_bit(e))) { p.e = e; return true; }
+        return false;
+    }
+    if (p.mnemonic == "MVC" || p.e.fixSym >= 0) return false;
     for (int k = 0; k < 4; k++) {
         if (order[k] == p.e.unit) continue;
         UnitName un;
@@ -986,6 +1001,10 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
        is not moved. */
     unsigned want = unit_bit(e);
     if (par) {
+        /* asm6x: "Too many branches to a label in this packet" - a second one is refused before any unit moves. */
+        if ((m == "B" || m == "BNOP") && e.fixSym >= 0)
+            for (size_t k = 0; k < packet.size(); k++)
+                if ((packet[k].mnemonic == "B" || packet[k].mnemonic == "BNOP") && packet[k].e.fixSym >= 0) { u.error("too many branches to a label in this packet"); return; }
         if (units & want) {
             Packet mine;
             mine.mnemonic = m; mine.operands = operands; mine.creg = creg; mine.z = z; mine.at = u.here(); mine.e = e;
