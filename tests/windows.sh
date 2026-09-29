@@ -58,7 +58,7 @@ scp -q "$T/$name.tgz" "$BOX:$ROOT/corpus/$name/" || exit 1
 box=$!
 ls "$corpus"/*.s | grep -v ' ' | ASM="$ASM" D="$T/$name" xargs -P 8 -I{} sh -c 'b=$(basename "{}" .s); "$ASM" "{}" -o "$D/$b.obj" > "$D/$b.err" 2>&1; echo $? > "$D/$b.rc"'
 wait $box
-n=0; same=0; differ=0; refused=0
+n=0; same=0; differ=0; refused=0; bytes=0
 for f in "$corpus"/*.s; do
     b=$(basename "$f" .s)
     case "$b" in *" "*) continue;; esac
@@ -67,10 +67,10 @@ for f in "$corpus"/*.s; do
         refused=$((refused + 1)); echo "REFUSED $b: $(head -1 "$T/$name/$b.err" | sed 's/^[^:]*: //')"; continue
     fi
     [ -f "$T/$name/$b.asm6x.obj" ] || { echo "NO-REFERENCE $b (asm6x refused it)"; continue; }
-    if python3 tests/c6xdiff.py "$T/$name/$b.obj" "$T/$name/$b.asm6x.obj" > "$T/$name/$b.diff"; then same=$((same + 1))
+    if python3 tests/c6xdiff.py "$T/$name/$b.obj" "$T/$name/$b.asm6x.obj" > "$T/$name/$b.diff"; then same=$((same + 1)); cmp -s "$T/$name/$b.obj" "$T/$name/$b.asm6x.obj" && bytes=$((bytes + 1))
     else differ=$((differ + 1)); echo "DIFFER $b: $(head -1 "$T/$name/$b.diff")"; fi
 done
-echo "windows.sh: $n files, $same identical to asm6x, $differ differ, $refused refused"
+echo "windows.sh: $n files, $same identical to asm6x ($bytes byte-identical), $differ differ, $refused refused"
 # link ours against TI's runtime, with the WITH directory's objects beside each if one is named
 rm -rf "$T/$name/with"
 if [ -n "${WITH:-}" ]; then
