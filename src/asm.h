@@ -9,6 +9,7 @@
    C-style ISO C++14, one thread per input file, no mutable globals. */
 
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -119,7 +120,8 @@ public:
     std::vector<std::string> errors;
     std::vector<std::string> warnings;          /* asm6x mends these with a word; so does this */
     std::vector<std::pair<int, std::string> > depends;  /* .symdepend: (symbol, section name) pairs, R_NONE entries */
-    std::string pendingLabel;                   /* a label alone on its line, placed by the next emission */
+    std::string pendingLabel;
+    std::unordered_map<std::string, int> symIndex;   /* prototype: name -> symbols[] index */                   /* a label alone on its line, placed by the next emission */
 
     void begin_pass(int n);
     bool moved() const;
