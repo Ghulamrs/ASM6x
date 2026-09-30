@@ -102,12 +102,32 @@ def num(s):
     v &= 0xFFFFFFFF
     return str(v - (1 << 32) if v & 0x80000000 else v)
 
+SIZES = {'ldw': 4, 'stw': 4, 'ldnw': 4, 'stnw': 4, 'ldh': 2, 'ldhu': 2, 'sth': 2, 'ldb': 1, 'ldbu': 1, 'stb': 1,
+         'lddw': 8, 'stdw': 8, 'ldndw': 8, 'stndw': 8}
+
+def mem(op, x):
+    """one address, one spelling: *R, *+R[0] and *+R(0) are the same address, and a constant
+    offset in bytes is written in units of the access, as *+R[k]"""
+    m = re.match(r'^\*(\+|-)?([ab]\d+)(?:\[(-?\w+)\]|\((-?\w+)\))?$', x)
+    if not m: return x
+    sign, reg, units, byts = m.group(1) or '+', m.group(2), m.group(3), m.group(4)
+    if units is None and byts is None: return '*+%s[0]' % reg
+    if units is not None:
+        k = num(units)
+    else:
+        k = num(byts)
+        if re.match(r'^-?\d+$', k) and op in SIZES and int(k) % SIZES[op] == 0: k = str(int(k) // SIZES[op])
+        else: return '*%s%s(%s)' % (sign, reg, k)
+    if k == '0': sign = '+'
+    return '*%s%s[%s]' % (sign, reg, k)
+
 def canon(t):
     t = re.sub(r'\s+', ' ', t).strip().lower()
     m = re.match(r'^(\[!?[ab]\d+\] )?(\w+)( \.\w+)?(?: (.*))?$', t)
     if not m: return t
     pred, op, unit, args = m.group(1) or '', m.group(2), m.group(3) or '', m.group(4) or ''
     a = [num(x.strip()) for x in re.split(r',(?![^\[\(]*[\]\)])', args)] if args else []
+    a = [mem(op, x) for x in a]
     if op == 'or' and len(a) == 3 and a[0] == '0': op = 'mv'; a = [a[1], a[2]]
     if op == 'add' and len(a) == 3 and a[1] == '0': op = 'mv'; a = [a[0], a[2]]
     if op in ('addaw', 'subaw', 'sub') and len(a) == 3 and a[1] == '0': op = 'mv'; a = [a[0], a[2]]

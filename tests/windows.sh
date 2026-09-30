@@ -60,15 +60,19 @@ if [ "${1:-}" = compact ]; then
             "$ASM" "$f" -o "$D/$b.plain.obj" > /dev/null 2>&1
         done
         ( cd "$D" && COPYFILE_DISABLE=1 tar --no-xattrs -czf "../compact-$name.tgz" *.s *.obj ) || exit 1
+        # cmd's `if` takes everything after it on the line, `&` included: one command per ssh
         ssh -n -o BatchMode=yes "$BOX" "if exist $W\\compact\\$name rmdir /s /q $W\\compact\\$name" > /dev/null
-        ssh -n -o BatchMode=yes "$BOX" "if not exist $W\\compact mkdir $W\\compact & mkdir $W\\compact\\$name" > /dev/null
+        ssh -n -o BatchMode=yes "$BOX" "if not exist $W\\compact mkdir $W\\compact" > /dev/null
+        ssh -n -o BatchMode=yes "$BOX" "mkdir $W\\compact\\$name" > /dev/null
+        ssh -n -o BatchMode=yes "$BOX" "if exist $W\\compact\\$name echo ok" | grep -q ok || { echo "cannot make $W\\compact\\$name on the box"; exit 1; }
         scp -q "$T/compact-$name.tgz" "$BOX:$ROOT/compact/$name/" || exit 1
         ssh -n -o BatchMode=yes "$BOX" "cd /d $W\\compact\\$name & tar xzf compact-$name.tgz & $W\\tests\\compact.cmd $W\\compact\\$name & tar czf back.tgz *.c82.obj *.nc82.obj *.c74.obj *.dis *.log" | grep -v "^$" | grep -v COMPACT-DONE
         scp -q "$BOX:$ROOT/compact/$name/back.tgz" "$D/" && tar xzf "$D/back.tgz" -C "$D" || { echo "nothing came back for $name"; continue; }
         for f in "$D"/*.s; do
             b=$(basename "$f" .s)
             total=$((total + 1))
-            [ -f "$D/$b.c82.obj" ] || { echo "ASM6X-REFUSED $b: $(tr -d '' < "$D/$b.c82.log" | grep -i error | head -1)"; continue; }
+            [ -f "$D/$b.c82.obj" ] || { echo "ASM6X-REFUSED $b: $(tr -d '
+' < "$D/$b.c82.log" | grep -i error | head -1)"; continue; }
             [ -n "${RECORD:-}" ] && cp "$D/$b.c82.obj" "$dir/$b.c82.obj"
             if python3 tests/c6xdiff.py "$D/$b.ours.obj" "$D/$b.c82.obj" > "$D/$b.diff"; then
                 same=$((same + 1)); cmp -s "$D/$b.ours.obj" "$D/$b.c82.obj" && bytes=$((bytes + 1))
