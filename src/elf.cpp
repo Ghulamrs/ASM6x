@@ -155,7 +155,7 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
         h.name = shstr.add(s.name);
         h.type = (unsigned long)s.kind;
         h.flags = 0x82;   /* SHF_ALLOC | SHF_LINK_ORDER */
-        h.size = (unsigned long)s.bytes.size();
+        h.size = (unsigned long)s.bytes.size(); h.entsize = 8;     /* two words an entry */
         h.align = (unsigned long)s.align;
         /* linked to the code section its name ends with, wherever that was opened; a plain
            .c6xabi.exidx to .text */
@@ -235,7 +235,7 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
     }
     {
         Shdr h; memset(&h, 0, sizeof h);
-        h.name = shstr.add(".TI.symbol.alias"); h.type = 0x7f000006; h.size = sizeof kSymbolAlias;
+        h.name = shstr.add(".TI.symbol.alias"); h.type = 0x7f000006; h.size = sizeof kSymbolAlias; h.entsize = 8;
         hdrs.push_back(h); bodies.push_back(std::vector<unsigned char>(kSymbolAlias, kSymbolAlias + sizeof kSymbolAlias));
     }
     {
@@ -246,14 +246,14 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
     size_t strtab_index = hdrs.size();
     {
         Shdr h; memset(&h, 0, sizeof h);
-        h.name = shstr.add(".strtab"); h.type = 3; h.flags = 0x20; h.size = (unsigned long)strtab.b.size();
+        h.name = shstr.add(".strtab"); h.type = 3; h.flags = 0x20; h.entsize = 1; h.size = (unsigned long)strtab.b.size();
         hdrs.push_back(h); bodies.push_back(strtab.b);
     }
     hdrs[symtab].link = (unsigned long)strtab_index;
     size_t shstrtab_index = hdrs.size();
     {
         Shdr h; memset(&h, 0, sizeof h);
-        h.name = shstr.add(".shstrtab"); h.type = 3; h.flags = 0x20;
+        h.name = shstr.add(".shstrtab"); h.type = 3; h.flags = 0x20; h.entsize = 1;
         hdrs.push_back(h); bodies.push_back(std::vector<unsigned char>());
     }
     hdrs[shstrtab_index].size = (unsigned long)shstr.b.size();
@@ -266,9 +266,11 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
     f.u16(1); f.u16(140); f.u32(1); f.u32(0); f.u32(0);
     size_t shoff_at = f.size();
     f.u32(0);
-    f.u32(0); f.u16(52); f.u16(0); f.u16(0); f.u16(40); f.u16((unsigned)hdrs.size()); f.u16((unsigned)shstrtab_index);
+    f.u32(0); f.u16(52); f.u16(32); f.u16(0); f.u16(40);   /* e_phentsize 32 with no program headers, as asm6x */ f.u16((unsigned)hdrs.size()); f.u16((unsigned)shstrtab_index);
+    /* each body at its own alignment, not four: asm6x's .text (32) is at 64, not 52, and
+       its .TI.section.flags (0) at an odd offset */
     for (size_t i = 1; i < hdrs.size(); i++) {
-        f.pad4();
+        while (hdrs[i].align > 1 && f.size() % hdrs[i].align) f.u8(0);
         hdrs[i].offset = (unsigned long)f.size();
         if (hdrs[i].type != 8) f.bytes(bodies[i]);
     }
