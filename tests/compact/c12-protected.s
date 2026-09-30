@@ -1,0 +1,108 @@
+; c12-protected: written by gen.py - do not edit
+	.text
+	.global f
+f:
+	LDW .D1T1 *+A4[0], A0
+	NOP 4
+	MV .D1 A0, A1
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[1], A1
+	NOP 4
+	MV .D1 A1, A2
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[2], A2
+	NOP 4
+	MV .D1 A2, A3
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[3], A3
+	NOP 4
+	MV .D1 A3, A4
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[4], A4
+	NOP 4
+	MV .D1 A4, A5
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[5], A5
+	NOP 4
+	MV .D1 A5, A6
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[6], A6
+	NOP 4
+	MV .D1 A6, A7
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[7], A7
+	NOP 4
+	MV .D1 A7, A0
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[8], A0
+	NOP 4
+	MV .D1 A0, A1
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[9], A1
+	NOP 4
+	MV .D1 A1, A2
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[10], A2
+	NOP 4
+	MV .D1 A2, A3
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[11], A3
+	NOP 4
+	MV .D1 A3, A4
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[12], A4
+	NOP 4
+	MV .D1 A4, A5
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[13], A5
+	NOP 4
+	MV .D1 A5, A6
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[14], A6
+	NOP 4
+	MV .D1 A6, A7
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[15], A7
+	NOP 4
+	MV .D1 A7, A0
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[0], A0
+	NOP 4
+	MV .D1 A0, A1
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[1], A1
+	NOP 4
+	MV .D1 A1, A2
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[2], A2
+	NOP 4
+	MV .D1 A2, A3
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[3], A3
+	NOP 4
+	MV .D1 A3, A4
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[4], A4
+	NOP 4
+	MV .D1 A4, A5
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[5], A5
+	NOP 4
+	MV .D1 A5, A6
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[6], A6
+	NOP 4
+	MV .D1 A6, A7
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[7], A7
+	NOP 4
+	MV .D1 A7, A0
+	ADD .D1 A5, 1, A5
+	LDW .D1T1 *+A4[1], A1
+	NOP 3
+	MV .D1 A1, A2
+	LDW .D1T1 *+A4[1], A1
+	NOP 4
+	NOP 1
+	B B3
+	NOP 5

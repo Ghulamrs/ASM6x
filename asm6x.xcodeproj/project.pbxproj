@@ -14,6 +14,7 @@
 		98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */; };
 		42356790D29286159536C3AB /* src/main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 180172A6BF36C3864515BC72 /* src/main.cpp */; };
 		2CFF03904E0D6BB33F35F406 /* src/unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C8AD841A06B482AD6514B7 /* src/unit.cpp */; };
+		5C0A11CE7C0DE0000000B001 /* src/compact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A11CE7C0DE0000000F001 /* src/compact.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/lexer.cpp; sourceTree = "<group>"; };
 		180172A6BF36C3864515BC72 /* src/main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/main.cpp; sourceTree = "<group>"; };
 		15C8AD841A06B482AD6514B7 /* src/unit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/unit.cpp; sourceTree = "<group>"; };
+		5C0A11CE7C0DE0000000F001 /* src/compact.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/compact.cpp; sourceTree = "<group>"; };
 		876DAF5CCB512912F5C91771 /* src/asm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = src/asm.h; sourceTree = "<group>"; };
 		43586A65B757F39E1DA3CD30 /* src/forms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = src/forms.h; sourceTree = "<group>"; };
 		1BA4060C0C0AB77421D9125E /* asm6x.exe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = asm6x.exe; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +60,7 @@
 				F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */,
 				180172A6BF36C3864515BC72 /* src/main.cpp */,
 				15C8AD841A06B482AD6514B7 /* src/unit.cpp */,
+				5C0A11CE7C0DE0000000F001 /* src/compact.cpp */,
 				876DAF5CCB512912F5C91771 /* src/asm.h */,
 				43586A65B757F39E1DA3CD30 /* src/forms.h */,
 			);
@@ -148,6 +151,7 @@
 				98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */,
 				42356790D29286159536C3AB /* src/main.cpp in Sources */,
 				2CFF03904E0D6BB33F35F406 /* src/unit.cpp in Sources */,
+				5C0A11CE7C0DE0000000B001 /* src/compact.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

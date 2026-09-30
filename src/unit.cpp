@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-Unit::Unit() : line(0), pass(0), current(-1), defined(0)
+Unit::Unit() : line(0), pass(0), current(-1), defined(0), compressing(false)
 {
 }
 
@@ -90,6 +90,8 @@ int Unit::section(const std::string &name, bool writable)
     s.align = 1;
     s.dataLast = false;
     s.dataEnd = 0;
+    s.dataBytes = 0;
+    s.compressed = false;
     sections.push_back(s);
     current = (int)sections.size() - 1;
     return current;
@@ -231,6 +233,7 @@ void Unit::emitData(int width, unsigned long long v)
     Section *s = cur();
     if (!s) return;
     for (int k = 0; k < width; k++) emit8((unsigned)(v >> (8 * k)));
+    s->dataBytes += (unsigned long)width;
     s->dataLast = true;
     s->dataEnd = here();
 }
@@ -239,6 +242,7 @@ void Unit::emitWord(unsigned long v)
 {
     Section *s = cur();
     if (!s) return;
+    s->insns.push_back((unsigned long)s->bytes.size());
     emit32(v);
     s->dataLast = false;
 }
@@ -255,6 +259,8 @@ void Unit::fixup(unsigned long at, int sym, RelKind kind, long long addend, int 
     f.kind = kind;
     f.addend = addend;
     f.line = line;
+    f.half = false;
+    f.settled = false;
     fixups.push_back(f);
 }
 
@@ -297,6 +303,7 @@ void Unit::resolve()
     for (size_t i = 0; i < fixups.size(); i++) {
         const Fixup &f = fixups[i];
         line = f.line;
+        if (f.settled) continue;
         Section &sec = sections[f.section];
         if (f.symbol < 0) {
             /* $: against the section symbol, the offset as the addend; a NOCMP marker leaves
@@ -326,8 +333,9 @@ void Unit::resolve()
         if (branch && s.defined && (s.section == f.section || s.section < 0) && s.bind != B_WEAK) {
             /* in the section - or a .set alias of a label, which asm6x takes as an offset here */
             long long target = s.value + f.addend;
-            if (target % 4) { error("branch to '" + s.name + "' is not word-aligned"); continue; }
-            long long disp = (target - (long long)(f.at & ~31ul)) / 4;
+            int unit = f.half ? 2 : 4;
+            if (target % unit) { error("branch to '" + s.name + "' is not word-aligned"); continue; }
+            long long disp = (target - (long long)(f.at & ~31ul)) / unit;
             int bits = f.kind == R_PCR_S21 ? 21 : 12, shift = f.kind == R_PCR_S21 ? 7 : 16;
             if (disp < -(1LL << (bits - 1)) || disp >= (1LL << (bits - 1))) { error("branch to '" + s.name + "' is too far"); continue; }
             put_word(sec, f.at, word_at(sec, f.at) | (((unsigned long)disp & ((1ul << bits) - 1)) << shift));

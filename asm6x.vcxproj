@@ -54,6 +54,7 @@
   <ItemGroup>
     <ClCompile Include="src\assembler.cpp" />
     <ClCompile Include="src\c6x.cpp" />
+    <ClCompile Include="src\compact.cpp" />
     <ClCompile Include="src\elf.cpp" />
     <ClCompile Include="src\expr.cpp" />
     <ClCompile Include="src\lexer.cpp" />
