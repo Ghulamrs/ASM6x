@@ -1,0 +1,56 @@
+The order of the global symbols in asm6x's .symtab - probes, 2026-09-30
+
+What is left between ASM6x's objects and asm6x 8.2.2's is the order of the non-local
+symbols in .symtab (and the .rel* and .strtab that follow from it). These probes were
+assembled on the Windows box (`sh probe.sh <dir>`: cl6x 8.2.2, `-c --symdebug:none`,
+under C:\cxx1\symorder), and globals.py reads the global part of an object's .symtab
+back; <name>.order beside each object is that list. The rule was NOT found in the time
+box; what was measured is below, and it rules out most of the obvious rules.
+
+Measured
+
+1. The order does not depend on the order of mention for names that do not tie
+   (p1/perm0..7: the same six names in eight orders, one output; p1/def6*: .global'ed
+   or defined in either order, one output). What matters is the name.
+2. It is a strict order on names, with occasional ties broken later-mentioned-first
+   (p5: two-symbol files in both mention orders - 20 of 22 pairs come out the same way
+   round whichever was mentioned first; e277/e99 flips, so those two tie and the one
+   mentioned later is written first, i.e. a chain pushed at the front). So: a hash
+   table walked from its top bucket down (or a sort on a hash), chains prepended.
+3. Single-character names come out in descending character order, always: z..a _ Z..A
+   (p4/ruler, p1/ref40). Two-character names xd (x a letter, d a digit) come out by x
+   descending then d descending (p4/rall), and the whole v0..z9 block sits above z, the
+   whole a0..u9 block below A - 210 names between two adjacent single characters, so
+   this is not a monotone function of the name mod anything small.
+4. The last character of a five-letter name enters by XOR: in p2/ee300 every group
+   eeAB0..eeAB9 comes out 9 8 1 0 3 2 5 4 7 6, which is descending (F ^ d) with F's low
+   nibble 6 - for every prefix eeAB; four-letter e2Bd and shorter groups come out 9..0.
+   No linear weight w with (B + d*w) mod N produces that ten (checked, and shown
+   impossible by hand), so the digit is XORed in. The only rotate-XOR step whose low
+   nibble is 6 after four steps from 'e' and 0 after fewer is h = rotl(h,7) ^ c (or
+   rotl 23), the classic rotating hash - but see 6.
+5. Ties measured: e277 = e99, and in the 300-name files e2Dx ties e(D+2)(x+2) for every
+   D and x (e266/e88, e202/e24, ...); p2/f300 shows blocks of ten alternating
+   (f259..f250 f39..f30 f249..f240 f29..f20 ...) with no ties. A candidate must
+   reproduce both.
+6. What does not fit, even one 24-name file (p2/rep: a x1..12 and b x1..12), under
+   "bucket descending, ties allowed": every polynomial h*k+c, h*k^c, (h+c)*k, (h^c)*k,
+   h<<k (+|^) c, rotl(h,k) (+|^) c, rotr, PJW/ELF, sdbm, FNV-1/1a, djb2, with k to 300
+   (1100 for the plain polynomial), seed 0 or the length, reduced as u32, u31, |int32|,
+   u16, u15, |int16|, h>>16, h^(h>>16), h>>8, h&0xffffff, and N from 2 to 70000
+   (fit3.cpp); rotate-XOR/ADD with N to 2^26 (fitrot.cpp). An open-addressing table
+   (linear probe either way, walked either way) over the same hashes was simulated
+   exactly on ee300 (sim.cpp) and did not finish its N range in the time box - and
+   finding 2 says chaining, not probing.
+
+What to try next
+
+- The hash is XOR-based with a rotation or an odd multiplier (4), the walk is
+  descending (3), chains are prepended (2). Missing is the reduction to a bucket and/or
+  a seed: seeds other than 0 and the length; h % N with N above 2^26 or the value sorted
+  whole; a table whose size grows and REHASHES (a chain's order after a rehash is the
+  reverse of the old walk, which could give f300's alternating blocks without ties);
+  hashing the name as 4-byte words.
+- p5's two-symbol probe is a cheap tie/order oracle: two files per question, no
+  reasoning about wraps. The ruler files (p4) place a block of ten between known
+  singles.
