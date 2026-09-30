@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-Unit::Unit() : line(0), pass(0), current(-1)
+Unit::Unit() : line(0), pass(0), current(-1), defined(0)
 {
 }
 
@@ -17,7 +17,8 @@ void Unit::begin_pass(int n)
         prev_sizes.push_back((unsigned long)sections[i].bytes.size());
     sections.clear();
     depends.clear();
-    pendingLabel.clear();
+    pendingLabels.clear();
+    defined = 0;
     /* asm6x numbers .text first whatever the source opens first; it is executable from the
        start, and its alignment is the fetch packet's once an instruction lands in it */
     current = -1;
@@ -138,6 +139,7 @@ int Unit::ref(const std::string &name)
     s.mustDefine = false;
     s.alias = -1;
     s.aliasAdd = 0;
+    s.order = 0;
     symbols.push_back(s);
     return (int)symbols.size() - 1;
 }
@@ -159,6 +161,7 @@ bool Unit::define(const std::string &name, int type)
     s.value = (long long)here();
     s.line = line;
     s.pass = pass;
+    s.order = defined++;
     return true;
 }
 
@@ -177,6 +180,7 @@ bool Unit::constant(const std::string &name, long long v, int alias, long long a
     s.alias = alias;
     s.aliasAdd = aliasAdd;
     s.pass = pass;
+    s.order = defined++;
     return true;
 }
 
@@ -189,17 +193,19 @@ void Unit::align(int bytes)
         s->bytes.push_back(0);
 }
 
-/* a label that stood alone on its line takes the address of what comes next, after that has
+/* labels that stood alone on their lines take the address of what comes next, after that has
    aligned itself - asm6x's placing, which puts `fwd:` before an instruction after data at the
-   padded word, not at the byte after the data */
+   padded word, not at the byte after the data - and are defined last first, which is the
+   order asm6x lists two such labels in its symbol table */
 void Unit::placeLabel()
 {
-    if (pendingLabel.empty()) return;
-    std::string name = pendingLabel;
-    pendingLabel.clear();
+    if (pendingLabels.empty()) return;
+    std::vector<std::string> names;
+    names.swap(pendingLabels);
     Section *s = cur();
     if (!s) return;
-    define(name, s->code ? SYM_FUNC : SYM_OBJECT);
+    for (size_t i = names.size(); i > 0; i--)
+        define(names[i - 1], s->code ? SYM_FUNC : SYM_OBJECT);
 }
 
 void Unit::emit8(unsigned v)

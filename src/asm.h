@@ -76,6 +76,7 @@ struct Symbol {
     int alias;          /* al .set fwd+4: the label, with aliasAdd; a reference to al is one to fwd, and the
                            symbol table has al as an absolute of the offset, as asm6x writes it */
     long long aliasAdd;
+    unsigned long order;    /* its place among the definitions: asm6x writes the locals in that order */
 };
 
 struct Fixup {
@@ -119,7 +120,9 @@ public:
     std::vector<std::string> errors;
     std::vector<std::string> warnings;          /* asm6x mends these with a word; so does this */
     std::vector<std::pair<int, std::string> > depends;  /* .symdepend: (symbol, section name) pairs, R_NONE entries */
-    std::string pendingLabel;                   /* a label alone on its line, placed by the next emission */
+    std::vector<std::string> pendingLabels;     /* labels alone on their lines, placed by the next emission - the
+                                                   last first, as asm6x defines them */
+    unsigned long defined;                      /* definitions so far this pass, for Symbol::order */
 
     void begin_pass(int n);
     bool moved() const;

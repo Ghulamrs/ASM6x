@@ -212,8 +212,7 @@ void C6xTarget::statement(Unit &u, std::vector<Token> &t)
             } else u.constant(label, v.v);
             return;
         }
-        u.placeLabel();
-        u.pendingLabel = label;
+        u.pendingLabels.push_back(label);
         if (i >= t.size()) return;
     }
     /* .asg names stand for their text in the operands */
@@ -264,7 +263,7 @@ bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
            of the space, in .bss or in the named section, which is uninitialised */
         bool usect = d == ".USECT";
         if (n < 1) { u.error(d + " needs a name and a size"); return true; }
-        std::string symbol = usect ? u.pendingLabel : t[cuts[0]].text;
+        std::string symbol = usect && !u.pendingLabels.empty() ? u.pendingLabels.back() : usect ? std::string() : t[cuts[0]].text;
         if (usect && symbol.empty()) { u.error("a symbol is expected in the label field of .usect"); return true; }
         if (usect && t[cuts[0]].kind != T_STR && t[cuts[0]].kind != T_NAME) { u.error(".usect needs a section name"); return true; }
         if (!usect && t[cuts[0]].kind != T_NAME) { u.error(".bss needs a symbol"); return true; }
@@ -282,7 +281,8 @@ bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
         u.sections[sec].bss = true;
         u.sections[sec].kind = SEC_NOBITS;
         u.align((int)align);
-        if (usect) u.pendingLabel.clear(); else u.placeLabel();
+        if (usect) u.pendingLabels.pop_back();
+        u.placeLabel();
         if (u.define(symbol, SYM_OBJECT)) {
             Symbol &s = u.symbols[u.find(symbol)];
             s.size = size;
@@ -956,7 +956,7 @@ void C6xTarget::instruction(Unit &u, const std::vector<Token> &t, size_t i)
     if (!sec->hasCode) { sec->hasCode = true; if (sec->align < 32) sec->align = 32; }
     u.align(4);
     if (par) {
-        if (!u.pendingLabel.empty()) { u.error("|| cannot follow a label"); return; }
+        if (!u.pendingLabels.empty()) { u.error("|| cannot follow a label"); return; }
         if (last_section != u.current || last_at + 4 != u.here()) { u.error("|| needs an instruction just before it"); return; }
     }
     u.placeLabel();
