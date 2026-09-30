@@ -11,8 +11,11 @@
 
 static int usage()
 {
-    fprintf(stderr, "usage: asm6x file.s ... [-o out.obj]\n"
-                    "       one thread per file; -o names the object of a single file\n");
+    fprintf(stderr, "usage: asm6x [--no_compress] file.s ... [-o out.obj]\n"
+                    "       one thread per file; -o names the object of a single file;\n"
+                    "       code is laid out in header-based fetch packets with 16-bit C64x+ compact\n"
+                    "       instructions, which the C674x runs natively, as TI's asm6x does by default;\n"
+                    "       --no_compress writes every instruction in 32 bits (--compress is accepted)\n");
     return 2;
 }
 
@@ -20,8 +23,11 @@ int main(int argc, char **argv)
 {
     std::vector<std::string> inputs;
     std::string output;
+    bool compress = true;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) output = argv[++i];
+        else if (strcmp(argv[i], "--compress") == 0) compress = true;
+        else if (strcmp(argv[i], "--no_compress") == 0) compress = false;
         else if (strcmp(argv[i], "--version") == 0) { printf("\xc2\xa9" "2026 G. R. Akhtar - asm6x 0.2, a TMS320C6000 assembler writing TI ELF\n"); return 0; }
         else if (argv[i][0] == '-') return usage();
         else inputs.push_back(argv[i]);
@@ -37,7 +43,7 @@ int main(int argc, char **argv)
             if (dot != std::string::npos && (slash == std::string::npos || dot > slash)) out.erase(dot);
             out += ".obj";
         }
-        jobs.push_back(new Assembler(inputs[i], out));
+        jobs.push_back(new Assembler(inputs[i], out, compress));
     }
     std::vector<std::thread> threads;
     for (size_t i = 0; i < jobs.size(); i++) {

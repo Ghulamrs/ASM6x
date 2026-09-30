@@ -7,13 +7,15 @@
 #   ASM=build/asm6x sh tests/run.sh
 cd "$(dirname "$0")/.." || exit 1
 ASM=${ASM:-build/asm6x.exe}
+# the references are TI's --no_compress objects, so ours are asked for the same way
+NC=--no_compress; export NC
 T=${T:-build/test/enc}
 mkdir -p "$T"
 files=0; same=0; differ=0; refused=0; bytes=0; enc=0
 for f in tests/enc/*.s; do
     b=$(basename "$f" .s)
     files=$((files + 1)); enc=$((enc + 1))
-    if ! "$ASM" "$f" -o "$T/$b.obj" > "$T/$b.err" 2>&1; then
+    if ! "$ASM" $NC "$f" -o "$T/$b.obj" > "$T/$b.err" 2>&1; then
         echo "REFUSED $b: $(head -1 "$T/$b.err")"; refused=$((refused + 1)); continue
     fi
     if python3 tests/c6xdiff.py "$T/$b.obj" "tests/enc/$b.asm6x.obj" > "$T/$b.diff"; then same=$((same + 1))
@@ -25,7 +27,7 @@ for f in tests/refuse/*.s; do
     [ -f "$f" ] || continue
     b=$(basename "$f" .s)
     files=$((files + 1))
-    if "$ASM" "$f" -o "$T/$b.obj" > "$T/$b.msg" 2>&1; then echo "refuse/$b: assembled, should have been refused"; differ=$((differ + 1)); continue; fi
+    if "$ASM" $NC "$f" -o "$T/$b.obj" > "$T/$b.msg" 2>&1; then echo "refuse/$b: assembled, should have been refused"; differ=$((differ + 1)); continue; fi
     same=$((same + 1))
 done
 echo "run.sh: $files files, $same as asm6x, $differ differ, $refused refused; $bytes of $enc byte-identical"

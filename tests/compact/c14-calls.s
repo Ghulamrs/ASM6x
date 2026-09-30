@@ -1,0 +1,231 @@
+; c14-calls: written by gen.py - do not edit
+	.text
+	.global f
+	.ref g
+f:
+	MVK .S1 44, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret0, B3
+	MVKH ret0, B3
+	B g
+	NOP 5
+ret0:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 48, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret1, B3
+	MVKH ret1, B3
+	B g
+	NOP 5
+ret1:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 52, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret2, B3
+	MVKH ret2, B3
+	B g
+	NOP 5
+ret2:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 56, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret3, B3
+	MVKH ret3, B3
+	B g
+	NOP 5
+ret3:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 60, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret4, B3
+	MVKH ret4, B3
+	B g
+	NOP 5
+ret4:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 64, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret5, B3
+	MVKH ret5, B3
+	B g
+	NOP 5
+ret5:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 68, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret6, B3
+	MVKH ret6, B3
+	B g
+	NOP 5
+ret6:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 72, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret7, B3
+	MVKH ret7, B3
+	B g
+	NOP 5
+ret7:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 76, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret8, B3
+	MVKH ret8, B3
+	B g
+	NOP 5
+ret8:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 80, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret9, B3
+	MVKH ret9, B3
+	B g
+	NOP 5
+ret9:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 84, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret10, B3
+	MVKH ret10, B3
+	B g
+	NOP 5
+ret10:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 88, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret11, B3
+	MVKH ret11, B3
+	B g
+	NOP 5
+ret11:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 92, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret12, B3
+	MVKH ret12, B3
+	B g
+	NOP 5
+ret12:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 96, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret13, B3
+	MVKH ret13, B3
+	B g
+	NOP 5
+ret13:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 100, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret14, B3
+	MVKH ret14, B3
+	B g
+	NOP 5
+ret14:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	MVK .S1 104, A0
+	SUB .D1 A15, A0, A4
+	LDW .D1T1 *+A4[0], A4
+	NOP 4
+	MV .D1 A4, A16
+	SUB .D2 B15, 8, B15
+	STW .D2T1 A4, *+B15[0]
+	MVKL ret15, B3
+	MVKH ret15, B3
+	B g
+	NOP 5
+ret15:
+	ADD .D2 B15, 8, B15
+	MV .D1 A4, A6
+	B B3
+	NOP 5

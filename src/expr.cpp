@@ -176,7 +176,7 @@ bool eval(Unit &u, const std::vector<Token> &t, size_t from, size_t to, Value &v
     /* a difference of two placed labels of one section is a constant */
     if (v.sym >= 0 && v.sub >= 0) {
         const Symbol &a = u.symbols[v.sym], &b = u.symbols[v.sub];
-        if (a.defined && b.defined && a.section == b.section && a.section >= 0) {
+        if (a.defined && b.defined && a.section == b.section && a.section >= 0 && !u.compressing) {
             v.v += a.value - b.value;
             v.sym = -1; v.sub = -1;
             v.op = R_NONE; v.operate = false;

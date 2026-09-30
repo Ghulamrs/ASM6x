@@ -1,0 +1,591 @@
+; c11-branch-label: written by gen.py - do not edit
+	.text
+	.global f
+f:
+top:
+	MV .D1 A4, A5
+	MV .D1 A5, A6
+	B .S2 near0
+	NOP 5
+	MVK .S1 0, A1
+	MV .D1 A1, A2
+near0:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near1
+	NOP 5
+	MVK .S1 1, A1
+	MV .D1 A1, A2
+near1:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near2
+	NOP 5
+	MVK .S1 2, A1
+	MV .D1 A1, A2
+near2:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near3
+	NOP 5
+	MVK .S1 3, A1
+	MV .D1 A1, A2
+near3:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near4
+	NOP 5
+	MVK .S1 4, A1
+	MV .D1 A1, A2
+near4:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near5
+	NOP 5
+	MVK .S1 5, A1
+	MV .D1 A1, A2
+near5:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near6
+	NOP 5
+	MVK .S1 6, A1
+	MV .D1 A1, A2
+near6:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near7
+	NOP 5
+	MVK .S1 7, A1
+	MV .D1 A1, A2
+near7:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near8
+	NOP 5
+	MVK .S1 8, A1
+	MV .D1 A1, A2
+near8:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near9
+	NOP 5
+	MVK .S1 9, A1
+	MV .D1 A1, A2
+near9:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near10
+	NOP 5
+	MVK .S1 10, A1
+	MV .D1 A1, A2
+near10:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near11
+	NOP 5
+	MVK .S1 11, A1
+	MV .D1 A1, A2
+near11:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near12
+	NOP 5
+	MVK .S1 12, A1
+	MV .D1 A1, A2
+near12:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near13
+	NOP 5
+	MVK .S1 13, A1
+	MV .D1 A1, A2
+near13:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near14
+	NOP 5
+	MVK .S1 14, A1
+	MV .D1 A1, A2
+near14:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near15
+	NOP 5
+	MVK .S1 15, A1
+	MV .D1 A1, A2
+near15:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near16
+	NOP 5
+	MVK .S1 16, A1
+	MV .D1 A1, A2
+near16:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near17
+	NOP 5
+	MVK .S1 17, A1
+	MV .D1 A1, A2
+near17:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near18
+	NOP 5
+	MVK .S1 18, A1
+	MV .D1 A1, A2
+near18:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 near19
+	NOP 5
+	MVK .S1 19, A1
+	MV .D1 A1, A2
+near19:
+	MV .D1 A2, A3
+	ADD .D1 A3, 1, A3
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 0
+	NOP 5
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 1
+	NOP 4
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 2
+	NOP 3
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 3
+	NOP 2
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 4
+	NOP 1
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 5
+	NOP 1
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 0
+	NOP 5
+	B .S2 top
+	NOP 5
+	BNOP .S2 top, 1
+	NOP 4
+	B .S1 top
+	NOP 5
+	[A1] B .S2 top
+	NOP 5
+	[!A0] B .S2 top
+	NOP 5
+	B .S2 far
+	NOP 5
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+	MV .D1 A1, A2
+	MV .D1 A2, A1
+far:
+	ZERO A4
+	B B3
+	NOP 5

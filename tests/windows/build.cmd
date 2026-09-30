@@ -22,7 +22,7 @@ set /a I=0
 for %%f in (tests\enc\*.s) do (
   set /a I+=1, M=I %% %~3 + 1
   if !M!==%~2 (
-    build\asm6x.exe %%f -o build\enc\%%~nf.obj
+    build\asm6x.exe --no_compress %%f -o build\enc\%%~nf.obj
     if errorlevel 1 echo REFUSED %%~nf
   )
 )

@@ -23,7 +23,7 @@ for f in "$dir"/*.s; do
     ref="$out/$b.asm6x.obj"
     if [ -f "$ref.gz" ]; then ref="$T/$b.asm6x.obj"; gunzip -c "$out/$b.asm6x.obj.gz" > "$ref"; fi
     [ -f "$ref" ] || theirs=refused
-    if "$ASM" "$f" -o "$T/$b.obj" > "$T/$b.log" 2>&1; then mine=accepted; else mine="refused: $(head -1 "$T/$b.log" | sed 's/^[^:]*: //')"; rm -f "$T/$b.obj"; fi
+    if "$ASM" ${NC:-} "$f" -o "$T/$b.obj" > "$T/$b.log" 2>&1; then mine=accepted; else mine="refused: $(head -1 "$T/$b.log" | sed 's/^[^:]*: //')"; rm -f "$T/$b.obj"; fi
     if [ "$theirs" = refused ]; then
         if [ "$mine" = accepted ]; then bad=$((bad + 1)); echo "$b: asm6x refused, ASM6x accepted"; else agree_refuse=$((agree_refuse + 1)); fi
         continue

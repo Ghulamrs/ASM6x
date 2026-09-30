@@ -51,6 +51,9 @@ struct Section {
     unsigned long dataEnd;
     std::vector<unsigned char> bytes;
     std::vector<Reloc> relocs;
+    std::vector<unsigned long> insns;   /* where each instruction word went, in order: the compressor's input */
+    unsigned long dataBytes;            /* bytes of data emitted here: a code section holding any is not compressed */
+    bool compressed;                    /* laid out in header-based fetch packets (--compress) */
 };
 
 enum { SEC_PROGBITS = 1, SEC_NOBITS = 8, SEC_UNWIND = 0x70000001 };
@@ -90,6 +93,8 @@ struct Fixup {
     long long addend;
     int width;          /* of the field: 1, 2 or 4 bytes */
     int line;
+    bool half;          /* a BNOP in a header-based fetch packet: its displacement is in halfwords */
+    bool settled;       /* the compressor wrote it in place (a compact branch): nothing left to do */
 };
 
 /* the value of an expression: a constant, or a symbol plus a constant, or a difference of two
@@ -124,6 +129,8 @@ public:
     std::vector<std::string> pendingLabels;     /* labels alone on their lines, placed by the next emission - the
                                                    last first, as asm6x defines them */
     unsigned long defined;                      /* definitions so far this pass, for Symbol::order */
+    bool compressing;                           /* the compressor's pass: a difference of two code labels
+                                                   is left to resolve(), as the labels will move */
     std::unordered_map<std::string, int> symIndex;   /* name -> symbols[] index: find() in one step */
 
     void begin_pass(int n);
@@ -227,9 +234,15 @@ private:
 
 bool write_elf(const Unit &u, const std::string &path, std::string &err);
 
+/* compact.cpp: TI's compaction - 16-bit instructions in header-based fetch packets - over the
+   code sections of a pass that has not been resolved yet; moves the labels and the fixups */
+void compress_sections(Unit &u);
+/* the 16-bit form of a 32-bit word, if it has one under the header's expansion bits; for the tests */
+bool compact_form(unsigned long w, unsigned dsz, unsigned br, unsigned &half, bool &branch);
+
 class Assembler {
 public:
-    Assembler(const std::string &input, const std::string &output);
+    Assembler(const std::string &input, const std::string &output, bool compress = false);
     bool run();
     const std::vector<std::string> &errors() const { return unit.errors; }
     const std::vector<std::string> &warnings() const { return unit.warnings; }
@@ -238,6 +251,7 @@ public:
 private:
     std::string input;
     std::string output;
+    bool compress;
     Unit unit;
 
     Assembler(const Assembler &);

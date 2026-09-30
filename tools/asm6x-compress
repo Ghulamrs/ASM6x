@@ -1,0 +1,4 @@
+#!/bin/sh
+# asm6x with --compress, for a caller that takes the assembler as one path and passes no flags:
+#   ASM6X=<this tree>/tools/asm6x-compress tools/c6747-levels      (from C++Optimize)
+exec "$(cd "$(dirname "$0")/.." && pwd)/build/asm6x.exe" --compress "$@"
