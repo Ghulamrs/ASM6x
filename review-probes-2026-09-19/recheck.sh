@@ -4,6 +4,7 @@
 # refused, the reverse, or both accepted with a table difference. Warnings from asm6x count
 # as acceptance; a mended value is then held to asm6x's object. A probe named in known.txt
 # beside this script is a difference kept on purpose (asm6x's own failure), counted apart.
+# The identical objects are also compared byte for byte, and that count is reported.
 #   ASM=<asm6x build> sh review-probes-2026-09-19/recheck.sh review-probes-2026-09-19/edge
 # Exit status: the number of disagreements not in known.txt.
 set -u
@@ -13,7 +14,7 @@ ASM=${ASM:?set ASM to the asm6x build}
 dir=$(cd "$1" && pwd)
 out="$dir/out"
 T=${T:-/tmp/asm6x-recheck}; rm -rf "$T"; mkdir -p "$T"
-same=0; agree_refuse=0; bad=0; known=0
+same=0; agree_refuse=0; bad=0; known=0; bytes=0
 for f in "$dir"/*.s; do
     b=$(basename "$f" .s)
     if grep -qx "$b" "$here/known.txt" 2>/dev/null; then known=$((known + 1)); continue; fi
@@ -28,8 +29,8 @@ for f in "$dir"/*.s; do
         continue
     fi
     if [ "$mine" != accepted ]; then bad=$((bad + 1)); echo "$b: asm6x accepted, ASM6x $mine"; continue; fi
-    if python3 "$root/tests/c6xdiff.py" "$T/$b.obj" "$ref" > "$T/$b.diff"; then same=$((same + 1))
+    if python3 "$root/tests/c6xdiff.py" "$T/$b.obj" "$ref" > "$T/$b.diff"; then same=$((same + 1)); cmp -s "$T/$b.obj" "$ref" && bytes=$((bytes + 1))
     else bad=$((bad + 1)); echo "$b: tables differ: $(head -1 "$T/$b.diff")"; fi
 done
-echo "recheck: $same identical, $agree_refuse refused by both, $known known differences (known.txt), $bad disagree"
+echo "recheck: $same identical ($bytes byte-identical), $agree_refuse refused by both, $known known differences (known.txt), $bad disagree"
 exit $bad

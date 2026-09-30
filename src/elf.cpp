@@ -86,9 +86,16 @@ bool write_elf(const Unit &u, const std::string &path, std::string &err)
     /* the file */
     sym.u32(strtab.add(u.source)); sym.u32(0); sym.u32(0); sym.u8(4); sym.u8(2); sym.u16(0xFFF1);
     count++;
-    for (size_t i = 0; i < u.symbols.size(); i++) {
+    std::vector<size_t> locals_by_order;
+    for (size_t i = 0; i < u.symbols.size(); i++)
+        if (u.symbols[i].bind == B_LOCAL && u.symbols[i].defined) locals_by_order.push_back(i);
+    for (size_t a = 1; a < locals_by_order.size(); a++)     /* by definition, as asm6x lists them */
+        for (size_t b = a; b > 0 && u.symbols[locals_by_order[b - 1]].order > u.symbols[locals_by_order[b]].order; b--) {
+            size_t t = locals_by_order[b - 1]; locals_by_order[b - 1] = locals_by_order[b]; locals_by_order[b] = t;
+        }
+    for (size_t k = 0; k < locals_by_order.size(); k++) {
+        size_t i = locals_by_order[k];
         const Symbol &s = u.symbols[i];
-        if (s.bind != B_LOCAL || !s.defined) continue;
         index[i] = count++;
         sym.u32(strtab.add(s.name)); sym.u32((unsigned long)s.value); sym.u32(s.sized ? (unsigned long)s.size : 0);
         /* a .set constant is an absolute symbol of no type, as asm6x writes it */
