@@ -497,64 +497,81 @@ static bool compress_section(Unit &u, int si)
         if (!flight) c.droppable = true;
     }
 
-    Layout L(in);
-    L.prevAddr.resize((size_t)n);
-    for (int k = 0; k < n; k++) L.prevAddr[(size_t)k] = (long)in[(size_t)k].off;
-    L.aligned.assign((size_t)n, 0);
-    for (int k = 0; k < n; k++) L.aligned[(size_t)k] = in[(size_t)k].pinned;
-    bool sticky = false, settled = false;
-    for (int it = 0; it < 80 && !settled; it++) {
-        if (it == 40) sticky = true;
-        L.pass();
-        std::vector<char> al((size_t)n, 0);
-        for (int k = 0; k < n; k++) al[(size_t)k] = in[(size_t)k].pinned || (sticky && L.aligned[(size_t)k]);
-        for (int k = 0; k < n; k++)
-            if (in[(size_t)k].target >= 0 && !L.curSmall[(size_t)k]) al[(size_t)in[(size_t)k].target] = 1;
-        bool same = al == L.aligned;
-        for (int k = 0; k < n && same; k++) if (L.curAddr[(size_t)k] >= 0 && L.curAddr[(size_t)k] != L.prevAddr[(size_t)k]) same = false;
-        for (int k = 0; k < n; k++) if (L.curAddr[(size_t)k] >= 0) L.prevAddr[(size_t)k] = L.curAddr[(size_t)k];
-        L.aligned = al;
-        settled = same;
-    }
-    if (!settled) return false;
-
-    /* the layout, checked against every rule of the machine before anything is written */
-    const std::vector<long> &A = L.curAddr;
-    std::vector<int> fpOf((size_t)n, -1);
-    for (size_t f = 0; f < L.fps.size(); f++)
-        for (int j = 0; j < L.fps[f].nw; j++) {
-            fpOf[(size_t)L.fps[f].words[j].a] = (int)f;
-            if (L.fps[f].words[j].b >= 0) fpOf[(size_t)L.fps[f].words[j].b] = (int)f;
-        }
+    /* a 32-bit BNOP counts halfwords in a header-based packet, so reaches half as far: one
+       too far for that stays in a packet without a header, found before the layout from the
+       plain distance and after it from the real one */
     for (int k = 0; k < n; k++) {
-        const CI &c = in[(size_t)k];
-        if (A[(size_t)k] < 0) {
-            /* dropped: a NOP 4 after a load in a PROT packet, nothing else */
-            if (!c.nop4 || k == 0 || !in[(size_t)(k - 1)].droppable || fpOf[(size_t)(k - 1)] < 0 || !L.fps[(size_t)fpOf[(size_t)(k - 1)]].prot) return false;
-            continue;
-        }
-        const FP &p = L.fps[(size_t)fpOf[(size_t)k]];
-        bool small = L.curSmall[(size_t)k] != 0;
-        if (c.pinned && (A[(size_t)k] & 3)) return false;
-        if (p.prot && c.load && (k + 1 >= n || A[(size_t)(k + 1)] >= 0)) return false;
-        if (c.target >= 0) {
-            long ta = A[(size_t)c.target];
-            if (ta < 0) return false;
-            long fp = A[(size_t)k] & ~31L;
-            if (small) { long d = (ta - fp) / 2; if ((ta & 1) || d < -64 || d >= 64) return false; }
-            else if (c.bnopLocal && p.header) { long d = (ta - fp) / 2; if (d < -2048 || d >= 2048) return false; }
-            else { if (ta & 3) return false; }
-        }
-        if (c.bnopRel && p.header) return false;
-        if (small) {
-            bool ok = false;
-            for (size_t f = 0; f < c.forms.size() && !ok; f++) {
-                const Form16 &x = c.forms[f];
-                if ((x.dsz >> p.dsz) & 1 && (x.br < 0 || (unsigned)x.br == p.br)) ok = true;
-            }
-            if (!ok || c.fixed) return false;
+        CI &c = in[(size_t)k];
+        if (c.bnopLocal) {
+            long d = ((long)in[(size_t)c.target].off - (long)(c.off & ~31ul)) / 2;
+            if (d < -2048 || d >= 2048) c.bnopRel = true;
         }
     }
+    Layout L(in);
+    std::vector<int> fpOf;
+    for (int round = 0; ; round++) {
+        if (round == 8) return false;
+        L.prevAddr.assign((size_t)n, 0);
+        for (int k = 0; k < n; k++) L.prevAddr[(size_t)k] = (long)in[(size_t)k].off;
+        L.aligned.assign((size_t)n, 0);
+        for (int k = 0; k < n; k++) L.aligned[(size_t)k] = in[(size_t)k].pinned;
+        bool sticky = false, settled = false;
+        for (int it = 0; it < 80 && !settled; it++) {
+            if (it == 40) sticky = true;
+            L.pass();
+            std::vector<char> al((size_t)n, 0);
+            for (int k = 0; k < n; k++) al[(size_t)k] = in[(size_t)k].pinned || (sticky && L.aligned[(size_t)k]);
+            for (int k = 0; k < n; k++)
+                if (in[(size_t)k].target >= 0 && !L.curSmall[(size_t)k]) al[(size_t)in[(size_t)k].target] = 1;
+            bool same = al == L.aligned;
+            for (int k = 0; k < n && same; k++) if (L.curAddr[(size_t)k] >= 0 && L.curAddr[(size_t)k] != L.prevAddr[(size_t)k]) same = false;
+            for (int k = 0; k < n; k++) if (L.curAddr[(size_t)k] >= 0) L.prevAddr[(size_t)k] = L.curAddr[(size_t)k];
+            L.aligned = al;
+            settled = same;
+        }
+        if (!settled) return false;
+
+        /* the layout, checked against every rule of the machine before anything is written */
+        const std::vector<long> &A = L.curAddr;
+        fpOf.assign((size_t)n, -1);
+        for (size_t f = 0; f < L.fps.size(); f++)
+            for (int j = 0; j < L.fps[f].nw; j++) {
+                fpOf[(size_t)L.fps[f].words[j].a] = (int)f;
+                if (L.fps[f].words[j].b >= 0) fpOf[(size_t)L.fps[f].words[j].b] = (int)f;
+            }
+        bool far = false;
+        for (int k = 0; k < n; k++) {
+            CI &c = in[(size_t)k];
+            if (A[(size_t)k] < 0) {
+                /* dropped: a NOP 4 after a load in a PROT packet, nothing else */
+                if (!c.nop4 || k == 0 || !in[(size_t)(k - 1)].droppable || fpOf[(size_t)(k - 1)] < 0 || !L.fps[(size_t)fpOf[(size_t)(k - 1)]].prot) return false;
+                continue;
+            }
+            const FP &p = L.fps[(size_t)fpOf[(size_t)k]];
+            bool small = L.curSmall[(size_t)k] != 0;
+            if (c.pinned && (A[(size_t)k] & 3)) return false;
+            if (p.prot && c.load && (k + 1 >= n || A[(size_t)(k + 1)] >= 0)) return false;
+            if (c.target >= 0) {
+                long ta = A[(size_t)c.target];
+                if (ta < 0) return false;
+                long fp = A[(size_t)k] & ~31L;
+                if (small) { long d = (ta - fp) / 2; if ((ta & 1) || d < -64 || d >= 64) return false; }
+                else if (c.bnopLocal && p.header) { long d = (ta - fp) / 2; if (d < -2048 || d >= 2048) { c.bnopRel = true; far = true; } }
+                else { if (ta & 3) return false; }
+            }
+            if (c.bnopRel && p.header && !far) return false;
+            if (small) {
+                bool ok = false;
+                for (size_t f = 0; f < c.forms.size() && !ok; f++) {
+                    const Form16 &x = c.forms[f];
+                    if ((x.dsz >> p.dsz) & 1 && (x.br < 0 || (unsigned)x.br == p.br)) ok = true;
+                }
+                if (!ok || c.fixed) return false;
+            }
+        }
+        if (!far) break;
+    }
+    const std::vector<long> &A = L.curAddr;
 
     /* the new section: packet by packet */
     std::vector<unsigned char> out;
