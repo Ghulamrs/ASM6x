@@ -11,11 +11,11 @@
 
 static int usage()
 {
-    fprintf(stderr, "usage: asm6x [--no_compress] file.s ... [-o out.obj]\n"
+    fprintf(stderr, "usage: asm6x [--compress] file.s ... [-o out.obj]\n"
                     "       one thread per file; -o names the object of a single file;\n"
-                    "       code is laid out in header-based fetch packets with 16-bit C64x+ compact\n"
-                    "       instructions, which the C674x runs natively, as TI's asm6x does by default;\n"
-                    "       --no_compress writes every instruction in 32 bits (--compress is accepted)\n");
+                    "       every instruction is written in 32 bits unless --compress lays the code out\n"
+                    "       in header-based fetch packets with 16-bit C64x+ compact instructions, which the\n"
+                    "       C674x runs natively (TI's asm6x does that by default; --no_compress is accepted)\n");
     return 2;
 }
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 {
     std::vector<std::string> inputs;
     std::string output;
-    bool compress = true;
+    bool compress = false;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) output = argv[++i];
         else if (strcmp(argv[i], "--compress") == 0) compress = true;
