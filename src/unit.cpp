@@ -111,10 +111,8 @@ unsigned long Unit::here()
 
 int Unit::find(const std::string &name) const
 {
-    for (size_t i = 0; i < symbols.size(); i++)
-        if (symbols[i].name == name)
-            return (int)i;
-    return -1;
+    std::unordered_map<std::string, int>::const_iterator it = symIndex.find(name);
+    return it == symIndex.end() ? -1 : it->second;
 }
 
 int Unit::ref(const std::string &name)
@@ -141,6 +139,7 @@ int Unit::ref(const std::string &name)
     s.aliasAdd = 0;
     s.order = 0;
     symbols.push_back(s);
+    symIndex[name] = (int)symbols.size() - 1;
     return (int)symbols.size() - 1;
 }
 

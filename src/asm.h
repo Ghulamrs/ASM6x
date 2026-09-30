@@ -9,6 +9,7 @@
    C-style ISO C++14, one thread per input file, no mutable globals. */
 
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -123,6 +124,7 @@ public:
     std::vector<std::string> pendingLabels;     /* labels alone on their lines, placed by the next emission - the
                                                    last first, as asm6x defines them */
     unsigned long defined;                      /* definitions so far this pass, for Symbol::order */
+    std::unordered_map<std::string, int> symIndex;   /* name -> symbols[] index: find() in one step */
 
     void begin_pass(int n);
     bool moved() const;
