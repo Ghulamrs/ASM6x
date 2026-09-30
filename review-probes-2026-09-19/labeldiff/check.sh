@@ -10,7 +10,7 @@ T=${T:-/tmp/asm6x-labeldiff}; rm -rf "$T"; mkdir -p "$T"
 bad=0; n=0
 for f in "$here"/*.s; do
     b=$(basename "$f" .s)
-    "$ASM" "$f" -o "$T/$b.obj" > "$T/$b.log" 2>&1 || { echo "$b: ASM6x refused: $(head -1 "$T/$b.log")"; bad=$((bad + 1)); }
+    "$ASM" ${NC:-} "$f" -o "$T/$b.obj" > "$T/$b.log" 2>&1 || { echo "$b: ASM6x refused: $(head -1 "$T/$b.log")"; bad=$((bad + 1)); }
 done
 python3 - "$here/expect.txt" "$T" <<'PY' || bad=$((bad + $?))
 import struct, sys

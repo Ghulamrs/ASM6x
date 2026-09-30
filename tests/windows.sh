@@ -35,7 +35,7 @@ ssh -n -o BatchMode=yes "$BOX" "cd /d $W & tar xzf tree.tgz & $W\\tests\\build.c
 rm -rf "$T/box-enc" && mkdir -p "$T/box-enc" && scp -q "$BOX:$ROOT/enc-out.tgz" "$T/" && tar xzf "$T/enc-out.tgz" -C "$T/box-enc" --strip-components 2
 same=0; differ=0
 rm -f "${T:?}"/*.mac.obj
-for f in tests/enc/*.s; do "$ASM" "$f" -o "$T/$(basename "$f" .s).mac.obj" > /dev/null 2>&1 & done
+for f in tests/enc/*.s; do "$ASM" --no_compress "$f" -o "$T/$(basename "$f" .s).mac.obj" > /dev/null 2>&1 & done
 wait
 for f in tests/enc/*.s; do
     b=$(basename "$f" .s)
@@ -57,7 +57,7 @@ if [ "${1:-}" = compact ]; then
             case "$b" in *" "*) continue;; esac
             cp "$f" "$D/"
             "$ASM" --compress "$f" -o "$D/$b.ours.obj" > "$D/$b.ours.err" 2>&1 || echo "OURS-REFUSED $b: $(head -1 "$D/$b.ours.err")"
-            "$ASM" "$f" -o "$D/$b.plain.obj" > /dev/null 2>&1
+            "$ASM" --no_compress "$f" -o "$D/$b.plain.obj" > /dev/null 2>&1
         done
         ( cd "$D" && COPYFILE_DISABLE=1 tar --no-xattrs -czf "../compact-$name.tgz" *.s *.obj ) || exit 1
         # cmd's `if` takes everything after it on the line, `&` included: one command per ssh
@@ -112,7 +112,7 @@ scp -q "$T/$name.tgz" "$BOX:$ROOT/corpus/$name/" || exit 1
 ( ssh -n -o BatchMode=yes "$BOX" "cd /d $W\\corpus\\$name & tar xzf $name.tgz & $W\\tests\\record.cmd $W\\corpus\\$name & tar czf out.tgz *.asm6x.obj" | grep -v "^$" | grep -v RECORD-DONE
   scp -q "$BOX:$ROOT/corpus/$name/out.tgz" "$T/$name/" && tar xzf "$T/$name/out.tgz" -C "$T/$name" ) &
 box=$!
-ls "$corpus"/*.s | grep -v ' ' | ASM="$ASM" D="$T/$name" xargs -P 8 -I{} sh -c 'b=$(basename "{}" .s); "$ASM" "{}" -o "$D/$b.obj" > "$D/$b.err" 2>&1; echo $? > "$D/$b.rc"'
+ls "$corpus"/*.s | grep -v ' ' | ASM="$ASM" D="$T/$name" xargs -P 8 -I{} sh -c 'b=$(basename "{}" .s); "$ASM" --no_compress "{}" -o "$D/$b.obj" > "$D/$b.err" 2>&1; echo $? > "$D/$b.rc"'
 wait $box
 n=0; same=0; differ=0; refused=0; bytes=0
 for f in "$corpus"/*.s; do
@@ -134,7 +134,7 @@ if [ -n "${WITH:-}" ]; then
     for f in "$WITH"/*.s; do
         b=$(basename "$f" .s)
         case "$b" in *" "*) continue;; esac
-        "$ASM" "$f" -o "$T/$name/with/$b.obj" || { echo "the runtime's $b did not assemble"; exit 1; }
+        "$ASM" --no_compress "$f" -o "$T/$name/with/$b.obj" || { echo "the runtime's $b did not assemble"; exit 1; }
     done
 fi
 ( cd "$T/$name" && COPYFILE_DISABLE=1 tar --no-xattrs -czf mine.tgz $(ls *.obj | grep -v asm6x) $( [ -d with ] && echo with ) ) || exit 1
