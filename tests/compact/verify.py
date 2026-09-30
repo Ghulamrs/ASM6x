@@ -32,10 +32,15 @@ def load(path):
             for k in range(x[5] // 16):
                 n, v, sz, info, oth, shn = struct.unpack_from('<IIIBBH', d, x[4] + k * 16)
                 syms.append((name(x[6], n), v, shn, info))
+    rel = collections.defaultdict(set)
+    for x in sh:
+        if x[1] in (4, 9):
+            ent = 12 if x[1] == 4 else 8
+            for k in range(x[5] // ent): rel[x[7]].add(struct.unpack_from('<I', d, x[4] + k * ent)[0])
     out = {}
     for i, x in enumerate(sh):
         if x[1] == 1 and (x[2] & 4) and x[5]:
-            out[names[i]] = dict(data=d[x[4]:x[4] + x[5]], syms=[(n, v) for (n, v, shn, info) in syms if shn == i and info & 15 != 3])
+            out[names[i]] = dict(data=d[x[4]:x[4] + x[5]], rel=rel[i], syms=[(n, v) for (n, v, shn, info) in syms if shn == i and info & 15 != 3])
     return out
 
 def decode(data):
@@ -86,9 +91,13 @@ def dis6x(path):
         t = m.group(4).strip()
         if not t or t.startswith('.fphead') or t.startswith('.'): continue
         tgt = None
-        b = re.search(r'\S+ \(PC[+-]\d+ = 0x([0-9a-f]+)\)', t)
-        if b: tgt = int(b.group(1), 16); t = t[:b.start()] + '<T>' + t[b.end():]
-        t = re.sub(r'^([A-Z0-9]+)\.([A-Z0-9]+)', r'\1 .\2', t)     # MVK.S1 -> MVK .S1
+        b = re.search(r'(\S+ )?\(PC[+-]\d+ = 0x([0-9a-f]+)\)', t)
+        if b: tgt = int(b.group(2), 16); t = t[:b.start()] + '<T>' + t[b.end():]
+        else:
+            b = re.match(r'^((?:\[!?[AB]\d\] )?(?:B|BNOP|CALLP)\.\S+\s+)(0x[0-9a-f]+)', t)
+            if b: tgt = int(b.group(2), 16); t = b.group(1) + '<T>' + t[b.end():]
+        t = re.sub(r'^\[\s*(!?)\s*([AB]\d+)\]\s*', r'[\1\2] ', t)          # [ A1] -> [A1]
+        t = re.sub(r'^((?:\[!?[AB]\d+\] )?)([A-Z0-9]+)\.([A-Z0-9]+)', r'\1\2 .\3', t)     # MVK.S1 -> MVK .S1
         secs[cur].append((int(m.group(1), 16), t.lower(), tgt))
     return secs
 
@@ -128,6 +137,9 @@ def canon(t):
     pred, op, unit, args = m.group(1) or '', m.group(2), m.group(3) or '', m.group(4) or ''
     a = [num(x.strip()) for x in re.split(r',(?![^\[\(]*[\]\)])', args)] if args else []
     a = [mem(op, x) for x in a]
+    if op == 'sub' and len(a) == 3 and a[0] == a[1] == a[2]: op = 'zero'; a = [a[2]]
+    if op == 'addk' and len(a) == 2: op = 'add'; a = [a[0], a[1], a[1]]
+    if op == 'sub' and len(a) == 3 and re.match(r'^-?\d+$', a[1]) and not unit.startswith(' .d'): op = 'add'; a[1] = str(-int(a[1]))
     if op == 'or' and len(a) == 3 and a[0] == '0': op = 'mv'; a = [a[1], a[2]]
     if op == 'add' and len(a) == 3 and a[1] == '0': op = 'mv'; a = [a[0], a[2]]
     if op in ('addaw', 'subaw', 'sub') and len(a) == 3 and a[1] == '0': op = 'mv'; a = [a[0], a[2]]
@@ -145,12 +157,43 @@ def canon(t):
 
 LOADS = re.compile(r'^(\[.*\] )?ld')
 
-def check(plain, comp, lp, lc):
+def prot_load(a, k, mapping, db):
+    """the execute packet ending at plain instruction k holds a load that sits in a PROT packet"""
+    if a[k][3]: return False
+    j = k
+    while j > 0 and a[j - 1][3]: j -= 1
+    for q in range(j, k + 1):
+        if LOADS.match(canon(a[q][1])):
+            h = db.get(mapping.get(a[q][0]), (0, 0, None))[2]
+            if h is not None and (h >> 20) & 1: return True
+    return False
+
+def unfill(lst, dec, rel):
+    """(address, text, target, p-bit) with the fillers taken out: a NOP 1 in parallel with the
+    instruction before it does nothing - asm6x pads an execute packet so with 16-bit NOPs - and the
+    p-bit an instruction is held to is the one of the last filler after it. A relocated branch's
+    target is the linker's, not the listing's."""
+    out = []
+    for (addr, t, tgt) in lst:
+        p = dec[addr][1] if addr in dec else 0
+        if out and out[-1][3] and canon(t) == 'nop 1':
+            out[-1] = out[-1][:3] + (p,)
+            continue
+        if addr in rel: tgt = None
+        out.append((addr, t, tgt, p))
+    return out
+
+def check(plain, comp, lp, lc, ti=False):
     A = load(plain); B = load(comp)
     errs = []; stat = collections.Counter()
     for s in lp:
-        a = lp[s]; b = lc.get(s, [])
         da = decode(A[s]['data']); db = decode(B[s]['data'])
+        a = unfill(lp[s], da, A[s]['rel']); b = unfill(lc.get(s, []), db, B[s]['rel'])
+        # the zero words that pad a section to 32 bytes read as NOPs: the code ends before them
+        while a and canon(a[-1][1]) == 'nop 1': a.pop()
+        while b and canon(b[-1][1]) == 'nop 1': b.pop()
+        enda = a[-1][0] + da[a[-1][0]][0] if a else 0
+        endb = b[-1][0] + db[b[-1][0]][0] if b else 0
         syma = set(v for n, v in A[s]['syms'])
         mapping = {}
         dropped = set()
@@ -162,7 +205,7 @@ def check(plain, comp, lp, lc):
             ta = canon(a[i][1]); tb = canon(b[j][1])
             if ta == tb:
                 mapping[a[i][0]] = b[j][0]
-                if da[a[i][0]][1] != db[b[j][0]][1]: errs.append((s, 'p-bit differs: plain %x, compressed %x' % (a[i][0], b[j][0])))
+                if a[i][3] != b[j][3]: errs.append((s, 'p-bit differs: plain %x, compressed %x' % (a[i][0], b[j][0])))
                 stat[db[b[j][0]][0]] += 1
                 i += 1; j += 1; continue
             h = db.get(b[j][0], (0, 0, None))[2]
@@ -171,10 +214,8 @@ def check(plain, comp, lp, lc):
                 # the three-bit source of a compact MV there as A16-A23, and asm6x means A0-A7
                 # by it, so only the mnemonic and unit are held to it
                 mapping[a[i][0]] = b[j][0]; stat['rs'] += 1; i += 1; j += 1; continue
-            if ta == 'nop 4' and i > 0 and LOADS.match(canon(a[i - 1][1])) and a[i][0] not in syma:
-                h = db.get(mapping.get(a[i - 1][0]), (0, 0, None))[2]
-                if h is not None and (h >> 20) & 1:
-                    stat['dropped'] += 1; mapping[a[i][0]] = b[j][0]; dropped.add(i); i += 1; continue
+            if ta == 'nop 4' and i > 0 and a[i][0] not in syma and prot_load(a, i - 1, mapping, db):
+                stat['dropped'] += 1; mapping[a[i][0]] = b[j][0]; dropped.add(i); i += 1; continue
             errs.append((s, 'plain %x %r, compressed %x %r' % (a[i][0], a[i][1], b[j][0], b[j][1]))); break
         while j < len(b) and canon(b[j][1]) == 'nop 1': j += 1
         if j < len(b) and not errs: errs.append((s, 'the compressed code has more at %x' % b[j][0]))
@@ -193,26 +234,38 @@ def check(plain, comp, lp, lc):
         for k, x in enumerate(a):
             if x[0] not in mapping or not LOADS.match(canon(x[1])): continue
             h = db[mapping[x[0]]][2]
-            if h is not None and (h >> 20) & 1 and (k + 1) not in dropped:
-                errs.append((s, 'the load at plain %x is in a PROT packet, and no NOP 4 after it went' % x[0]))
+            if h is None or not (h >> 20) & 1: continue
+            e = k
+            while e < len(a) and a[e][3]: e += 1          # the last instruction of the load's packet
+            if (e + 1) not in dropped:
+                errs.append((s, 'the load at plain %x is in a PROT packet, and no NOP 4 after its packet went' % x[0]))
         if errs: break
         sb = dict(B[s]['syms'])
-        end = max([x[0] for x in a if canon(x[1]) != 'nop 1'] + [0])
         for n, v in A[s]['syms']:
             if v in mapping:
                 if sb.get(n) != mapping[v]: errs.append((s, 'symbol %s at %x, not %x' % (n, sb.get(n, -1), mapping[v])))
-            elif v <= end: errs.append((s, 'symbol %s at plain %x is at no instruction' % (n, v)))
+            elif v >= enda:
+                # asm6x itself leaves a label after the last instruction of a section at a value
+                # past the compressed code (L$main$fnend 0x7d4 in a 0x760-byte .text): its quirk,
+                # counted and not held against it
+                if sb.get(n) != endb:
+                    if ti: stat['endlabel'] += 1
+                    else: errs.append((s, 'symbol %s at the end of the code: %x, not %x' % (n, sb.get(n, -1), endb)))
+            else: errs.append((s, 'symbol %s at plain %x is at no instruction' % (n, v)))
     return errs, stat
 
 if __name__ == '__main__':
     args = sys.argv[1:]
+    ti = args[:1] == ['--ti']
+    if ti: args = args[1:]
     if args[:1] == ['--dis']:
         lp, lc = dis6x(args[1]), dis6x(args[2]); args = args[3:]
     else:
         lp, lc = objdump(args[0]), objdump(args[1])
     if len(args) != 2: sys.exit(__doc__)
-    errs, stat = check(args[0], args[1], lp, lc)
+    errs, stat = check(args[0], args[1], lp, lc, ti)
     for e in errs[:10]: print('DIFFER %s: %s' % e)
     print(('ok' if not errs else 'BAD') + ' %d 32-bit, %d 16-bit, %d NOP 4 stood for by PROT' % (stat[4], stat[2], stat['dropped']) +
-          (', %d in RS=1 packets held to their mnemonic only' % stat['rs'] if stat['rs'] else ''))
+          (', %d in RS=1 packets held to their mnemonic only' % stat['rs'] if stat['rs'] else '') +
+          (', %d end-of-code labels where asm6x puts them' % stat['endlabel'] if stat['endlabel'] else ''))
     sys.exit(1 if errs else 0)

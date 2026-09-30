@@ -80,7 +80,7 @@ if [ "${1:-}" = compact ]; then
             cmp -s "$D/$b.c82.obj" "$D/$b.c74.obj" && ti74=$((ti74 + 1))
             if python3 tests/compact/verify.py --dis "$D/$b.plain.dis" "$D/$b.ours.dis" "$D/$b.plain.obj" "$D/$b.ours.obj" > "$D/$b.ver" 2>&1; then ok=$((ok + 1))
             else bad=$((bad + 1)); echo "DIS6X-BAD $b (ours):"; sed 's/^/    /' "$D/$b.ver" | head -3; fi
-            if python3 tests/compact/verify.py --dis "$D/$b.nc82.dis" "$D/$b.c82.dis" "$D/$b.nc82.obj" "$D/$b.c82.obj" > "$D/$b.tiver" 2>&1; then tiok=$((tiok + 1))
+            if python3 tests/compact/verify.py --ti --dis "$D/$b.nc82.dis" "$D/$b.c82.dis" "$D/$b.nc82.obj" "$D/$b.c82.obj" > "$D/$b.tiver" 2>&1; then tiok=$((tiok + 1))
             else tibad=$((tibad + 1)); echo "DIS6X-CONTROL-BAD $b (asm6x's own pair - the checker, not the assembler):"; sed 's/^/    /' "$D/$b.tiver" | head -3; fi
         done
     done
