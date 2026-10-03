@@ -28,7 +28,7 @@ int main(int argc, char **argv)
         if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) output = argv[++i];
         else if (strcmp(argv[i], "--compress") == 0) compress = true;
         else if (strcmp(argv[i], "--no_compress") == 0) compress = false;
-        else if (strcmp(argv[i], "--version") == 0) { printf("\xc2\xa9" "2026 G. R. Akhtar - asm6x 0.2, a TMS320C6000 assembler writing TI ELF\n"); return 0; }
+        else if (strcmp(argv[i], "--version") == 0) { printf("\xc2\xa9" "2026 G. R. Akhtar - asm6x 1.0, a TMS320C6000 assembler writing TI ELF\n"); return 0; }
         else if (argv[i][0] == '-') return usage();
         else inputs.push_back(argv[i]);
     }
