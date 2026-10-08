@@ -1,0 +1,11 @@
+; tests/compact files whose --compress object is not byte-identical to asm6x 8.2.2's, and why -
+; measured on the Windows box (sh tests/compact/check.sh, dis6x, tests/elfdump.py), 2026-10-08.
+; check.sh counts these "identical" table by table; the bytes are written down here so that a
+; reader of "13 byte-identical" knows what the fourteenth is.
+c14-calls   symbol table entries 19 and 20: asm6x lists the undefined `g` before the defined `f`,
+            this assembler in the order the source names them - the same code, relocations and
+            symbols; the order of the globals is the one difference left on the edge probes too
+; c13-packets differed until 2026-10-08 (review of 2026-10-08, D17/V10): asm6x writes ADD and SUB
+; .L of two registers into a third, all of A0-A7 or B0-B7, as the 16-bit L3 form (s | dst<<4 |
+; src2<<7 | op<<11 | x<<12 | src1<<13, measured from cl6x 8.2.2 on twelve shapes), which
+; src/compact.cpp did not make, so a packet paired the next two instructions instead. It does now.

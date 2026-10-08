@@ -187,6 +187,10 @@ static void forms16(unsigned long w, std::vector<Form16> &out)
         add(out, 0x0026 | s | (src2 << 7) | (dst << 11) | (src1 << 13));
         return;
     }
+    if ((form == 0x1E || form == 0x3E) && dst < 8 && src1 < 8 && src2 < 8) {   /* ADD/SUB .L src1, x src2: L3 */
+        add(out, s | (dst << 4) | (src2 << 7) | ((form == 0x3E ? 1u : 0u) << 11) | (x << 12) | (src1 << 13));
+        return;
+    }
     static const unsigned l2c[][2] = { { 0x29E, 3 }, { 0x2BE, 4 }, { 0x23E, 5 }, { 0x2FE, 6 }, { 0x27E, 7 } };
     for (size_t k = 0; k < sizeof l2c / sizeof *l2c; k++)      /* the compares into A0/A1: L2c */
         if (form == l2c[k][0] && dst < 2 && src1 < 8 && src2 < 8) {

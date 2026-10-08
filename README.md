@@ -131,7 +131,8 @@ instructions): `src/compact.cpp` makes, for each one, the 16-bit word asm6x made
 `NOP n` (1-8); `LDW`/`STW`/`LDB(U)`/`LDH(U)`/`STB`/`STH`/`LDDW`/`STDW` with `*+R[k]`, R one
 of A4-A7/B4-B7, k 0-15, under the header's DSZ; `LDW`/`STW *+B15[0..31]`; `ADD`/`SUB .D2
 B15, 4k` as `ADDAW`/`SUBAW` (and `ADD .D2 B15, 4k, B0-B7`); `ADD`/`SUB`/`XOR` of 1 to itself
-and `ADD`/`SUB` of two registers into the first on `.D`; `MV` (`OR 0`, `ADD 0`) either way
+and `ADD`/`SUB` of two registers into the first on `.D`; `ADD`/`SUB .L` of two registers into a
+third (L3, either side of the cross path); `MV` (`OR 0`, `ADD 0`) either way
 across the three bits; `MVK .S` 0-255, `MVK .L` -16..15; `B`/`BNOP` of a B register;
 `B`/`BNOP` of a label within 64 halfwords of the fetch packet (BR=1); `NEG .S`; `EXT`/`EXTU`
 16,16 and 24,24; `SHL`/`SHR`/`SHRU` by a constant or a register; `CMPEQ` of 0-7 and the five
@@ -167,8 +168,15 @@ and -O2 output for the six kernels and every tests/cases program, which
 `tests/compact/cpp11-corpus.sh` writes), all passing; it passes asm6x's own compressed objects
 too (the corpus, the harness at -O1 and -O2, bench-c6x), its RS=1 packets held to the mnemonic
 only. On the box, `sh tests/windows.sh compact` holds ours to asm6x's compressed objects
-table by table and byte for byte and has dis6x list both; and TI's simulator runs the kernels
+table by table and byte for byte and has dis6x list both - all fourteen of tests/compact table for
+table, thirteen byte for byte (tests/compact/known-differ.txt says why the fourteenth is not); and TI's simulator runs the kernels
 assembled so (`ASM6X=<this tree>/tools/asm6x-compress tools/c6747-levels` from C++Optimize).
+
+**What cpp11's own output measures, 2026-10-08.** Every tests/cases program for tms6747 at -O1
+and -O2 (794 files, cpp11 at C++Optimize cc210bb) assembled by cl6x 8.2.2 and by `--compress`:
+the code sections are asm6x's byte for byte in 43, and the same size in 380. The difference is
+the high register set: cpp11 keeps locals in A16-A31 and B16-B31 since 2026-09-29, and asm6x
+writes those under an RS=1 header (`MVK.L1 1,A16` as `2426`), which this compressor does not.
 
 ## In RIDE
 
