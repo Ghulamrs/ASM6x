@@ -1,7 +1,7 @@
 @echo off
 if "%~1"==":shard" goto :shard
 rem  Links every .obj in a directory on its own with lnk6x against rts6740_elf_eh.lib, the
-rem  exception-handling build of TI's runtime made once as VM6747/Emulator/tests/ti.sh says.
+rem  exception-handling build of TI's runtime made once as VM6747/tests/ti.sh says.
 rem    link.cmd <directory>
 set PATH=C:\ti\ccsv7\tools\compiler\ti-cgt-c6000_8.2.2\bin;%PATH%
 set TILIB=C:\Users\GRA\Documents\VM6747\tilib

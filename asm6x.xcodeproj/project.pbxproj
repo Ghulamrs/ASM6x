@@ -9,23 +9,23 @@
 /* Begin PBXBuildFile section */
 		864D380C20C579DBA8B3634E /* src/assembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 147B68B1C95EAA701B9F0069 /* src/assembler.cpp */; };
 		38C860EA8030A42FB6274254 /* src/c6x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 170A36BB8128E85F19233ED1 /* src/c6x.cpp */; };
+		596E0E56DD344E10994D3DD5 /* src/compact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A867173B8E04FC8BCC547AED /* src/compact.cpp */; };
 		7B14A1F8CAB6CB6FC9832DC4 /* src/elf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */; };
 		D3760B0E660519653090197A /* src/expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A80680B07616447733BCF3D /* src/expr.cpp */; };
 		98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */; };
 		42356790D29286159536C3AB /* src/main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 180172A6BF36C3864515BC72 /* src/main.cpp */; };
 		2CFF03904E0D6BB33F35F406 /* src/unit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C8AD841A06B482AD6514B7 /* src/unit.cpp */; };
-		5C0A11CE7C0DE0000000B001 /* src/compact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A11CE7C0DE0000000F001 /* src/compact.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		147B68B1C95EAA701B9F0069 /* src/assembler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/assembler.cpp; sourceTree = "<group>"; };
 		170A36BB8128E85F19233ED1 /* src/c6x.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/c6x.cpp; sourceTree = "<group>"; };
+		A867173B8E04FC8BCC547AED /* src/compact.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/compact.cpp; sourceTree = "<group>"; };
 		35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/elf.cpp; sourceTree = "<group>"; };
 		0A80680B07616447733BCF3D /* src/expr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/expr.cpp; sourceTree = "<group>"; };
 		F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/lexer.cpp; sourceTree = "<group>"; };
 		180172A6BF36C3864515BC72 /* src/main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/main.cpp; sourceTree = "<group>"; };
 		15C8AD841A06B482AD6514B7 /* src/unit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/unit.cpp; sourceTree = "<group>"; };
-		5C0A11CE7C0DE0000000F001 /* src/compact.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/compact.cpp; sourceTree = "<group>"; };
 		876DAF5CCB512912F5C91771 /* src/asm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = src/asm.h; sourceTree = "<group>"; };
 		43586A65B757F39E1DA3CD30 /* src/forms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = src/forms.h; sourceTree = "<group>"; };
 		1BA4060C0C0AB77421D9125E /* asm6x.exe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = asm6x.exe; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,12 +55,12 @@
 			children = (
 				147B68B1C95EAA701B9F0069 /* src/assembler.cpp */,
 				170A36BB8128E85F19233ED1 /* src/c6x.cpp */,
+				A867173B8E04FC8BCC547AED /* src/compact.cpp */,
 				35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */,
 				0A80680B07616447733BCF3D /* src/expr.cpp */,
 				F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */,
 				180172A6BF36C3864515BC72 /* src/main.cpp */,
 				15C8AD841A06B482AD6514B7 /* src/unit.cpp */,
-				5C0A11CE7C0DE0000000F001 /* src/compact.cpp */,
 				876DAF5CCB512912F5C91771 /* src/asm.h */,
 				43586A65B757F39E1DA3CD30 /* src/forms.h */,
 			);
@@ -135,7 +135,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\ndest=\"$SRCROOT/../RIDE-4.5\"\nmkdir -p \"$dest\"\ncp -f \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME\" \"$dest/.$PRODUCT_NAME.new\"\nmv -f \"$dest/.$PRODUCT_NAME.new\" \"$dest/$PRODUCT_NAME\"\ncodesign --force --sign - \"$dest/$PRODUCT_NAME\"\n";
+			shellScript = "set -e\ndest=\"$SRCROOT/../RIDE-roundtrip\"\nmkdir -p \"$dest\"\ncp -f \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME\" \"$dest/.$PRODUCT_NAME.new\"\nmv -f \"$dest/.$PRODUCT_NAME.new\" \"$dest/$PRODUCT_NAME\"\ncodesign --force --sign - \"$dest/$PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -146,12 +146,12 @@
 			files = (
 				864D380C20C579DBA8B3634E /* src/assembler.cpp in Sources */,
 				38C860EA8030A42FB6274254 /* src/c6x.cpp in Sources */,
+				596E0E56DD344E10994D3DD5 /* src/compact.cpp in Sources */,
 				7B14A1F8CAB6CB6FC9832DC4 /* src/elf.cpp in Sources */,
 				D3760B0E660519653090197A /* src/expr.cpp in Sources */,
 				98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */,
 				42356790D29286159536C3AB /* src/main.cpp in Sources */,
 				2CFF03904E0D6BB33F35F406 /* src/unit.cpp in Sources */,
-				5C0A11CE7C0DE0000000B001 /* src/compact.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
