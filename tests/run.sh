@@ -37,6 +37,8 @@ for d in edge linkcheck fresh; do
     T="$T/review-$d" ASM="$ASM" sh review-probes-2026-09-19/recheck.sh "review-probes-2026-09-19/$d" > "$T/review-$d.log"; bad=$((bad + $?))
     sed "s/^/review $d: /" "$T/review-$d.log"
 done
+# the .debug_line built from .dwpsn, against asm6x 8.2.2's bytes for the same rows
+sh tests/debug-line.sh; bad=$((bad + $?))
 # the label differences asm6x cannot assemble, held to what dis6x and lnk6x confirmed
 ASM="$ASM" sh review-probes-2026-09-19/labeldiff/check.sh; bad=$((bad + $?))
 [ "$differ" = 0 ] && [ "$refused" = 0 ] && [ "$bad" = 0 ]

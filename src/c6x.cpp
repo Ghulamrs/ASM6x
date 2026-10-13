@@ -401,8 +401,27 @@ bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
         return true;
     }
     if (d == ".END") { done = true; return true; }
+    if (d == ".DWPSN") {
+        /* .dwpsn file "f",line n,column c,is_stmt,address sym,isa 0 (cl6x -g; cpp11 -g): the position of the
+           next instruction of this section, a row of the .debug_line dwarf.cpp builds; `address` opens a sequence */
+        DwRow r; r.section = u.current; r.insn = u.sections[(size_t)u.current].insns.size();
+        r.line = 0; r.column = 0; r.stmt = false; r.newSeq = false;
+        for (size_t k = 0; k < n; k++) {
+            size_t a = cuts[k], last = cuts[k + 1] - 2;          /* the item's tokens, before the comma after it */
+            if (last < a || t[a].kind != T_NAME) continue;
+            std::string key = upper(t[a].text);
+            bool one = last == a + 1;
+            if (key == "FILE" && one && t[a + 1].kind == T_STR) r.file = t[a + 1].text;
+            else if (key == "LINE" && one && t[a + 1].kind == T_NUM) r.line = (int)strtol(t[a + 1].text.c_str(), 0, 0);
+            else if (key == "COLUMN" && one && t[a + 1].kind == T_NUM) r.column = (int)strtol(t[a + 1].text.c_str(), 0, 0);
+            else if (key == "IS_STMT" && last == a) r.stmt = true;
+            else if (key == "ADDRESS" && one) r.newSeq = true;
+        }
+        if (r.file.empty() || r.line <= 0) { u.error(".dwpsn takes file \"name\" and line n"); return true; }
+        u.dwRows.push_back(r);
+        return true;
+    }
     if (d == ".CLINK" || d == ".RETAIN" || d == ".NOCMP" || d == ".COMPILER_OPTS" || d == ".FILE" ||
-        d == ".DWPSN" ||   /* cl6x's source position under -g: nothing here builds .debug_line from it yet */
         d == ".LIST" || d == ".NOLIST" || d == ".TITLE" || d == ".OPTION" || d == ".LENGTH" || d == ".WIDTH")
         return true;
     #undef ITEM

@@ -631,6 +631,12 @@ static bool compress_section(Unit &u, int si)
         if ((unsigned long)s.value >= codeEnd) s.value = newEnd;
         else s.value = A[(size_t)(s.value / 4)];
     }
+    /* where each instruction went, for the line table: an instruction folded away (a NOP a header absorbed)
+       is where the next one is, or the section's end */
+    for (int k = n - 1; k >= 0; k--)
+        sec.insns[(size_t)k] = A[(size_t)k] >= 0 ? (unsigned long)A[(size_t)k]
+                             : (k + 1 < n ? sec.insns[(size_t)k + 1] : (unsigned long)newEnd);
+    sec.codeEnd = (unsigned long)newEnd;
     sec.bytes.swap(out);
     sec.compressed = true;
     return true;
