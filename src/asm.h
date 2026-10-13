@@ -52,6 +52,7 @@ struct Section {
     std::vector<unsigned char> bytes;
     std::vector<Reloc> relocs;
     std::vector<unsigned long> insns;   /* where each instruction word went, in order: the compressor's input */
+    unsigned long codeEnd;              /* the end of the last instruction: where a line-program sequence ends, before the padding */
     unsigned long dataBytes;            /* bytes of data emitted here: a code section holding any is not compressed */
     bool compressed;                    /* laid out in header-based fetch packets (--compress) */
 };
@@ -111,6 +112,17 @@ struct Value {
                            size a section refuse that, as asm6x refuses it */
 };
 
+/* a .dwpsn: the source position the next instruction of a section carries (-g), as cl6x writes it;
+   `address` names a function, which starts a new line-program sequence */
+struct DwRow {
+    int section;
+    size_t insn;        /* the index of the next instruction in the section when the directive was read */
+    std::string file;
+    int line, column;
+    bool stmt;
+    bool newSeq;
+};
+
 class Unit {
 public:
     Unit();
@@ -123,6 +135,7 @@ public:
     std::vector<Section> sections;
     std::vector<Symbol> symbols;
     std::vector<Fixup> fixups;
+    std::vector<DwRow> dwRows;                  /* the .dwpsn rows of this pass, in source order */
     std::vector<std::string> errors;
     std::vector<std::string> warnings;          /* asm6x mends these with a word; so does this */
     std::vector<std::pair<int, std::string> > depends;  /* .symdepend: (symbol, section name) pairs, R_NONE entries */
@@ -259,3 +272,6 @@ private:
 };
 
 #endif
+
+/* dwarf.cpp: the .debug_line section built from the .dwpsn rows, once the layout is final */
+void build_debug_line(Unit &u);

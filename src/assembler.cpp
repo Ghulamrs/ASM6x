@@ -64,6 +64,7 @@ bool Assembler::run()
         if (!unit.errors.empty()) unit = settled;
         else unit.warnings = settled.warnings;
     }
+    if (!unit.dwRows.empty()) build_debug_line(unit);
     std::string err;
     if (!write_elf(unit, output, err)) { unit.errors.push_back(err); return false; }
     return true;

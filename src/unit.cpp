@@ -17,6 +17,7 @@ void Unit::begin_pass(int n)
         prev_sizes.push_back((unsigned long)sections[i].bytes.size());
     sections.clear();
     depends.clear();
+    dwRows.clear();
     pendingLabels.clear();
     defined = 0;
     /* asm6x numbers .text first whatever the source opens first; it is executable from the
@@ -88,6 +89,7 @@ int Unit::section(const std::string &name, bool writable)
     s.alloc = true;
     s.kind = head == ".c6xabi.exidx" ? SEC_UNWIND : SEC_PROGBITS;
     s.align = 1;
+    s.codeEnd = 0;
     s.dataLast = false;
     s.dataEnd = 0;
     s.dataBytes = 0;
@@ -244,6 +246,7 @@ void Unit::emitWord(unsigned long v)
     if (!s) return;
     s->insns.push_back((unsigned long)s->bytes.size());
     emit32(v);
+    s->codeEnd = (unsigned long)s->bytes.size();
     s->dataLast = false;
 }
 
