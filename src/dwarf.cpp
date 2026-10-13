@@ -127,6 +127,6 @@ void build_debug_line(Unit &u)
     s.code = false; s.hasCode = false; s.bss = false; s.writable = false; s.alloc = false;
     s.kind = SEC_PROGBITS; s.align = 0; s.dataLast = false; s.dataEnd = 0; s.dataBytes = 0; s.compressed = false; s.codeEnd = 0;   /* align 0, as asm6x writes it */
     s.bytes = unit.b;
-    for (size_t i = 0; i < relocs.size(); i++) { relocs[i].offset += programAt; s.relocs.push_back(relocs[i]); }
+    for (size_t i = 0; i < relocs.size(); i++) { relocs[i].offset += (unsigned long)programAt; s.relocs.push_back(relocs[i]); }
     u.sections.push_back(s);
 }

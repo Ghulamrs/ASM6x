@@ -10,6 +10,7 @@
 		864D380C20C579DBA8B3634E /* src/assembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 147B68B1C95EAA701B9F0069 /* src/assembler.cpp */; };
 		38C860EA8030A42FB6274254 /* src/c6x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 170A36BB8128E85F19233ED1 /* src/c6x.cpp */; };
 		596E0E56DD344E10994D3DD5 /* src/compact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A867173B8E04FC8BCC547AED /* src/compact.cpp */; };
+		EA4041B0F90109C339950A09 /* src/dwarf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 377B2654FEA958CF5F1A7EFA /* src/dwarf.cpp */; };
 		7B14A1F8CAB6CB6FC9832DC4 /* src/elf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */; };
 		D3760B0E660519653090197A /* src/expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A80680B07616447733BCF3D /* src/expr.cpp */; };
 		98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */; };
@@ -21,6 +22,7 @@
 		147B68B1C95EAA701B9F0069 /* src/assembler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/assembler.cpp; sourceTree = "<group>"; };
 		170A36BB8128E85F19233ED1 /* src/c6x.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/c6x.cpp; sourceTree = "<group>"; };
 		A867173B8E04FC8BCC547AED /* src/compact.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/compact.cpp; sourceTree = "<group>"; };
+		377B2654FEA958CF5F1A7EFA /* src/dwarf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/dwarf.cpp; sourceTree = "<group>"; };
 		35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/elf.cpp; sourceTree = "<group>"; };
 		0A80680B07616447733BCF3D /* src/expr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/expr.cpp; sourceTree = "<group>"; };
 		F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = src/lexer.cpp; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 				147B68B1C95EAA701B9F0069 /* src/assembler.cpp */,
 				170A36BB8128E85F19233ED1 /* src/c6x.cpp */,
 				A867173B8E04FC8BCC547AED /* src/compact.cpp */,
+				377B2654FEA958CF5F1A7EFA /* src/dwarf.cpp */,
 				35B0D13E23485E9C2F9BADD9 /* src/elf.cpp */,
 				0A80680B07616447733BCF3D /* src/expr.cpp */,
 				F612CA57AEDBEA6DB46F381F /* src/lexer.cpp */,
@@ -147,6 +150,7 @@
 				864D380C20C579DBA8B3634E /* src/assembler.cpp in Sources */,
 				38C860EA8030A42FB6274254 /* src/c6x.cpp in Sources */,
 				596E0E56DD344E10994D3DD5 /* src/compact.cpp in Sources */,
+				EA4041B0F90109C339950A09 /* src/dwarf.cpp in Sources */,
 				7B14A1F8CAB6CB6FC9832DC4 /* src/elf.cpp in Sources */,
 				D3760B0E660519653090197A /* src/expr.cpp in Sources */,
 				98EFF9D42865A7F7415857A3 /* src/lexer.cpp in Sources */,
