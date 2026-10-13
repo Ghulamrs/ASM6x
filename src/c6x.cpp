@@ -402,6 +402,7 @@ bool C6xTarget::directive(Unit &u, const std::vector<Token> &t, size_t i)
     }
     if (d == ".END") { done = true; return true; }
     if (d == ".CLINK" || d == ".RETAIN" || d == ".NOCMP" || d == ".COMPILER_OPTS" || d == ".FILE" ||
+        d == ".DWPSN" ||   /* cl6x's source position under -g: nothing here builds .debug_line from it yet */
         d == ".LIST" || d == ".NOLIST" || d == ".TITLE" || d == ".OPTION" || d == ".LENGTH" || d == ".WIDTH")
         return true;
     #undef ITEM
