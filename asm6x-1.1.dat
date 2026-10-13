@@ -1,11 +1,11 @@
 ©2026 G. R. Akhtar - asm6x 1.1, a TMS320C6000 assembler writing TI ELF
 Release seal, version 1.1, sealed 13-10-2026
 Written by tools/seal; check it with `tools/seal check`.
-CRC32  size  file - 10 files, seal C92A0608
+CRC32  size  file - 10 files, seal 7AABD171
 ------------------------------------------------------------------
 848BD422     11269  src/asm.h
 1CB0A732      2908  src/assembler.cpp
-3F34D4C7     54362  src/c6x.cpp
+D0F4ED61     54472  src/c6x.cpp
 DFB39C1C     31396  src/compact.cpp
 BDAF3B93     14713  src/elf.cpp
 8AE348CE      8394  src/expr.cpp
